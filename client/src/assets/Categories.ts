@@ -1,0 +1,3 @@
+export const menCategories = ["men_tshirts", "men_shortsleevebutton", "men_sweatshirts", "men_longsleevebutton", "men_jackets", "men_shorts", "men_jeans", "men_pants"];
+
+export const womenCategories = ["women_tshirts", "women_croptops", "women_sweatshirts", "women_longsleeve", "women_jackets", "women_shorts", "women_jeans", "women_pants", "women_dresses", "women_skirts", "women_bras", "women_sportbras"];
