@@ -27,6 +27,7 @@ const checkS3Connection = async() => {
 }
 
 const S3UploadImg = async (filePath, imgBuffer) => {
+  console.log("pop")
   const resizedImgBuffer = await sharp(imgBuffer)
     .resize(800) // resize the image to a maximum width of 800 pixels
     .jpeg({ quality: 80 }) // compress the image with a quality of 80%

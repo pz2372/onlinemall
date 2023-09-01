@@ -5,15 +5,15 @@ const uploadLinkSlice = createSlice({
   initialState: [] as string[],
   reducers: {
     modifyURL: (state, action) => {
-       const newArray = state;
+      const newArray = state;
       const { index, value } = action.payload;
-      newArray[index] = value ;
+      newArray[index] = value;
       return newArray;
     },
     addLinks: (state, action) => {
-      state = []
-        return action.payload;
-      },
+      state = [];
+      return action.payload;
+    },
   },
 });
 export default uploadLinkSlice.reducer;

@@ -21,6 +21,5 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
-  ]
+    "src", "../dump/men", "../dump/ProjectUploadCard.tsx", "../dump/UploadProductsContainer.tsx", "../dump/App.test.tsx", "../dump/feed", "../dump/ProductPage.tsx", "../dump/UploadAdmin.tsx", "../dump/Dashboard", "../dump/Dashboard.tsx", "../dump/CategorySelector.tsx", "../dump/Admin.tsx" ]
 }

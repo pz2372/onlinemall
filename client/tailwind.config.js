@@ -1,8 +1,44 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        themeBlack: "#212121",
+        themeBlackBold: "#171B26",
+        themeOrange: "#DE3435",
+        dropdownText: "#3D424D",
+        dropdownHoverBG: "#F7F7F7",
+        navBG: "#F8F2EF",
+        dashboardBorder: "#EBEBEB",
+        placeholderColor: "#737780",
+        placeholderColor2: "#3D424D",
+        categoryText: "#1e1e1e",
+        categoryBorder: "#D2D3D6",
+        uploadImageBG: "#fbfbfb",
+        grayBg: "#fafafa",
+        discountBanner: "#EDF0FF",
+        discountTextBlack: "#1A1F22",
+        discountParaText: "#565D6D",
+        discountYellow: "#FFA802",
+        discoundBigBannerHeading: "#0D0E0F",
+        discountPrice: "#9E9E9E",
+        productColor1: "#8D939E",
+        productColor2: "#8093D7",
+        productColor3: "#80B0DD",
+        collectionBanner1: "#FAE6E1",
+        collectionBanner2: "#EDE1FA",
+        followText: "#d3d3d3",
+        footerText: "#636363",
+        footerHeading: "#202020",
+        newsletterInput: "#969696",
+        copyrightBorder: "#e6e6e6",
+      },
+      boxShadow: {
+        dropdown: "0px 20px 44px 0px rgba(16, 24, 40, 0.16)",
+        supprtShadow: "4px 4px 16px 0px rgba(73, 73, 73, 0.08)",
+      },
+    },
   },
   plugins: [],
-}
+};

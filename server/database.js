@@ -1,4 +1,4 @@
-const mysql = require("mysql2");
+{/*const mysql = require("mysql2");
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -13,4 +13,4 @@ db.connect((err) => {
 
 // Create an Amazon S3 service client object.
 
-module.exports = { db: db };
+module.exports = { db: db };*/}

@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import styled from "styled-components";
-import NavBar from "./components/nav/NavBar";
-import HomeHeader from "./pages/home/HomeHeader";
-import ProductCard from "./components/carousel/ProductCard";
-import Carousel from "./components/carousel/Carousel";
-import Home from "./pages/home/Home";
-import ProductsPage from "./pages/ProductPage"
-import User from "./user/User"
-import Admin from "./admin/Admin"
-import { menCategories, womenCategories } from "./assets/Categories"
+import Navbar from "./components/navigation/Navbar";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import BrandDashboard from "./brandUser/BrandDashboard"
+import BrandPage from "./pages/BrandPage"
+import CategoryPage from "./pages/CategoryPage"
+import BrandProductUpload from "./brandUser/BrandProductUpload"
+import AdminDashboard from "./admin/AdminDashboard"
+import { categories, brands } from "./assets/Categories"
 import Footer from "./components/Footer";
+
 
 const AppContainer = styled.div`
   background-color: #e6e6e6;
@@ -49,28 +51,34 @@ const App = () => {
   // Listening for the window resize event
   useEffect(() => {
     window.onresize = resizeHanlder;
-
-    // You can also use:
-    // window.addEventListener('resize', resizeHanlder);
   }, []);
-
 
   return (
     <AppContainer>
-      <NavBar></NavBar>
+      <Navbar homepage={false} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/user" element={<User />} />
-        {menCategories.map((pageName) => (
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/brandproductupload" element={<BrandProductUpload />} />
+        <Route path="/branddashboard" element={<BrandDashboard />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
+        {categories.map((category) => (
           <Route
-            key={pageName}
-            path={`/${pageName}`}
-            element={<ProductsPage pageName={pageName} />}
+            key={category.path}
+            path={`/${category.path}`}
+            element={<CategoryPage category={category}/>}
+          />
+        ))}
+        {brands.map((brand) => (
+          <Route
+            key={brand}
+            path={`/${brand}`}
+            element={<BrandPage  />}
           />
         ))}
       </Routes>
-      <Footer></Footer>
+      <Footer/>
     </AppContainer>
   );
 };
