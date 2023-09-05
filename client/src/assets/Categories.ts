@@ -13,6 +13,7 @@ export const categories = [
   { path: "men_pants", gender: "Men", category: "Pants" },
   { path: "women_tshirts", gender: "Women", category: "T-Shirts" },
   { path: "women_sweatshirts", gender: "Women", category: "Sweatshirts" },
+  { path: "women_longsleeves", gender: "Women", category: "Long Sleeves" },
   { path: "women_jackets", gender: "Women", category: "Jackets" },
   { path: "women_shorts", gender: "Women", category: "Shorts" },
   { path: "women_jeans", gender: "Women", category: "Jeans" },

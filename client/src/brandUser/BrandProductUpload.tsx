@@ -1,10 +1,9 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import DashboardNavbar from "../../../dump/Dashboard/DashboardNavbar";
 import ProductUpload from "../components/propductUpload/ProductUpload";
 import UploadCategories from "../components/propductUpload/UploadCategories";
 import { addProduct } from "../reducers/EditProductSlice";
-import { Product } from "../reducers/EditProductSlice"
+import { Product } from "../reducers/EditProductSlice";
 
 const BrandProductUpload = ({ onChange }: any, brand: string) => {
   const [category, setCategory] = useState("");
@@ -29,8 +28,10 @@ const BrandProductUpload = ({ onChange }: any, brand: string) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const query = encodeURIComponent(JSON.stringify({brand: brand, category: category}))
-    const url = `./getDashboardProducts/data?json=${query}`
+    const query = encodeURIComponent(
+      JSON.stringify({ brand: brand, category: category })
+    );
+    const url = `./getDashboardProducts/data?json=${query}`;
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -42,8 +43,9 @@ const BrandProductUpload = ({ onChange }: any, brand: string) => {
         for (var i = 0; i < data.length; i++) {
           dispatch(addProduct(data[i]));
         }
-      }).catch((error) => {
-        console.error("There was a problem getting product", error)
+      })
+      .catch((error) => {
+        console.error("There was a problem getting product", error);
       });
   }, [category]);
 
