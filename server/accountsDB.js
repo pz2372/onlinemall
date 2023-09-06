@@ -1,19 +1,20 @@
 const { S3UploadImg, S3GetImg, checkS3Connection } = require("./s3");
-require("dotenv").config();
+// require("dotenv").config();
 const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "new_password",
-  database: "OnlineMallDatabase",
+  password: "",
+  database: "onlinemalldatabase",
 });
 db.connect((err) => {
   if (err) throw err;
-  console.log("Connected!");
+  console.log("Connected to MySQL!");
 });
 
-{/*//Retrieve brand data
+{
+  /*//Retrieve brand data
 const getData = (req, res) => {
   const id = "Nike";
   const sqlSelect = `SELECT * FROM men_tshirts WHERE brand = '${id}'`;
@@ -31,7 +32,8 @@ const getData = (req, res) => {
       res.send(result);
     }
   });
-};*/}
+};*/
+}
 
 //*****Update brand data*****//
 const insertData = (req, res) => {
@@ -73,7 +75,8 @@ const insertData = (req, res) => {
 };
 
 //*****Create new entry into table*****//
-{/*const createBrand = (req, res) => {
+{
+  /*const createBrand = (req, res) => {
   const uploadData = req.files;
   const imgURL = {};
   var keys = "";
@@ -115,10 +118,12 @@ const insertData = (req, res) => {
       res.send(result);
     }
   });
-};*/}
+};*/
+}
 
 //*****Get Products Page Data*****//
-{/*const getProducts = (req, res) => {
+{
+  /*const getProducts = (req, res) => {
   const id = "Nike";
   const sqlSelect = `SELECT * FROM men_tshirts WHERE brand = '${id}'`;
   db.query(sqlSelect, async (err, result) => {
@@ -135,14 +140,14 @@ const insertData = (req, res) => {
       res.send(result);
     }
   });
-};*/}
+};*/
+}
 
 //////////////USERS///////////////
 
 //******User Register******//
 const createUser = async (req, res) => {
   const input = req.body;
-
   const hashPassword = await bcrypt.hash(input.password, 10);
 
   const date = new Date();
@@ -191,10 +196,10 @@ const login = async (req, res) => {
 
   db.query(sqlSearch, async (err, result) => {
     if (err) throw err;
-  
+
     if (result.length == 0) {
       console.log("User does not exist");
-      res.status(401).json({ error: 'Username does not exist.'});
+      res.status(401).json({ error: "Username does not exist." });
     } else {
       const hashedPassword = result[0].password;
 
@@ -206,7 +211,7 @@ const login = async (req, res) => {
         res.json({ accessToken: accessToken, refreshToken: refreshToken });
       } else {
         console.log("Password incorrect");
-        res.status(401).json({ error: 'Password is incorrect.' });
+        res.status(401).json({ error: "Password is incorrect." });
       }
     }
   });
@@ -263,10 +268,10 @@ const brandLogin = async (req, res) => {
 
   db.query(sqlSearch, async (err, result) => {
     if (err) throw err;
-  
+
     if (result.length == 0) {
       console.log("User does not exist");
-      res.status(401).json({ error: 'Username does not exist.'});
+      res.status(401).json({ error: "Username does not exist." });
     } else {
       const hashedPassword = result[0].password;
 
@@ -278,7 +283,7 @@ const brandLogin = async (req, res) => {
         res.json({ accessToken: accessToken, refreshToken: refreshToken });
       } else {
         console.log("Password incorrect");
-        res.status(401).json({ error: 'Password is incorrect.' });
+        res.status(401).json({ error: "Password is incorrect." });
       }
     }
   });
@@ -335,10 +340,10 @@ const adminLogin = async (req, res) => {
 
   db.query(sqlSearch, async (err, result) => {
     if (err) throw err;
-  
+
     if (result.length == 0) {
       console.log("User does not exist");
-      res.status(401).json({ error: 'Username does not exist.'});
+      res.status(401).json({ error: "Username does not exist." });
     } else {
       const hashedPassword = result[0].password;
 
@@ -350,12 +355,11 @@ const adminLogin = async (req, res) => {
         res.json({ accessToken: accessToken, refreshToken: refreshToken });
       } else {
         console.log("Password incorrect");
-        res.status(401).json({ error: 'Password is incorrect.' });
+        res.status(401).json({ error: "Password is incorrect." });
       }
     }
   });
 };
-
 
 module.exports = {
   createUser: createUser,
