@@ -30,24 +30,21 @@ const checkS3Connection = async () => {
 };
 
 const S3UploadImg = async (filePath, buffer) => {
-  const resizedImgBuffer = await sharp(buffer)
-    .resize(800) // resize the image to a maximum width of 800 pixels
-    .jpeg({ quality: 80 }) // compress the image with a quality of 80%
-    .toBuffer(); // convert the image to a Buffer object
-  return await s3
-    .send(
-      new PutObjectCommand({
-        Bucket: S3_BUCKET_NAME,
-        Key: filePath,
-        Body: resizedImgBuffer,
-      })
-    )
-    .then(async (data) => {
-      console.log("Image Uploaded!");
-    })
-    .catch((error) => {
-      console.error("Error uploading image to S3:", error);
+  try {
+    const resizedImgBuffer = await sharp(buffer)
+      .resize(800) // resize the image to a maximum width of 800 pixels
+      .jpeg({ quality: 80 }) // compress the image with a quality of 80%
+      .toBuffer(); // convert the image to a Buffer object
+    const command = new PutObjectCommand({
+      Bucket: S3_BUCKET_NAME,
+      Key: filePath,
+      Body: resizedImgBuffer,
     });
+    const response = await s3.send(command);
+    return response;
+  } catch (err) {
+    return err;
+  }
 };
 
 const S3GetImg = async (filePath) => {
@@ -55,12 +52,11 @@ const S3GetImg = async (filePath) => {
 };
 
 const S3DeleteImg = async (filePath) => {
-  const command = new DeleteObjectCommand({
-    Bucket: S3_BUCKET_NAME,
-    Key: filePath,
-  });
-
   try {
+    const command = new DeleteObjectCommand({
+      Bucket: S3_BUCKET_NAME,
+      Key: filePath,
+    });
     const response = await s3.send(command);
     return response;
   } catch (err) {

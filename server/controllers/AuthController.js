@@ -30,7 +30,9 @@ const signup = async (req, res) => {
       gender,
     });
     await newUser.save();
-    res.status(201).send({ message: "User created!", success: true });
+    res
+      .status(201)
+      .send({ message: "User created!", success: true, data: newUser });
   } catch (e) {
     res
       .status(500)
@@ -56,7 +58,7 @@ const login = async (req, res) => {
       } else {
         const hashedPassword = user.password;
 
-        if (await bcrypt.compare(password, hashedPassword)) {
+        if (bcrypt.compare(password, hashedPassword)) {
           const tokenPayload = {
             email: user.email,
           };

@@ -84,8 +84,8 @@ const update = async (req, res) => {
         res.status(404).send({ message: "Brand not found", success: false });
       } else {
         const logo = req.file;
-        let logoUrl = "";
         if (logo) {
+          let logoUrl = "";
           await S3DeleteImg(brand.logo);
           logoUrl = `brands/${Date.now()}-${logo.originalname}`;
           await S3UploadImg(logoUrl, logo.buffer);

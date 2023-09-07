@@ -1,29 +1,24 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const app = express();
-const authRoutes = require("./routes/auth");
-const brandRoutes = require("./routes/brand");
-const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/AuthRouter");
+const brandRoutes = require("./routes/BrandRouter");
+const userRoutes = require("./routes/UserRouter");
+const userAddressRoutes = require("./routes/UserAddressRouter");
+const categoryRoutes = require("./routes/CategoryRouter");
+const connectDB = require("./config/database");
 
 require("dotenv").config();
 
-mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useUNifiedTopology: true,
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error"));
-db.once("open", () => {
-  console.log("Connected to MongoDB!");
-});
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/auth", authRoutes);
-app.use("/brand", brandRoutes);
-app.use("/user", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/brand", brandRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/userAddress", userAddressRoutes);
+app.use("/api/category", categoryRoutes);
 
 // app.post("/uploadProduct", catalogDB.uploadProduct);
 // app.get("/getDashboardProducts", catalogDB.getDashboardProducts);

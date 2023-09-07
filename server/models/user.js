@@ -52,6 +52,11 @@ const userSchema = new mongoose.Schema({
     required: [true, "Gender is required."],
     default: null,
   },
+  avatar: {
+    type: String,
+    required: false,
+    default: null,
+  },
   createdAt: {
     type: Date,
     default: new Date(),
