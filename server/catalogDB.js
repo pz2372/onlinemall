@@ -1,21 +1,4 @@
-// const Product = require("./models/product");
-// const Brand = require("./models/brand");
-// const UserAddress = require("./models/userAddress");
 const { S3UploadImg, S3GetImg, checkS3Connection } = require("./s3");
-
-// const mongoose = require("mongoose");
-// // mongoose.connect("mongodb+srv://siilkcompany:wAhhBZ6PLJGcYqqP@cluster0.a0hsbwz.mongodb.net/?retryWrites=true&w=majority",
-// // { useNewUrlParser: true, useUNifiedTopology: true });
-// mongoose.connect("mongodb://127.0.0.1:27017", {
-//   useNewUrlParser: true,
-//   useUNifiedTopology: true,
-// });
-
-// const db = mongoose.connection;
-// db.on("error", console.error.bind(console, "MongoDB connection error"));
-// db.once("open", () => {
-//   console.log("Connected to MongoDB!");
-// });
 
 const uploadProduct = async (req, res) => {
   const productInfoArray = req.body;
@@ -61,44 +44,7 @@ const getDashboardProducts = (req, res) => {
     });
 };
 
-const createBrand = (req, res) => {
-  const brandInfo = req.body;
-  const currentDate = new Date();
-  const newBrand = new Brand({
-    name: brandInfo.name,
-    description: brandInfo.description,
-    price: brandInfo.price,
-    categoryID: brandInfo.categoryID,
-    createdAt: currentDate,
-    modifiedAt: currentDate, // Set modifiedAt to the same value as createdAt initially
-  });
-
-  newBrand
-    .save()
-    .then((savedBrand) => {
-      console.log("Brand saved:", savedBrand);
-      res.status(201).json({ message: "Brand created successfully" });
-    })
-    .catch((err) => {
-      console.log("Error while creating Brand:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    });
-};
-
-const getAllBrands = async (req, res) => {
-  try {
-    const brands = await Brand.find({}, "name");
-    const brandNames = brands.map((brand) => brand.name);
-    res.json(brandNames);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
 module.exports = {
   uploadProduct: uploadProduct,
   getDashboardProducts: getDashboardProducts,
-  createBrand: createBrand,
-  getAllBrands: getAllBrands,
 };

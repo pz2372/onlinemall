@@ -1,18 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 const app = express();
-const catalogDB = require("./catalogDB");
 const authRoutes = require("./routes/auth");
 const brandRoutes = require("./routes/brand");
 const userRoutes = require("./routes/user");
 
 require("dotenv").config();
-
-// const multer = require("multer");
-// const upload = multer({
-//   storage: multer.memoryStorage(), // save files in memory as Buffers
-// });
 
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
@@ -26,8 +19,7 @@ db.once("open", () => {
 });
 
 app.use(express.json());
-app.use(bodyParser.json({ limit: "1mb" }));
-app.use(bodyParser.urlencoded({ limit: "1mb", extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRoutes);
 app.use("/brand", brandRoutes);
