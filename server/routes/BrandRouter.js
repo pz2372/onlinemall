@@ -18,7 +18,7 @@ brandRouter.post(
   [body("name").notEmpty().withMessage("Name is required.")],
   BrandController.create
 );
-brandRouter.post(
+brandRouter.put(
   "/update/:id",
   auth,
   upload.single("logo"),

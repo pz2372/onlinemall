@@ -1,8 +1,13 @@
 const mongoose = require("mongoose");
+const Category = require("../models/category");
 
 const getAll = async (req, res) => {
   try {
-    res.send("getAll");
+    const categories = await Category.find();
+    res.status(200).send({
+      success: true,
+      data: categories,
+    });
   } catch (e) {
     res
       .status(500)
@@ -12,7 +17,22 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-    res.send("getById");
+    const _id = req.params?.id;
+    if (mongoose.Types.ObjectId.isValid(_id)) {
+      const category = await Category.findOne({ _id });
+      if (!category) {
+        res
+          .status(404)
+          .send({ message: "Category not found.", success: false });
+      } else {
+        res.status(200).send({
+          success: true,
+          data: category,
+        });
+      }
+    } else {
+      res.status(500).send({ message: "Invalid id provided.", success: false });
+    }
   } catch (e) {
     res
       .status(500)
@@ -22,7 +42,18 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    res.send("create");
+    const { name, description, path } = req.body;
+    const newCategory = new Category({
+      name,
+      description,
+      path,
+      key: name.replaceAll(" ", "_").toUpperCase(),
+    });
+
+    await newCategory.save();
+    res
+      .status(201)
+      .send({ message: "Category created!", success: true, data: newCategory });
   } catch (e) {
     res
       .status(500)
@@ -32,7 +63,30 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    res.send("update");
+    const _id = req.params?.id;
+    if (mongoose.Types.ObjectId.isValid(_id)) {
+      const where = { _id };
+      let update = req.body;
+      const category = await Category.findOne(where);
+      if (!category) {
+        res
+          .status(404)
+          .send({ message: "Category not found.", success: false });
+      } else {
+        update.modifiedAt = new Date();
+        const updatedCategory = await Category.findOneAndUpdate(where, update, {
+          new: true,
+        });
+
+        res.status(200).send({
+          message: "Category updated!",
+          success: true,
+          data: updatedCategory,
+        });
+      }
+    } else {
+      res.status(500).send({ message: "Invalid id provided.", success: false });
+    }
   } catch (e) {
     res
       .status(500)
@@ -42,7 +96,22 @@ const update = async (req, res) => {
 
 const deleteById = async (req, res) => {
   try {
-    res.send("deleteById");
+    const _id = req.params?.id;
+    if (mongoose.Types.ObjectId.isValid(_id)) {
+      const category = await Category.findOne({ _id });
+      if (!category) {
+        res.status(404).send({ message: "Category not found", success: false });
+      } else {
+        await Category.deleteOne({ _id: category._id });
+        await Category.deleteMany({ parent: category._id });
+        res.status(200).send({
+          message: "Category deleted!",
+          success: true,
+        });
+      }
+    } else {
+      res.status(500).send({ message: "Invalid id provided.", success: false });
+    }
   } catch (e) {
     res
       .status(500)

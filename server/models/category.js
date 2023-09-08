@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema({
-  parent: {
-    type: String,
-    default: null,
-  },
   name: {
     type: String,
     required: [true, "Name is required."],
@@ -13,6 +9,14 @@ const categorySchema = new mongoose.Schema({
   description: {
     type: String,
     required: false,
+    default: null,
+  },
+  key: {
+    type: String,
+    default: null,
+  },
+  path: {
+    type: String,
     default: null,
   },
   createdAt: {
