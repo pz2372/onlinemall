@@ -16,6 +16,6 @@ userRouter.put(
   upload.single("avatar"),
   UserController.update
 );
-userRouter.post("/delete/:id", auth, UserController.deleteById);
+userRouter.delete("/delete/:id", auth, UserController.deleteById);
 
 module.exports = userRouter;

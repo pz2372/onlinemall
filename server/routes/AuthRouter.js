@@ -20,5 +20,10 @@ authRouter.post(
   ],
   AuthController.login
 );
+authRouter.post(
+  "/password-reset",
+  body("email").isEmail().withMessage("Please enter a valid email address."),
+  AuthController.resetPassword
+);
 
 module.exports = authRouter;

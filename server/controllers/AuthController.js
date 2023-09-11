@@ -87,7 +87,35 @@ const login = async (req, res) => {
   }
 };
 
+const resetPassword = async (req, res) => {
+  try {
+    const user = req.body;
+    if (!user?.email) {
+      res.status(500).send({
+        message: "Please provide your email address.",
+        success: false,
+      });
+    } else {
+      const { errors } = validationResult(req);
+      if (errors.length) {
+        res.status(500).send({
+          message: "Validation failed.",
+          error: errors,
+          success: false,
+        });
+      } else {
+        res.send({ message: "This API is still incomplete." });
+      }
+    }
+  } catch (e) {
+    res
+      .status(500)
+      .send({ message: e.message, error: e.errors, success: false });
+  }
+};
+
 module.exports = {
   signup,
   login,
+  resetPassword,
 };

@@ -1,22 +1,16 @@
 const mongoose = require("mongoose");
 
-const brandSchema = new mongoose.Schema({
+const colorSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Name is required."],
     default: null,
   },
-  description: {
+  hex: {
     type: String,
-    required: false,
+    required: [true, "Hex is required."],
     default: null,
   },
-  logo: {
-    type: String,
-    required: false,
-    default: null,
-  },
-  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
   createdAt: {
     type: Date,
     default: new Date(),
@@ -31,6 +25,6 @@ const brandSchema = new mongoose.Schema({
   },
 });
 
-const Brand = mongoose.model("Brand", brandSchema);
+const Color = mongoose.model("Color", colorSchema);
 
-module.exports = Brand;
+module.exports = Color;

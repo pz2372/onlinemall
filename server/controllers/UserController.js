@@ -5,10 +5,19 @@ const { S3DeleteImg, S3UploadImg } = require("../s3");
 
 const getAll = async (req, res) => {
   try {
-    const users = await User.find();
+    const { page = 1, limit } = req.query;
+    const users = await User.find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+
+    const count = await User.count();
+
     res.status(200).send({
       success: true,
       data: users,
+      currentPage: page,
+      totalPages: Math.ceil(count / limit),
     });
   } catch (e) {
     res

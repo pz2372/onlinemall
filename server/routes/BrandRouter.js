@@ -24,6 +24,6 @@ brandRouter.put(
   upload.single("logo"),
   BrandController.update
 );
-brandRouter.post("/delete/:id", auth, BrandController.deleteById);
+brandRouter.delete("/delete/:id", auth, BrandController.deleteById);
 
 module.exports = brandRouter;

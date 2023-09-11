@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
-const Category = require("../models/category");
+const Size = require("../models/size");
 
 const getAll = async (req, res) => {
   try {
     const { page = 1, limit } = req.query;
-    const categories = await Category.find()
+    const sizes = await Size.find()
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
 
-    const count = await Category.count();
+    const count = await Size.count();
 
     res.status(200).send({
       success: true,
-      data: categories,
+      data: sizes,
       currentPage: page,
       totalPages: Math.ceil(count / limit),
     });
@@ -28,15 +28,13 @@ const getById = async (req, res) => {
   try {
     const _id = req.params?.id;
     if (mongoose.Types.ObjectId.isValid(_id)) {
-      const category = await Category.findOne({ _id });
-      if (!category) {
-        res
-          .status(404)
-          .send({ message: "Category not found.", success: false });
+      const size = await Size.findOne({ _id });
+      if (!size) {
+        res.status(404).send({ message: "Size not found.", success: false });
       } else {
         res.status(200).send({
           success: true,
-          data: category,
+          data: size,
         });
       }
     } else {
@@ -51,18 +49,15 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { name, description, path } = req.body;
-    const newCategory = new Category({
+    const { name } = req.body;
+    const newSize = new Size({
       name,
-      description,
-      path,
-      key: name.replaceAll(" ", "_").toUpperCase(),
     });
 
-    await newCategory.save();
+    await newSize.save();
     res
       .status(201)
-      .send({ message: "Category created!", success: true, data: newCategory });
+      .send({ message: "Size created!", success: true, data: newSize });
   } catch (e) {
     res
       .status(500)
@@ -76,21 +71,19 @@ const update = async (req, res) => {
     if (mongoose.Types.ObjectId.isValid(_id)) {
       const where = { _id };
       let update = req.body;
-      const category = await Category.findOne(where);
-      if (!category) {
-        res
-          .status(404)
-          .send({ message: "Category not found.", success: false });
+      const size = await Size.findOne(where);
+      if (!size) {
+        res.status(404).send({ message: "Size not found.", success: false });
       } else {
         update.modifiedAt = new Date();
-        const updatedCategory = await Category.findOneAndUpdate(where, update, {
+        const updatedSize = await Size.findOneAndUpdate(where, update, {
           new: true,
         });
 
         res.status(200).send({
-          message: "Category updated!",
+          message: "Size updated!",
           success: true,
-          data: updatedCategory,
+          data: updatedSize,
         });
       }
     } else {
@@ -107,14 +100,13 @@ const deleteById = async (req, res) => {
   try {
     const _id = req.params?.id;
     if (mongoose.Types.ObjectId.isValid(_id)) {
-      const category = await Category.findOne({ _id });
-      if (!category) {
-        res.status(404).send({ message: "Category not found", success: false });
+      const size = await Size.findOne({ _id });
+      if (!size) {
+        res.status(404).send({ message: "Size not found", success: false });
       } else {
-        await Category.deleteOne({ _id: category._id });
-        await Category.deleteMany({ parent: category._id });
+        await Size.deleteOne({ _id: size._id });
         res.status(200).send({
-          message: "Category deleted!",
+          message: "Size deleted!",
           success: true,
         });
       }

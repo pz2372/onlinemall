@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
-const Category = require("../models/category");
+const Color = require("../models/color");
 
 const getAll = async (req, res) => {
   try {
     const { page = 1, limit } = req.query;
-    const categories = await Category.find()
+    const colors = await Color.find()
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
 
-    const count = await Category.count();
+    const count = await Color.count();
 
     res.status(200).send({
       success: true,
-      data: categories,
+      data: colors,
       currentPage: page,
       totalPages: Math.ceil(count / limit),
     });
@@ -28,15 +28,13 @@ const getById = async (req, res) => {
   try {
     const _id = req.params?.id;
     if (mongoose.Types.ObjectId.isValid(_id)) {
-      const category = await Category.findOne({ _id });
-      if (!category) {
-        res
-          .status(404)
-          .send({ message: "Category not found.", success: false });
+      const color = await Color.findOne({ _id });
+      if (!color) {
+        res.status(404).send({ message: "Color not found.", success: false });
       } else {
         res.status(200).send({
           success: true,
-          data: category,
+          data: color,
         });
       }
     } else {
@@ -51,18 +49,16 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { name, description, path } = req.body;
-    const newCategory = new Category({
+    const { name, hex } = req.body;
+    const newColor = new Color({
       name,
-      description,
-      path,
-      key: name.replaceAll(" ", "_").toUpperCase(),
+      hex,
     });
 
-    await newCategory.save();
+    await newColor.save();
     res
       .status(201)
-      .send({ message: "Category created!", success: true, data: newCategory });
+      .send({ message: "Color created!", success: true, data: newColor });
   } catch (e) {
     res
       .status(500)
@@ -76,21 +72,19 @@ const update = async (req, res) => {
     if (mongoose.Types.ObjectId.isValid(_id)) {
       const where = { _id };
       let update = req.body;
-      const category = await Category.findOne(where);
-      if (!category) {
-        res
-          .status(404)
-          .send({ message: "Category not found.", success: false });
+      const color = await Color.findOne(where);
+      if (!color) {
+        res.status(404).send({ message: "Color not found.", success: false });
       } else {
         update.modifiedAt = new Date();
-        const updatedCategory = await Category.findOneAndUpdate(where, update, {
+        const updatedColor = await Color.findOneAndUpdate(where, update, {
           new: true,
         });
 
         res.status(200).send({
-          message: "Category updated!",
+          message: "Color updated!",
           success: true,
-          data: updatedCategory,
+          data: updatedColor,
         });
       }
     } else {
@@ -107,14 +101,13 @@ const deleteById = async (req, res) => {
   try {
     const _id = req.params?.id;
     if (mongoose.Types.ObjectId.isValid(_id)) {
-      const category = await Category.findOne({ _id });
-      if (!category) {
-        res.status(404).send({ message: "Category not found", success: false });
+      const color = await Color.findOne({ _id });
+      if (!color) {
+        res.status(404).send({ message: "Color not found", success: false });
       } else {
-        await Category.deleteOne({ _id: category._id });
-        await Category.deleteMany({ parent: category._id });
+        await Color.deleteOne({ _id: color._id });
         res.status(200).send({
-          message: "Category deleted!",
+          message: "Color deleted!",
           success: true,
         });
       }

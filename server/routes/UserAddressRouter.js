@@ -11,6 +11,6 @@ userAddressRouter.get(
 userAddressRouter.get("/getById/:id", auth, UserAddressController.getById);
 userAddressRouter.post("/create", auth, UserAddressController.create);
 userAddressRouter.put("/update/:id", auth, UserAddressController.update);
-userAddressRouter.post("/delete/:id", auth, UserAddressController.deleteById);
+userAddressRouter.delete("/delete/:id", auth, UserAddressController.deleteById);
 
 module.exports = userAddressRouter;

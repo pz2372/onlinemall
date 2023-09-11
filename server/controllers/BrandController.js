@@ -5,10 +5,20 @@ const { S3UploadImg, S3DeleteImg } = require("../s3");
 
 const getAll = async (req, res) => {
   try {
-    const brands = await Brand.find();
+    const { page = 1, limit } = req.query;
+    const brands = await Brand.find()
+      .populate("categories")
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+
+    const count = await Brand.count();
+
     res.status(200).send({
       success: true,
       data: brands,
+      currentPage: page,
+      totalPages: Math.ceil(count / limit),
     });
   } catch (e) {
     res
@@ -48,7 +58,7 @@ const create = async (req, res) => {
         .status(500)
         .send({ message: "Validation failed.", error: errors, success: false });
     } else {
-      const { name, description } = req.body;
+      const { name, description, categories } = req.body;
       const logo = req.file;
       let logoUrl = "";
       if (logo) {
@@ -59,6 +69,7 @@ const create = async (req, res) => {
         name,
         description,
         logo: logoUrl,
+        categories,
       });
 
       await newBrand.save();

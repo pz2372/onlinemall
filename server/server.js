@@ -1,11 +1,14 @@
 const express = require("express");
 const app = express();
+const connectDB = require("./config/database");
 const authRoutes = require("./routes/AuthRouter");
 const brandRoutes = require("./routes/BrandRouter");
 const userRoutes = require("./routes/UserRouter");
 const userAddressRoutes = require("./routes/UserAddressRouter");
 const categoryRoutes = require("./routes/CategoryRouter");
-const connectDB = require("./config/database");
+const productRoutes = require("./routes/ProductRouter");
+const colorRouter = require("./routes/ColorRouter");
+const sizeRouter = require("./routes/SizeRouter");
 
 require("dotenv").config();
 
@@ -19,9 +22,9 @@ app.use("/api/brand", brandRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/userAddress", userAddressRoutes);
 app.use("/api/category", categoryRoutes);
-
-// app.post("/uploadProduct", catalogDB.uploadProduct);
-// app.get("/getDashboardProducts", catalogDB.getDashboardProducts);
+app.use("/api/product", productRoutes);
+app.use("/api/color", colorRouter);
+app.use("/api/size", sizeRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server started on port ${process.env.PORT}`);
