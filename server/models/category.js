@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const brandSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Name is required."],
@@ -11,12 +11,14 @@ const brandSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
-  logo: {
+  key: {
     type: String,
-    required: false,
     default: null,
   },
-  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
+  path: {
+    type: String,
+    default: null,
+  },
   createdAt: {
     type: Date,
     default: new Date(),
@@ -31,6 +33,6 @@ const brandSchema = new mongoose.Schema({
   },
 });
 
-const Brand = mongoose.model("Brand", brandSchema);
+const Category = mongoose.model("Category", categorySchema);
 
-module.exports = Brand;
+module.exports = Category;
