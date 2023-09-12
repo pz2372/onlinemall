@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const mongoose = require("mongoose");
 const UserAddress = require("../models/userAddress");
-const { S3DeleteImg, S3UploadImg } = require("../s3");
+const { S3DeleteImg, S3UploadImg } = require("../utils/s3");
 
 const getAll = async (req, res) => {
   try {
