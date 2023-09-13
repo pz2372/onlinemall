@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { validationResult } = require("express-validator");
+const { sendMail } = require("../utils/sendMail");
+const { generatePassword } = require("../utils/generatePassword");
 
 const signup = async (req, res) => {
   try {
@@ -57,8 +59,7 @@ const login = async (req, res) => {
         res.status(404).send({ message: "User not found!", success: false });
       } else {
         const hashedPassword = user.password;
-
-        if (bcrypt.compare(password, hashedPassword)) {
+        if (await bcrypt.compare(password, hashedPassword)) {
           const tokenPayload = {
             email: user.email,
           };
@@ -104,7 +105,32 @@ const resetPassword = async (req, res) => {
           success: false,
         });
       } else {
-        res.send({ message: "This API is still incomplete." });
+        try {
+          const newPassword = generatePassword();
+          const mailOptions = {
+            from: `"Siilk" <${process.env.NODEMAILER_USER}>`,
+            to: user.email,
+            subject: "Password reset",
+            html: `Your new password is:  <b style="font-size: 20px">${newPassword}</b>`,
+          };
+          await sendMail(mailOptions);
+          let hashPassword = await bcrypt.hash(newPassword, 10);
+          await User.findOneAndUpdate(
+            { email: user.email },
+            { password: hashPassword },
+            {
+              new: true,
+            }
+          );
+          res.send({
+            message: "Your new password has been sent to your email.",
+            success: true,
+          });
+        } catch (e) {
+          res
+            .status(500)
+            .send({ message: e.message, error: e.errors, success: false });
+        }
       }
     }
   } catch (e) {

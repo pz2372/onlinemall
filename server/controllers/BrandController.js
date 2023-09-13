@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 const Brand = require("../models/brand");
-const { S3UploadImg, S3DeleteImg } = require("../s3");
+const { S3UploadImg, S3DeleteImg } = require("../utils/s3");
 
 const getAll = async (req, res) => {
   try {
