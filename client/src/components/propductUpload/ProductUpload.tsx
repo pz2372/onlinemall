@@ -4,11 +4,11 @@ import { createAction } from "@reduxjs/toolkit";
 import UploadImageModal from "./uploadImage/UploadImageModal";
 import "react-image-crop/dist/ReactCrop.css";
 import plusSign from "../../assets/Plus.png";
-import { modifyImg } from "../../reducers/UploadImgSlice";
-import { modifyURL } from "../../reducers/UploadLinkSlice";
-import { modifyPrice } from "../../reducers/UploadPriceSlice";
-import { modifyName } from "../../reducers/UploadNameSlice";
-import { updateProduct } from "../../reducers/EditProductSlice";
+import { modifyImg } from "../../redux/slice/UploadImgSlice";
+import { modifyURL } from "../../redux/slice/UploadLinkSlice";
+import { modifyPrice } from "../../redux/slice/UploadPriceSlice";
+import { modifyName } from "../../redux/slice/UploadNameSlice";
+import { updateProduct } from "../../redux/slice/EditProductSlice";
 
 const ProductUpload = (props: any) => {
   const [showModal, setShowModal] = useState(false);
@@ -42,20 +42,20 @@ const ProductUpload = (props: any) => {
 
   const handleNameChange = (index: number, value: any) => {
     dispatch(modifyName({ index, value }));
-    dispatch(updateProduct( {key: index, changes: { name: value } }));
+    dispatch(updateProduct({ key: index, changes: { name: value } }));
     props.onChange("name" + `${index + 1}`, value);
   };
 
   const handlePriceChange = (index: number, value: any) => {
     dispatch(modifyPrice({ index, value }));
-    console.log(index)
-    dispatch(updateProduct( {key: index, changes: { price: value } }));
+    console.log(index);
+    dispatch(updateProduct({ key: index, changes: { price: value } }));
     props.onChange("price" + `${index + 1}`, value);
   };
 
   const handleLinkChange = (index: number, value: any) => {
     dispatch(modifyURL({ index, value }));
-    dispatch(updateProduct( {key: index, changes: { link: value } }));
+    dispatch(updateProduct({ key: index, changes: { link: value } }));
     props.onChange("link" + `${index + 1}`, value);
   };
 

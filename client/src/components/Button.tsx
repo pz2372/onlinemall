@@ -8,7 +8,12 @@ interface ButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, bgColorCode, type, onClick }) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  bgColorCode,
+  type,
+  onClick,
+}) => {
   return (
     <button
       style={{ backgroundColor: bgColorCode }}

@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,6 +16,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src", "../dump/men", "../dump/ProjectUploadCard.tsx", "../dump/UploadProductsContainer.tsx", "../dump/App.test.tsx", "../dump/feed", "../dump/ProductPage.tsx", "../dump/UploadAdmin.tsx", "../dump/Dashboard", "../dump/Dashboard.tsx", "../dump/CategorySelector.tsx", "../dump/Admin.tsx" ]
+  "include": ["src"]
 }

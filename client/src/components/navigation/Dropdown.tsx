@@ -1,19 +1,23 @@
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavDropdowns from "./NavDropdowns";
+import styles from "./Navbar.module.scss";
 
 const Dropdown = ({ gender }: any) => {
+  const navigate = useNavigate();
   let category;
-  
+
   if (gender == "men") {
-    category = NavDropdowns[0]
+    category = NavDropdowns[0];
   } else {
-    category = NavDropdowns[1]
+    category = NavDropdowns[1];
   }
 
   return (
-    <div className="dropdown bg-white w-max py-2 px-4 rounded-xl shadow-dropdown absolute top-full  hidden z-50">
+    <div
+      className={`${styles.dropdown} bg-white py-5 px-3 w-full rounded-xl shadow-dropdown fixed top-[97px] z-50`}
+    >
       {/* Dropdown icon */}
-      <div className="absolute left-6 -top-[9px]">
+      {/* <div className={`absolute top-[-9px] ${styles.arrow}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -26,7 +30,7 @@ const Dropdown = ({ gender }: any) => {
             fill="#fff"
           />
         </svg>
-      </div>
+      </div> */}
 
       {/* Mapping the dropdown items and returning each one */}
       <ul>
@@ -36,13 +40,11 @@ const Dropdown = ({ gender }: any) => {
           return (
             <li
               key={link}
-              className="flex items-center gap-2 px-3 py-2 bg-transparent hover:bg-dropdownHoverBG rounded-lg duration-200 cursor-pointer"
+              className="flex items-center gap-2 px-3 py-4 bg-transparent hover:bg-dropdownHoverBG duration-100 cursor-pointer"
+              onClick={() => navigate(link)}
             >
               <img src={image} alt={name} />
-
-              <NavLink to={link}>
-                <p className="text-dropdownText">{name}</p>
-              </NavLink>
+              <p className="text-dropdownText">{name}</p>
             </li>
           );
         })}
