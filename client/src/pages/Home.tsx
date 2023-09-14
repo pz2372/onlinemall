@@ -5,7 +5,7 @@ import Categories from "../components/home/Categories";
 import CollectionBanners from "../components/home/CollectionBanners";
 import DiscountBanners from "../components/home/DiscountBanners";
 import FollowUs from "../components/home/FollowUs";
-import HomeBanner from "../components/home/HomeBanner";
+import HomeBanner from "../components/home/homeBanner/HomeBanner";
 import Swimsuits from "../components/home/Swimsuits";
 import TrendingProducts from "../components/home/TrendingProducts";
 import Tshirts from "../components/home/Tshirts";
@@ -13,9 +13,6 @@ import Tshirts from "../components/home/Tshirts";
 const Home = () => {
   return (
     <>
-      {/* Navbar */}
-      <Navbar homepage={true} />
-
       {/* Banner */}
       <HomeBanner />
 

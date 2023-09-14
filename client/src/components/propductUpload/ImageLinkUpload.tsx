@@ -4,9 +4,9 @@ import { createAction } from "@reduxjs/toolkit";
 import UploadImageModal from "./uploadImage/UploadImageModal";
 import "react-image-crop/dist/ReactCrop.css";
 import plusSign from "../../assets/Plus.png";
-import ImageUpload from "./ImageUpload"
-import { modifyImg } from "../../reducers/UploadImgSlice";
-import { modifyURL } from "../../reducers/UploadLinkSlice";
+import ImageUpload from "./ImageUpload";
+import { modifyImg } from "../../redux/slice/UploadImgSlice";
+import { modifyURL } from "../../redux/slice/UploadLinkSlice";
 
 const ImageLinkUpload = (props: any) => {
   const [showModal, setShowModal] = useState(false);
@@ -19,7 +19,7 @@ const ImageLinkUpload = (props: any) => {
 
   return (
     <div className="w-full flex justify-between md:flex-row flex-col lg:gap-20 gap-10 mb-10">
-      <ImageUpload/>
+      <ImageUpload />
       {/* Right side */}
       <div className="w-full md:w-9/12 py-2">
         <div className="w-full flex items-center gap-3 mt-4 md:mt-9">

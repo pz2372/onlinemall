@@ -1,66 +1,131 @@
-import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Button from "../Button";
 import Dropdown from "./Dropdown";
 import Sidebar from "../Sidebar";
 import { useState } from "react";
-import logo from "../../assets/logo.png"
+import logo from "../../assets/logo.png";
+import styles from "./Navbar.module.scss";
+import { useOutsideClick } from "../../hooks/useOutsideClick ";
+import SearchIcon from "../svgs/SearchIcon";
+import AvatarIcon from "../svgs/AvatarIcon";
+import ShoppingCartIcon from "../svgs/ShoppingCartIcon";
 
-interface NavbarProps {
-  homepage: boolean;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ homepage }) => {
+const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   // sidebar show and toggle
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showMenDropdown, setShowMenDropdown] = useState(false);
+  const [showWomenDropdown, setShowWomenDropdown] = useState(false);
+
+  const menRef = useOutsideClick(() => {
+    setShowMenDropdown(false);
+  });
+
+  const womenRef = useOutsideClick(() => {
+    setShowWomenDropdown(false);
+  });
 
   const sidebarOpen = () => {
     setShowSidebar(true);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (document.querySelector("nav")) {
+        if (window.scrollY > 100) {
+          document.querySelector("nav")!.style.position = "fixed";
+        } else {
+          document.querySelector("nav")!.style.position = "absolute";
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     // Navbar Start
-    <div
-      className={`${
-        homepage === true ? "bg-transparent" : "bg-navBG"
-      } absolute top-0 left-0 w-full md:h-24 h-20 flex items-center justify-center navbar z-40`}
+    <nav
+      className={`bg-white absolute top-0 left-0 w-full flex items-center justify-center ${styles.navbar} z-40 h-[96px]`}
     >
       {/* Container Start */}
       <div className="container mx-auto lg:w-10/12 w-11/12 h-full">
         <div className="w-full flex items-center justify-between h-full">
           {/* Left */}
-          <div>
+          <div className="flex items-center h-full">
             <NavLink to="/">
-              <img src={logo} style={{height: "80px"}}/>
+              <img alt="app-logo" src={logo} style={{ height: "80px" }} />
             </NavLink>
-          </div>
+            <div
+              className={`h-full relative md:block hidden ml-20 ${styles.mainMenu}`}
+            >
+              <ul className="h-full flex items-center justify-center gap-12 text-themeBlack">
+                <li
+                  className="h-full flex items-center justify-center"
+                  onClick={() => navigate("/")}
+                >
+                  <span className={`${styles.menuItem}`}>Home</span>
+                </li>
 
-          {/* middle */}
-          <div className="h-full relative md:block hidden">
-            <ul className="h-full flex items-center justify-center gap-12 text-themeBlack">
-              <li className="h-full flex items-center justify-center">
-                <NavLink to="/">Home</NavLink>
-              </li>
+                <li
+                  ref={menRef}
+                  className={`h-full flex items-center justify-center ${
+                    showMenDropdown ? styles.active : ""
+                  }`}
+                  onClick={() => setShowMenDropdown(!showMenDropdown)}
+                >
+                  <span className={`${styles.menuItem}`}>Men</span>
 
-              <li className="h-full flex items-center justify-center men">
-                <NavLink to="">Men</NavLink>
+                  {showMenDropdown ? <Dropdown gender={"men"} /> : null}
+                </li>
 
-                {/* Mens Dropdown */}
-                <Dropdown gender={"men"} />
-              </li>
+                <li
+                  ref={womenRef}
+                  className={`h-full flex items-center justify-center ${
+                    showWomenDropdown ? styles.active : ""
+                  }`}
+                  onClick={() => setShowWomenDropdown(!showWomenDropdown)}
+                >
+                  <span className={`${styles.menuItem}`}>Women</span>
 
-              <li className="h-full flex items-center justify-center women">
-                <NavLink to="">Women</NavLink>
+                  {showWomenDropdown ? <Dropdown gender={"women"} /> : null}
+                </li>
 
-                {/* Womens dropdown */}
-                <Dropdown gender={"women"} />
-              </li>
-            </ul>
+                <li
+                  className="h-full flex items-center justify-center"
+                  // onClick={() => navigate("/")}
+                >
+                  <span className={`${styles.menuItem}`}>Trending</span>
+                </li>
+
+                <li
+                  className="h-full flex items-center justify-center"
+                  // onClick={() => navigate("/")}
+                >
+                  <span className={`${styles.menuItem}`}>Brands</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* right */}
-          <div className="flex justify-end items-center gap-6">
+          <div
+            className={`flex justify-end items-center gap-6 ${styles.getStarted}`}
+          >
+            <SearchIcon />
+            <AvatarIcon />
+            <ShoppingCartIcon />
             {/* Calling Button Component */}
-            <Button text="Get Started" bgColorCode="#DE3435" />
+            <Button
+              text="Get Started"
+              bgColorCode="#3f3f3f27"
+              onClick={() => navigate("/register")}
+            />
             {/* hamburger menu */}
             <div className="md:hidden block" onClick={sidebarOpen}>
               <i className="fa-solid fa-bars-staggered text-2xl cursor-pointer"></i>
@@ -80,7 +145,7 @@ const Navbar: React.FC<NavbarProps> = ({ homepage }) => {
 
       {/* Sidebar */}
       <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-    </div>
+    </nav>
     // Navbar Start
   );
 };

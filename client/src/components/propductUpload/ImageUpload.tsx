@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import UploadImageModal from "./uploadImage/UploadImageModal";
 import "react-image-crop/dist/ReactCrop.css";
 import plusSign from "../../assets/Plus.png";
-import { modifyImg } from "../../reducers/UploadImgSlice";
-import { modifyURL } from "../../reducers/UploadLinkSlice";
+import { modifyImg } from "../../redux/slice/UploadImgSlice";
+import { modifyURL } from "../../redux/slice/UploadLinkSlice";
 
 const ImageUpload = (props: any) => {
   const [showModal, setShowModal] = useState(false);

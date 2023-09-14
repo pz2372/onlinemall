@@ -1,0 +1,78 @@
+@import "../../assets/scss/mixins";
+@import "../../assets/scss/variables";
+
+.navbar {
+  transition: .3s ease;
+  border-bottom: 1px solid rgba(63, 63, 63, .15);
+
+  .getStarted {
+    button {
+      height: unset !important;
+      border-radius: 4px !important;
+      border: 0px solid #5F789E !important;
+      padding: 10px 36px 10px 24px !important;
+      color: $white !important;
+      font-size: 14px !important;
+      font-style: normal !important;
+      font-weight: 600 !important;
+      line-height: normal !important;
+      transition: 0.3s all ease-in !important;
+      clip-path: polygon(0 0, 80% 0, 100% 100%, 0% 100%);
+      background: $orange !important;
+      width: auto !important;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #eb916a !important;
+      }
+    }
+  }
+
+  .mainMenu {
+
+    >ul {
+      >li {
+        position: relative;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        min-height: 80px;
+        transition: .3s ease;
+
+        >.menuItem {
+          color: $dark;
+        }
+
+        .dropdown {
+          cursor: default;
+          left: 50%;
+          transform: translateX(-50%);
+
+          .arrow {
+            left: 50%;
+            transform: translateX(-50%);
+          }
+
+          >ul {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+
+            >li {
+              &:hover {
+                border-left: 3px solid $orange;
+              }
+            }
+
+            @include lg {
+              grid-template-columns: 1fr 1fr;
+            }
+          }
+        }
+
+        &:hover,
+        &.active {
+          border-bottom: 3px solid $orange;
+        }
+      }
+    }
+  }
+}

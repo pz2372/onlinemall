@@ -4,61 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  -webkit-tap-highlight-color: transparent;
-}
-
-body {
-  font-family: "Inter", sans-serif;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 .footer {
   font-family: "Figtree", sans-serif;
-}
-
-.homebanner {
-  background-image: url("../public/images/background.png");
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-@media screen and (min-width: 768px) {
-  .navbar a.active {
-    color: #de3435;
-  }
-
-  .men:hover .dropdown {
-    display: block !important;
-    left: 80px;
-  }
-
-  .women:hover .dropdown {
-    display: block !important;
-    left: 165px;
-  }
-}
-
-@media screen and (min-width: 1850px) {
-  .homebanner {
-    height: 85vh !important;
-  }
 }
 
 .swiper-pagination-fraction,
 .swiper-pagination-custom,
 .swiper-horizontal > .swiper-pagination-bullets,
 .swiper-pagination-bullets.swiper-pagination-horizontal {
-  bottom: var(--swiper-pagination-bottom, 50%);
-  top: var(--swiper-pagination-top, auto);
-  left: 96%;
-  width: max-content;
-  rotate: 90deg;
+  bottom: var(--swiper-pagination-bottom, 50%) !important;
+  top: var(--swiper-pagination-top, auto) !important;
+  left: 96% !important;
+  width: max-content !important;
+  rotate: 90deg !important;
 }
 
 @media screen and (max-width: 1200px) {
@@ -96,4 +54,3 @@ code {
     var(--swiper-pagination-bullet-size, 10px)
   );
 }
-

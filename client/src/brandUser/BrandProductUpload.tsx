@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ProductUpload from "../components/propductUpload/ProductUpload";
 import UploadCategories from "../components/propductUpload/UploadCategories";
-import { addProduct } from "../reducers/EditProductSlice";
-import { Product } from "../reducers/EditProductSlice";
+import { addProduct } from "../redux/slice/EditProductSlice";
+import { Product } from "../redux/slice/EditProductSlice";
 
 const BrandProductUpload = ({ onChange }: any, brand: string) => {
   const [category, setCategory] = useState("");

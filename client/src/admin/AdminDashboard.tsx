@@ -1,8 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Upload from "../components/propductUpload/ProductUpload";
-import { modifyImg, addImages } from "../reducers/UploadImgSlice";
-import { modifyURL, addLinks } from "../reducers/UploadLinkSlice";
 import AdminDropdown from "./AdminDropdown";
 import FeaturedCategories from "./subpages/FeaturedCategories";
 import FeaturedProducts from "./subpages/FeaturedProducts";
@@ -49,12 +47,12 @@ const AdminDashboard = () => {
   }, [dropdown]);
 
   const handleDropdownChange = (value: string) => {
-    setDropdown(value)
-  }
+    setDropdown(value);
+  };
 
   return (
     <div className="p-40">
-      <AdminDropdown onChange={handleDropdownChange}/>
+      <AdminDropdown onChange={handleDropdownChange} />
       {subpage}
     </div>
   );
