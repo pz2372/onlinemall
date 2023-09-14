@@ -32,9 +32,7 @@ const signup = async (req, res) => {
       gender,
     });
     await newUser.save();
-    res
-      .status(201)
-      .send({ message: "User created!", success: true, data: newUser });
+    res.status(201).send({ message: "User created!", success: true });
   } catch (e) {
     res
       .status(500)
@@ -68,11 +66,9 @@ const login = async (req, res) => {
             process.env.ACCESS_TOKEN_SECRET
           );
           res.status(200).send({
-            message: "User Logged In!",
+            message: "You have successfully logged In.",
             success: true,
-            data: {
-              accessToken,
-            },
+            accessToken,
           });
         } else {
           res

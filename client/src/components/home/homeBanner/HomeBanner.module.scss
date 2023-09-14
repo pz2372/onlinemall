@@ -1,0 +1,14 @@
+@import "../../../assets/scss/mixins";
+@import "../../../assets/scss/variables";
+
+.homebanner {
+  background-image: url("../../../../public/images/background.png");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 85vh;
+
+  @include lg {
+    height: unset;
+  }
+}
