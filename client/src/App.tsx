@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 import "./App.scss";
 import styled from "styled-components";
 import Navbar from "./components/navigation/Navbar";
@@ -15,6 +15,9 @@ import { categories, brands } from "./assets/Categories";
 import Footer from "./components/Footer";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { AppDispatch, RootState } from "./redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { me } from "./redux/slice/UserSlice";
 
 const AppContainer = styled.div`
   background-color: #e6e6e6;
@@ -22,37 +25,30 @@ const AppContainer = styled.div`
   font-family: Verdana;
 `;
 
-interface Size {
-  width: number;
-  height: number;
-}
-
 const App = () => {
-  const [size, setSize] = useState<Size>();
+  const dispatch: AppDispatch = useDispatch();
+  const { accessToken } = useSelector((state: RootState) => state.auth);
+  const { userInfo } = useSelector((state: RootState) => state.user);
 
-  // This function updates the state thus re-render components
-  const resizeHanlder = () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    setSize({
-      width: width,
-      height: height,
-    });
-  };
-
-  // Listening for the window resize event
   useEffect(() => {
-    window.onresize = resizeHanlder;
-  }, []);
+    if (sessionStorage.access_token) {
+      dispatch(me());
+    }
+  }, [accessToken]);
 
   return (
     <AppContainer>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={userInfo ? <Navigate to={"/"} /> : <Login />}
+        />
+        <Route
+          path="/register"
+          element={userInfo ? <Navigate to={"/"} /> : <Register />}
+        />
         <Route path="/brandproductupload" element={<BrandProductUpload />} />
         <Route path="/branddashboard" element={<BrandDashboard />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />

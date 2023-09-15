@@ -3,6 +3,27 @@ const mongoose = require("mongoose");
 const UserAddress = require("../models/userAddress");
 const { S3DeleteImg, S3UploadImg } = require("../utils/s3");
 
+const me = async (req, res) => {
+  try {
+    const { email } = req.user;
+    const user = await User.findOne({ email }).select(
+      "username firstName lastName email phone gender avatar"
+    );
+    if (!user) {
+      res.status(404).send({ message: "User not found", success: false });
+    } else {
+      res.status(200).send({
+        success: true,
+        data: user,
+      });
+    }
+  } catch (e) {
+    res
+      .status(500)
+      .send({ message: e.message, error: e.errors, success: false });
+  }
+};
+
 const getAll = async (req, res) => {
   try {
     const { page = 1, limit } = req.query;
@@ -116,6 +137,7 @@ const deleteById = async (req, res) => {
 };
 
 module.exports = {
+  me,
   getAll,
   getById,
   update,

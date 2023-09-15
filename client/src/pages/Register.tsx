@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import plus from "../assets/Plus.png";
-import Button from "../components/Button";
+import Button from "../components/button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { validatePhoneNumber } from "../utils/validatePhoneNumber";
 import { validateEmailAddress } from "../utils/validateEmail";
@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 const Register = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const state = useSelector((state: RootState) => state.auth);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -111,6 +110,7 @@ const Register = () => {
       isValid = false;
       cloneErrors.password = "Password is required.";
     } else if (!validatePassword(formData.password)) {
+      isValid = false;
       cloneErrors.password =
         "Password must be minimum 8 characters, at least one letter and one number";
     } else {
@@ -126,21 +126,20 @@ const Register = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
+  useEffect(() => {
+    Object.values(errors).forEach((err) => {
+      if (err) {
+        toast.error(err);
+      }
+    });
+  }, [errors]);
+
   return (
     <div className="flex py-2 pt-40">
       <div className="flex-1">
         <img alt="" src={plus} className="" />
       </div>
       <div className="flex-1 justify-between gap-6 p-20">
-        <div className="my-3">
-          {Object.values(errors).map((err, index) => {
-            return err ? (
-              <p key={index} className="text-red-500">
-                {err}
-              </p>
-            ) : null;
-          })}
-        </div>
         <div className="items-center gap-3 ">
           <p className="text-categoryText md:text-base text-sm">First Name:</p>
           <input
@@ -229,12 +228,9 @@ const Register = () => {
         </div>
         <br />
         <div className="flex flex-col items-center">
-          <Button
-            type={"submit"}
-            text={"Create Account"}
-            bgColorCode={"green"}
-            onClick={handleSubmit}
-          />
+          <Button variant="primary" onClick={handleSubmit}>
+            Create Account
+          </Button>
           <Link to={"/login"} className="p-2 text-blue-800">
             Already Have An Account?
           </Link>

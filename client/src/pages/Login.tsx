@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import plus from "../assets/Plus.png";
-import Button from "../components/Button";
+import Button from "../components/button/Button";
 import { validateEmailAddress } from "../utils/validateEmail";
 import { validatePassword } from "../utils/validatePassword";
 import { AppDispatch } from "../redux/store";
@@ -29,14 +29,12 @@ const Login = () => {
     }
 
     await dispatch(login(formData)).then((res) => {
-      console.log("resssssssss", res);
       if (res.payload.data?.success) {
         toast.success(res.payload.data.message, {
           autoClose: 2000,
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         navigate("/");
-        localStorage.access_token = res.payload.data?.accessToken;
       } else {
         toast.error(res.payload.message || res.payload, {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -61,6 +59,7 @@ const Login = () => {
       isValid = false;
       cloneErrors.password = "Password is required.";
     } else if (!validatePassword(formData.password)) {
+      isValid = false;
       cloneErrors.password =
         "Password must be minimum 8 characters, at least one letter and one number";
     } else {
@@ -76,21 +75,20 @@ const Login = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
+  useEffect(() => {
+    Object.values(errors).forEach((err) => {
+      if (err) {
+        toast.error(err);
+      }
+    });
+  }, [errors]);
+
   return (
     <div className="flex py-2 pt-40">
       <div className="flex-1">
         <img alt="" src={plus} className="" />
       </div>
       <div className="flex-1 justify-between gap-6 p-20">
-        <div className="my-3">
-          {Object.values(errors).map((err, index) => {
-            return err ? (
-              <p key={index} className="text-red-500">
-                {err}
-              </p>
-            ) : null;
-          })}
-        </div>
         <div className="items-center gap-3">
           <p className="text-categoryText md:text-base text-sm">
             Email address:
@@ -125,12 +123,9 @@ const Login = () => {
           </p>
         </div>
         <div className="flex flex-col items-center">
-          <Button
-            type={"submit"}
-            text={"Log In"}
-            bgColorCode={"green"}
-            onClick={handleSubmit}
-          />
+          <Button variant="primary" onClick={handleSubmit}>
+            Log in
+          </Button>
           <Link to="/register" className="p-2 text-blue-800">
             Register Account
           </Link>

@@ -1,13 +1,13 @@
 import React from "react";
 import { TIcon } from "../../types/icons.type";
 
-const SearchIcon = ({ width, height, fill }: TIcon) => {
+const LogoutIcon = ({ width, height, fill }: TIcon) => {
   return (
     <svg
+      fill={fill}
       width={width}
       height={height}
       viewBox="0 0 24 24"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g id="SVGRepo_bgCarrier" strokeWidth="0" />
@@ -19,16 +19,10 @@ const SearchIcon = ({ width, height, fill }: TIcon) => {
       />
 
       <g id="SVGRepo_iconCarrier">
-        <path
-          d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-          stroke={fill}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path d="M7.707,8.707,5.414,11H17a1,1,0,0,1,0,2H5.414l2.293,2.293a1,1,0,1,1-1.414,1.414l-4-4a1,1,0,0,1,0-1.414l4-4A1,1,0,1,1,7.707,8.707ZM21,1H13a1,1,0,0,0,0,2h7V21H13a1,1,0,0,0,0,2h8a1,1,0,0,0,1-1V2A1,1,0,0,0,21,1Z" />
       </g>
     </svg>
   );
 };
 
-export default SearchIcon;
+export default LogoutIcon;
