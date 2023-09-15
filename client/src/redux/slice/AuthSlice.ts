@@ -29,7 +29,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     isLoading: false,
-    data: [],
     isError: false,
     message: "",
     accessToken: null,
@@ -56,9 +55,11 @@ const authSlice = createSlice({
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoading = false;
       state.message = action.payload.data.message;
-      state.accessToken = action.payload.data.accessToken;
       if (!action.payload.data.success) {
         state.isError = true;
+      } else {
+        sessionStorage.access_token = action.payload.data?.accessToken;
+        state.accessToken = action.payload.data.accessToken;
       }
     });
     builder.addCase(login.rejected, (state, action) => {

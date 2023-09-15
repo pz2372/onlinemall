@@ -1,22 +1,32 @@
 import { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import Button from "../Button";
-import Dropdown from "./Dropdown";
+import Button from "../button/Button";
+import MenuDropdown from "./dropdowns/MenuDropdown";
 import Sidebar from "../Sidebar";
 import { useState } from "react";
 import logo from "../../assets/logo.png";
 import styles from "./Navbar.module.scss";
 import { useOutsideClick } from "../../hooks/useOutsideClick ";
 import SearchIcon from "../svgs/SearchIcon";
-import AvatarIcon from "../svgs/AvatarIcon";
 import ShoppingCartIcon from "../svgs/ShoppingCartIcon";
+import UserAccountDropdown from "./dropdowns/UserAccountDropdown";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllCategories } from "../../redux/slice/CategorySlice";
+import HamburgerIcon from "../svgs/HamburgerIcon";
 
 const Navbar: React.FC = () => {
+  const { categories } = useSelector((state: RootState) => state.category);
+  const dispatch: AppDispatch = useDispatch();
+
   const navigate = useNavigate();
   // sidebar show and toggle
   const [showSidebar, setShowSidebar] = useState(false);
   const [showMenDropdown, setShowMenDropdown] = useState(false);
   const [showWomenDropdown, setShowWomenDropdown] = useState(false);
+
+  const [menCategories, setMenCategories] = useState([]);
+  const [womenCategories, setWomenCategories] = useState([]);
 
   const menRef = useOutsideClick(() => {
     setShowMenDropdown(false);
@@ -25,10 +35,6 @@ const Navbar: React.FC = () => {
   const womenRef = useOutsideClick(() => {
     setShowWomenDropdown(false);
   });
-
-  const sidebarOpen = () => {
-    setShowSidebar(true);
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +54,29 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    dispatch(fetchAllCategories());
+  }, []);
+
+  useEffect(() => {
+    if (categories.length) {
+      const menCat: any = [];
+      const womenCat: any = [];
+      categories.forEach((category: any) => {
+        if (category.path.startsWith("MEN") && category.path !== "MEN") {
+          menCat.push(category);
+          setMenCategories(menCat);
+        } else if (
+          category.path.startsWith("WOMEN") &&
+          category.path !== "WOMEN"
+        ) {
+          womenCat.push(category);
+          setWomenCategories(womenCat);
+        }
+      });
+    }
+  }, [categories]);
+
   return (
     // Navbar Start
     <nav
@@ -62,9 +91,9 @@ const Navbar: React.FC = () => {
               <img alt="app-logo" src={logo} style={{ height: "80px" }} />
             </NavLink>
             <div
-              className={`h-full relative md:block hidden ml-20 ${styles.mainMenu}`}
+              className={`h-full relative md:block hidden ml-14 ${styles.mainMenu}`}
             >
-              <ul className="h-full flex items-center justify-center gap-12 text-themeBlack">
+              <ul className="h-full flex items-center justify-center gap-8 text-themeBlack">
                 <li
                   className="h-full flex items-center justify-center"
                   onClick={() => navigate("/")}
@@ -81,7 +110,9 @@ const Navbar: React.FC = () => {
                 >
                   <span className={`${styles.menuItem}`}>Men</span>
 
-                  {showMenDropdown ? <Dropdown gender={"men"} /> : null}
+                  {showMenDropdown ? (
+                    <MenuDropdown categories={menCategories} />
+                  ) : null}
                 </li>
 
                 <li
@@ -93,7 +124,9 @@ const Navbar: React.FC = () => {
                 >
                   <span className={`${styles.menuItem}`}>Women</span>
 
-                  {showWomenDropdown ? <Dropdown gender={"women"} /> : null}
+                  {showWomenDropdown ? (
+                    <MenuDropdown categories={womenCategories} />
+                  ) : null}
                 </li>
 
                 <li
@@ -115,20 +148,27 @@ const Navbar: React.FC = () => {
 
           {/* right */}
           <div
-            className={`flex justify-end items-center gap-6 ${styles.getStarted}`}
+            className={`flex justify-end items-center ml-3 gap-6 ${styles.navbarRight}`}
           >
-            <SearchIcon />
-            <AvatarIcon />
-            <ShoppingCartIcon />
+            <div className={styles.search}>
+              <SearchIcon width="30px" height="30px" fill="#000000" />
+            </div>
+            <UserAccountDropdown />
+            <div className={styles.shoppingCart}>
+              <ShoppingCartIcon width="30px" height="30px" fill="#000000" />
+            </div>
             {/* Calling Button Component */}
-            <Button
+            {/* <Button
               text="Get Started"
               bgColorCode="#3f3f3f27"
               onClick={() => navigate("/register")}
-            />
+            /> */}
             {/* hamburger menu */}
-            <div className="md:hidden block" onClick={sidebarOpen}>
-              <i className="fa-solid fa-bars-staggered text-2xl cursor-pointer"></i>
+            <div
+              className="md:hidden block cursor-pointer"
+              onClick={() => setShowSidebar(true)}
+            >
+              <HamburgerIcon width="50px" height="50px" fill="#000000" />
             </div>
           </div>
         </div>
@@ -136,7 +176,7 @@ const Navbar: React.FC = () => {
       {/* Container end */}
 
       {/* Black overlay */}
-      {showSidebar == true ? (
+      {showSidebar ? (
         <div
           className="h-screen w-full bg-black bg-opacity-60 fixed inset-0"
           onClick={() => setShowSidebar(false)}

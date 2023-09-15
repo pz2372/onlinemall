@@ -8,6 +8,7 @@ const upload = multer({
   storage: multer.memoryStorage(),
 });
 
+userRouter.get("/me", auth, UserController.me);
 userRouter.get("/getAll", auth, UserController.getAll);
 userRouter.get("/getById/:id", auth, UserController.getById);
 userRouter.put(

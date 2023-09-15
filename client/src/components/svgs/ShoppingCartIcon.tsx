@@ -1,15 +1,16 @@
 import React from "react";
+import { TIcon } from "../../types/icons.type";
 
-const ShoppingCartIcon = () => {
+const ShoppingCartIcon = ({ width, height, fill }: TIcon) => {
   return (
     <svg
-      height="30px"
-      width="30px"
+      height={height}
+      width={width}
       version="1.1"
       id="_x32_"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
-      fill="#000000"
+      fill={fill}
     >
       <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 

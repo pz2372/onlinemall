@@ -1,0 +1,25 @@
+@import "../../assets/scss/mixins";
+@import "../../assets/scss/variables";
+
+button {
+  &.primary {
+    height: unset !important;
+    border-radius: 4px !important;
+    border: none !important;
+    padding: 10px 36px 10px 24px !important;
+    color: $white !important;
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    line-height: normal !important;
+    transition: 0.3s all ease-in !important;
+    clip-path: polygon(0 0, 80% 0, 100% 100%, 0% 100%);
+    background: $orange !important;
+    width: auto !important;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #eb916a !important;
+    }
+  }
+}
