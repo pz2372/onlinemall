@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from "../button/Button";
 
 const CollectionBanners = () => {
   return (
@@ -20,7 +20,7 @@ const CollectionBanners = () => {
               Wrinkle long <br className="md:block hidden" /> thong shirt
             </h2>
 
-            <Button bgColorCode="#000" text="More Collection" />
+            <Button variant="primary">More Collection</Button>
           </div>
 
           {/* right Side */}
@@ -45,7 +45,7 @@ const CollectionBanners = () => {
               Leather jacket
             </h2>
 
-            <Button bgColorCode="#000" text="More Collection" />
+            <Button variant="primary">More Collection</Button>
           </div>
 
           {/* right Side */}

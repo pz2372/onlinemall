@@ -7,10 +7,14 @@ import UploadNameSlice from "./slice/UploadNameSlice";
 import UploadPriceSlice from "./slice/UploadPriceSlice";
 import EditProductSlice from "./slice/EditProductSlice";
 import AuthSlice from "./slice/AuthSlice";
+import UserSlice from "./slice/UserSlice";
+import CategorySlice from "./slice/CategorySlice";
 
 const store = configureStore({
   reducer: {
     auth: AuthSlice,
+    user: UserSlice,
+    category: CategorySlice,
     mobile: MobileSlice,
     carousel: CarouselSlice,
     uploadImg: UploadImgSlice,

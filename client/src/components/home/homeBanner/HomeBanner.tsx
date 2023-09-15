@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Autoplay, Pagination } from "swiper";
-import Button from "../../Button";
+import Button from "../../button/Button";
 import styles from "./HomeBanner.module.scss";
 
 const HomeBanner = () => {
@@ -38,7 +38,7 @@ const HomeBanner = () => {
                     Collection
                   </h1>
 
-                  <Button bgColorCode="#000" text="Shop Collection" />
+                  <Button variant="primary">Shop Collection</Button>
                 </div>
 
                 {/* right Side */}
@@ -68,7 +68,7 @@ const HomeBanner = () => {
                     Collection
                   </h1>
 
-                  <Button bgColorCode="#000" text="Shop Collection" />
+                  <Button variant="primary">Shop Collection</Button>
                 </div>
 
                 {/* right Side */}
@@ -98,7 +98,7 @@ const HomeBanner = () => {
                     Collection
                   </h1>
 
-                  <Button bgColorCode="#000" text="Shop Collection" />
+                  <Button variant="primary">Shop Collection</Button>
                 </div>
 
                 {/* right Side */}
