@@ -11,7 +11,7 @@ type ItemType = {
 
 // Then, you can specify the type of the 'data' prop in the component:
 type BrandCategoryCardsProps = {
-  brand?: string
+  brand?: string;
   data?: ItemType[];
   brandImg?: string;
 };

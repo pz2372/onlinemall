@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Category = require("../models/category");
 const mongoose = require("mongoose");
 const { S3DeleteImg, S3UploadImg } = require("../utils/s3");
 const { validationResult } = require("express-validator");
@@ -28,6 +29,91 @@ const getAll = async (req, res) => {
       currentPage: page,
       totalPages: Math.ceil(count / limit),
     });
+  } catch (e) {
+    res
+      .status(500)
+      .send({ message: e.message, error: e.errors, success: false });
+  }
+};
+
+const getProductsByCategory = async (req, res) => {
+  try {
+    const { categoryId, page = 1, limit } = req.query;
+    const products = await Product.find({ category: categoryId })
+      .populate("sizes")
+      .populate("colors")
+      .populate({
+        path: "brand",
+        populate: {
+          path: "categories",
+        },
+      })
+      .populate("category")
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    const obj = {};
+    Promise.all([
+      products.map((p) => {
+        if (obj[p.brand.name]) {
+          obj[p.brand.name].push(p);
+        } else {
+          obj[p.brand.name] = [p];
+        }
+        return obj;
+      }),
+    ]);
+    res.status(200).send({
+      success: true,
+      data: obj,
+    });
+    // const c = await Category.findById(categoryId);
+    // if (c.path === "MEN" || c.path === "WOMEN") {
+    //   const categories = await Category.find({
+    //     path: { $regex: "^" + c.path },
+    //   });
+    //   const products = [];
+    //   const doc = categories.map(async (cat) => {
+    //     const query = await Product.find({ category: cat._id })
+    //       .populate("sizes")
+    //       .populate("colors")
+    //       .populate({
+    //         path: "brand",
+    //         populate: {
+    //           path: "categories",
+    //         },
+    //       })
+    //       .populate("category")
+    //       .exec();
+    //     if (query.length) {
+    //       query.map((q) => {
+    //         products.push(q);
+    //       });
+    //     }
+    //     return products;
+    //   });
+    //   const results = await Promise.all(doc);
+    //   res.status(200).send({
+    //     success: true,
+    //     data: results[0],
+    //   });
+    // } else {
+    //   const products = await Product.find({ category: categoryId })
+    //     .populate("sizes")
+    //     .populate("colors")
+    //     .populate({
+    //       path: "brand",
+    //       populate: {
+    //         path: "categories",
+    //       },
+    //     })
+    //     .populate("category")
+    //     .exec();
+    //   res.status(200).send({
+    //     success: true,
+    //     data: products,
+    //   });
+    // }
   } catch (e) {
     res
       .status(500)
@@ -187,6 +273,7 @@ const deleteById = async (req, res) => {
 
 module.exports = {
   getAll,
+  getProductsByCategory,
   getById,
   create,
   update,

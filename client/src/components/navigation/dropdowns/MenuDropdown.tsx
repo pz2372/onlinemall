@@ -1,13 +1,16 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import NavDropdowns from "../NavDropdowns";
 import styles from "../Navbar.module.scss";
 
 const MenuDropdown = ({ categories }: any) => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const mainCategory = location.pathname.substring(1);
+  const selectedCategory = searchParams.get("cat");
   return (
     <div
-      className={`${styles.dropdown} bg-white py-5 px-3 w-full rounded-xl shadow-dropdown fixed top-[97px] z-50`}
+      className={`${styles.menuDropdown} bg-black w-full shadow-dropdown z-50`}
     >
       {/* Dropdown icon */}
       {/* <div className={`absolute top-[-9px] ${styles.arrow}`}>
@@ -26,17 +29,25 @@ const MenuDropdown = ({ categories }: any) => {
       </div> */}
 
       {/* Mapping the dropdown items and returning each one */}
-      <ul>
+      <ul className="container mx-auto lg:w-10/12 w-11/12 flex items-center">
         {categories.map((category: any) => {
-          const link = category?.path?.toLowerCase();
+          const splittedPath = category?.path?.toLowerCase().split("/");
+          const link = splittedPath[1]
+            ? `${splittedPath[0]}?cat=${splittedPath[1]}`
+            : splittedPath[0];
           return (
             <li
               key={category?._id}
-              className="flex items-center gap-2 px-3 py-4 bg-transparent hover:bg-dropdownHoverBG duration-100 cursor-pointer"
+              className={`flex items-center gap-2 py-3 px-3 bg-transparent duration-100 cursor-pointer ${
+                selectedCategory === category?.name.toLowerCase() &&
+                category?.path.toLowerCase().startsWith(mainCategory)
+                  ? styles.active
+                  : ""
+              }`}
               onClick={() => navigate(link)}
             >
               {/* <img src={image} alt={name} /> */}
-              <p className="text-dropdownText">{category?.name}</p>
+              <p className="text-white">{category?.name}</p>
             </li>
           );
         })}
