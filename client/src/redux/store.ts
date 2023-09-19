@@ -9,12 +9,14 @@ import EditProductSlice from "./slice/EditProductSlice";
 import AuthSlice from "./slice/AuthSlice";
 import UserSlice from "./slice/UserSlice";
 import CategorySlice from "./slice/CategorySlice";
+import ProductSlice from "./slice/ProductSlice";
 
 const store = configureStore({
   reducer: {
     auth: AuthSlice,
     user: UserSlice,
     category: CategorySlice,
+    product: ProductSlice,
     mobile: MobileSlice,
     carousel: CarouselSlice,
     uploadImg: UploadImgSlice,

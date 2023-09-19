@@ -1,14 +1,15 @@
 import React from "react";
+import Breadcrumb from "../breadcrumb/Breadcrumb";
 
-const FilterHeading = ({category, options}:any) => {
-  console.log(category)
+const FilterHeading = ({ category, options }: any) => {
   const optionValues = options.map((o: any) => o.option);
+  const breadcrumbs = category.category
+    ? [`${category.gender} ${category.category}`]
+    : [category.gender];
 
   return (
     <div className="w-full flex items-center justify-between">
-      <p className="text-lg md:text-2xl text-categoryText">
-       {category.gender} {category.category}
-      </p>
+      <Breadcrumb path={breadcrumbs} />
 
       <div className="flex items-center gap-3">
         <p className="text-categoryText md:text-base text-sm">Sort By:</p>

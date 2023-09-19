@@ -70,4 +70,22 @@
       }
     }
   }
+
+  .menuDropdown {
+    ul {
+      >li {
+        p {
+          font-size: 14px;
+        }
+
+        &.active {
+          background-color: $orange;
+        }
+
+        &:hover {
+          background-color: $orange;
+        }
+      }
+    }
+  }
 }

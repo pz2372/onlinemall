@@ -3,19 +3,16 @@
 
 button {
   &.primary {
-    height: unset !important;
-    border-radius: 4px !important;
-    border: none !important;
-    padding: 10px 36px 10px 24px !important;
-    color: $white !important;
-    font-size: 14px !important;
-    font-style: normal !important;
-    font-weight: 600 !important;
-    line-height: normal !important;
-    transition: 0.3s all ease-in !important;
-    clip-path: polygon(0 0, 80% 0, 100% 100%, 0% 100%);
-    background: $orange !important;
-    width: auto !important;
+    border-radius: 99px;
+    border: none;
+    padding: 10px 24px;
+    color: $white ;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s all ease-in;
+    background: $orange;
     cursor: pointer;
 
     &:hover {
