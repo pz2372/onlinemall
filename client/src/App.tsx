@@ -18,6 +18,8 @@ import { ToastContainer } from "react-toastify";
 import { AppDispatch, RootState } from "./redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { me } from "./redux/slice/UserSlice";
+import BrandsPage from "./pages/BrandsPage";
+import TrendingPage from "./pages/TrendingPage";
 
 const AppContainer = styled.div`
   background-color: #e6e6e6;
@@ -52,15 +54,19 @@ const App = () => {
         <Route path="/brandproductupload" element={<BrandProductUpload />} />
         <Route path="/branddashboard" element={<BrandDashboard />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
-        {categories.map((category) => (
+        <Route path="/men" element={<CategoryPage />} />
+        <Route path="/women" element={<CategoryPage />} />
+        <Route path="/trending" element={<TrendingPage />} />
+        <Route path="/brands" element={<BrandsPage />} />
+        {/* {categories.map((category) => (
           <Route
             key={category.path}
             path={`/${category.path}`}
             element={<CategoryPage category={category} />}
           />
-        ))}
+        ))} */}
         {brands.map((brand) => (
-          <Route key={brand} path={`/${brand}`} element={<BrandPage />} />
+          <Route key={brand} path={`brand/${brand}`} element={<BrandPage />} />
         ))}
       </Routes>
       <ToastContainer />

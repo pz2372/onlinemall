@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import logo from "../assets/logo.png"
+import logo from "../assets/logo.png";
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
           {/* 1st col */}
           <div className="w-full">
             <NavLink to="/">
-            <img src={logo} style={{height: "80px"}}/>
+              <img alt="app-logo" src={logo} style={{ height: "80px" }} />
             </NavLink>
 
             <p className="text-footerText lg:text-base text-sm leading-[142%] font-medium mt-6 mb-8">

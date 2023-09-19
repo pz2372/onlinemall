@@ -27,7 +27,7 @@ export const categories = [
 
 export const brands = [
   "Nike",
-  "Addidas",
+  "Adidas",
   "Lowkey",
   "American Eagle",
   "Hollister",

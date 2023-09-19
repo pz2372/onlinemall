@@ -9,8 +9,12 @@ const upload = multer({
   storage: multer.memoryStorage(),
 });
 
-productRouter.get("/getAll", auth, ProductController.getAll);
-productRouter.get("/getById/:id", auth, ProductController.getById);
+productRouter.get("/getAll", ProductController.getAll);
+productRouter.get(
+  "/getProductsByCategory",
+  ProductController.getProductsByCategory
+);
+productRouter.get("/getById/:id", ProductController.getById);
 productRouter.post(
   "/create",
   auth,

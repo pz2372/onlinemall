@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import Button from "../button/Button";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import MenuDropdown from "./dropdowns/MenuDropdown";
 import Sidebar from "../Sidebar";
 import { useState } from "react";
 import logo from "../../assets/logo.png";
 import styles from "./Navbar.module.scss";
-import { useOutsideClick } from "../../hooks/useOutsideClick ";
 import SearchIcon from "../svgs/SearchIcon";
 import ShoppingCartIcon from "../svgs/ShoppingCartIcon";
 import UserAccountDropdown from "./dropdowns/UserAccountDropdown";
@@ -19,22 +17,15 @@ const Navbar: React.FC = () => {
   const { categories } = useSelector((state: RootState) => state.category);
   const dispatch: AppDispatch = useDispatch();
 
+  const location = useLocation();
   const navigate = useNavigate();
   // sidebar show and toggle
   const [showSidebar, setShowSidebar] = useState(false);
-  const [showMenDropdown, setShowMenDropdown] = useState(false);
-  const [showWomenDropdown, setShowWomenDropdown] = useState(false);
 
   const [menCategories, setMenCategories] = useState([]);
   const [womenCategories, setWomenCategories] = useState([]);
 
-  const menRef = useOutsideClick(() => {
-    setShowMenDropdown(false);
-  });
-
-  const womenRef = useOutsideClick(() => {
-    setShowWomenDropdown(false);
-  });
+  const [selectedMenu, setSelectedMenu] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,7 +33,7 @@ const Navbar: React.FC = () => {
         if (window.scrollY > 100) {
           document.querySelector("nav")!.style.position = "fixed";
         } else {
-          document.querySelector("nav")!.style.position = "absolute";
+          document.querySelector("nav")!.style.position = "relative";
         }
       }
     };
@@ -77,10 +68,32 @@ const Navbar: React.FC = () => {
     }
   }, [categories]);
 
+  useEffect(() => {
+    switch (location.pathname) {
+      case "/":
+        setSelectedMenu("women");
+        break;
+      case "/men":
+        setSelectedMenu("men");
+        break;
+      case "/women":
+        setSelectedMenu("women");
+        break;
+      case "/trending":
+        setSelectedMenu("trending");
+        break;
+      case "/brands":
+        setSelectedMenu("brands");
+        break;
+      default:
+        setSelectedMenu("");
+    }
+  }, [location.pathname]);
+
   return (
     // Navbar Start
     <nav
-      className={`bg-white absolute top-0 left-0 w-full flex items-center justify-center ${styles.navbar} z-40 h-[96px]`}
+      className={`bg-white relative top-0 left-0 w-full ${styles.navbar} z-40 h-[96px]`}
     >
       {/* Container Start */}
       <div className="container mx-auto lg:w-10/12 w-11/12 h-full">
@@ -94,51 +107,45 @@ const Navbar: React.FC = () => {
               className={`h-full relative md:block hidden ml-14 ${styles.mainMenu}`}
             >
               <ul className="h-full flex items-center justify-center gap-8 text-themeBlack">
-                <li
+                {/* <li
                   className="h-full flex items-center justify-center"
                   onClick={() => navigate("/")}
                 >
                   <span className={`${styles.menuItem}`}>Home</span>
-                </li>
+                </li> */}
 
                 <li
-                  ref={menRef}
                   className={`h-full flex items-center justify-center ${
-                    showMenDropdown ? styles.active : ""
+                    selectedMenu === "women" ? styles.active : ""
                   }`}
-                  onClick={() => setShowMenDropdown(!showMenDropdown)}
-                >
-                  <span className={`${styles.menuItem}`}>Men</span>
-
-                  {showMenDropdown ? (
-                    <MenuDropdown categories={menCategories} />
-                  ) : null}
-                </li>
-
-                <li
-                  ref={womenRef}
-                  className={`h-full flex items-center justify-center ${
-                    showWomenDropdown ? styles.active : ""
-                  }`}
-                  onClick={() => setShowWomenDropdown(!showWomenDropdown)}
+                  onClick={() => navigate("/women?cat=tops")}
                 >
                   <span className={`${styles.menuItem}`}>Women</span>
-
-                  {showWomenDropdown ? (
-                    <MenuDropdown categories={womenCategories} />
-                  ) : null}
                 </li>
 
                 <li
-                  className="h-full flex items-center justify-center"
-                  // onClick={() => navigate("/")}
+                  className={`h-full flex items-center justify-center ${
+                    selectedMenu === "men" ? styles.active : ""
+                  }`}
+                  onClick={() => navigate("/men?cat=t-shirts")}
+                >
+                  <span className={`${styles.menuItem}`}>Men</span>
+                </li>
+
+                <li
+                  className={`h-full flex items-center justify-center ${
+                    selectedMenu === "trending" ? styles.active : ""
+                  }`}
+                  onClick={() => navigate("/trending")}
                 >
                   <span className={`${styles.menuItem}`}>Trending</span>
                 </li>
 
                 <li
-                  className="h-full flex items-center justify-center"
-                  // onClick={() => navigate("/")}
+                  className={`h-full flex items-center justify-center ${
+                    selectedMenu === "brands" ? styles.active : ""
+                  }`}
+                  onClick={() => navigate("/brands")}
                 >
                   <span className={`${styles.menuItem}`}>Brands</span>
                 </li>
@@ -157,12 +164,6 @@ const Navbar: React.FC = () => {
             <div className={styles.shoppingCart}>
               <ShoppingCartIcon width="30px" height="30px" fill="#000000" />
             </div>
-            {/* Calling Button Component */}
-            {/* <Button
-              text="Get Started"
-              bgColorCode="#3f3f3f27"
-              onClick={() => navigate("/register")}
-            /> */}
             {/* hamburger menu */}
             <div
               className="md:hidden block cursor-pointer"
@@ -173,6 +174,11 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
+      {selectedMenu === "men" || selectedMenu === "women" ? (
+        <MenuDropdown
+          categories={selectedMenu === "men" ? menCategories : womenCategories}
+        />
+      ) : null}
       {/* Container end */}
 
       {/* Black overlay */}
