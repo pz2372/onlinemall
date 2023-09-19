@@ -39,15 +39,20 @@ const CategoryPage = () => {
       <div className="container mx-auto lg:w-10/12 w-11/12 mt-24 pt-10 md:pt-20">
         {/* Heading */}
         <FilterHeading category={category} options={options} />
-        {Object.values(products).length ? (
-          <div className={`${styles.brandWithProductsSliderContainer}`}>
-            {Object.values(products).map((product: any, index) => {
-              return <BrandWithProductsSlider key={index} product={product} />;
-            })}
-          </div>
-        ) : (
-          <div className="my-20">No products found</div>
-        )}
+        <div className={styles.productsWithFiltersContainer}>
+          <div className={styles.filterSidebar}>Sidebar</div>
+          {Object.values(products).length ? (
+            <div className={`${styles.brandWithProductsSliderContainer}`}>
+              {Object.values(products).map((product: any, index) => {
+                return (
+                  <BrandWithProductsSlider key={index} product={product} />
+                );
+              })}
+            </div>
+          ) : (
+            <div className="my-20">No products found</div>
+          )}
+        </div>
         {/* {brands.map((brand: any, index: number) => {
           return (
             <BrandCategoryCards

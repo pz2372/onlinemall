@@ -69,21 +69,25 @@
         }
       }
     }
+
+
   }
 
   .menuDropdown {
     ul {
       >li {
+        border-color: $orange;
+
         p {
           font-size: 14px;
         }
 
         &.active {
-          background-color: $orange;
+          border-bottom: 2px solid $orange;
         }
 
         &:hover {
-          background-color: $orange;
+          border-bottom: 2px solid $orange;
         }
       }
     }
