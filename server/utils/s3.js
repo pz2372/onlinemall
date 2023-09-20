@@ -29,11 +29,10 @@ const checkS3Connection = async () => {
   }
 };
 
-const S3UploadImg = async (filePath, buffer) => {
+const S3UploadImg = async (filePath, buffer, width = 800) => {
   try {
     const resizedImgBuffer = await sharp(buffer)
-      .resize(800) // resize the image to a maximum width of 800 pixels
-      .jpeg({ quality: 80 }) // compress the image with a quality of 80%
+      .resize(width) // resize the image to a maximum width of 800 pixels
       .toBuffer(); // convert the image to a Buffer object
     const command = new PutObjectCommand({
       Bucket: S3_BUCKET_NAME,

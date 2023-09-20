@@ -10,7 +10,7 @@ const MenuDropdown = ({ categories }: any) => {
   const selectedCategory = searchParams.get("cat");
   return (
     <div
-      className={`${styles.menuDropdown} bg-black w-full shadow-dropdown z-50`}
+      className={`${styles.menuDropdown} bg-white w-full shadow-dropdown z-50`}
     >
       {/* Dropdown icon */}
       {/* <div className={`absolute top-[-9px] ${styles.arrow}`}>
@@ -29,7 +29,13 @@ const MenuDropdown = ({ categories }: any) => {
       </div> */}
 
       {/* Mapping the dropdown items and returning each one */}
-      <ul className="container mx-auto lg:w-10/12 w-11/12 flex items-center">
+      <ul
+        className="container mx-auto lg:w-10/12 w-11/12 flex items-center bg-black"
+        style={{
+          clipPath: "polygon(0 0, 95% 0, 100% 100%, 5% 100%)",
+          paddingLeft: "170px",
+        }}
+      >
         {categories.map((category: any) => {
           const splittedPath = category?.path?.toLowerCase().split("/");
           const link = splittedPath[1]
@@ -38,7 +44,7 @@ const MenuDropdown = ({ categories }: any) => {
           return (
             <li
               key={category?._id}
-              className={`flex items-center gap-2 py-3 px-3 bg-transparent duration-100 cursor-pointer ${
+              className={`flex items-center gap-2 px-3 bg-transparent py-3 duration-100 cursor-pointer ${
                 selectedCategory === category?.name.toLowerCase() &&
                 category?.path.toLowerCase().startsWith(mainCategory)
                   ? styles.active

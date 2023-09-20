@@ -63,7 +63,7 @@ const create = async (req, res) => {
       let logoUrl = "";
       if (logo) {
         logoUrl = `brands/${Date.now()}-${logo.originalname}`;
-        await S3UploadImg(logoUrl, logo.buffer);
+        await S3UploadImg(logoUrl, logo.buffer, 100);
       }
       const newBrand = new Brand({
         name,
@@ -99,7 +99,7 @@ const update = async (req, res) => {
           let logoUrl = "";
           await S3DeleteImg(brand.logo);
           logoUrl = `brands/${Date.now()}-${logo.originalname}`;
-          await S3UploadImg(logoUrl, logo.buffer);
+          await S3UploadImg(logoUrl, logo.buffer, 100);
           update.logo = logoUrl;
         }
         update.modifiedAt = new Date();

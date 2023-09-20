@@ -12,9 +12,13 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCategories } from "../../redux/slice/CategorySlice";
 import HamburgerIcon from "../svgs/HamburgerIcon";
+import BagIcon from "../svgs/BagIcon";
+import HeartIcon from "../svgs/HeartIcon";
+import LoginIcon from "../svgs/LoginIcon";
 
 const Navbar: React.FC = () => {
   const { categories } = useSelector((state: RootState) => state.category);
+  const { userInfo } = useSelector((state: RootState) => state.user);
   const dispatch: AppDispatch = useDispatch();
 
   const location = useLocation();
@@ -157,12 +161,36 @@ const Navbar: React.FC = () => {
           <div
             className={`flex justify-end items-center ml-3 gap-6 ${styles.navbarRight}`}
           >
-            <div className={styles.search}>
-              <SearchIcon width="30px" height="30px" fill="#000000" />
+            <div
+              className={`${styles.searchContainer} relative shadow-xl py-2 px-4 rounded-3xl`}
+            >
+              <input
+                type="text"
+                className="bg-white w-[330px]"
+                placeholder="Search product, category or brand"
+              />
+              <div className="absolute top-1 right-2">
+                <SearchIcon width="30px" height="30px" fill="#000000" />
+              </div>
             </div>
-            <UserAccountDropdown />
-            <div className={styles.shoppingCart}>
-              <ShoppingCartIcon width="30px" height="30px" fill="#000000" />
+            <div title="Favorites">
+              <HeartIcon width="30px" height="30px" fill="#000000" />
+            </div>
+            <div className={styles.shoppingCart} title="Cart">
+              <BagIcon width="30px" height="30px" fill="#000000" />
+            </div>
+            <div>
+              {userInfo ? (
+                <UserAccountDropdown />
+              ) : (
+                <div
+                  className="cursor-pointer"
+                  title="Login / Register"
+                  onClick={() => navigate("/login")}
+                >
+                  <LoginIcon width="30px" height="30px" fill="#000000" />
+                </div>
+              )}
             </div>
             {/* hamburger menu */}
             <div
