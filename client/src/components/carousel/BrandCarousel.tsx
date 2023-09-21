@@ -5,25 +5,20 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "./styles.css";
 import { Pagination, Navigation } from "swiper";
-import styled from "styled-components";
 import logo from "../assets/Logo.png";
 import CarouselCard from "./CarouselCard";
 
-const CarouselContainer = styled.div`
-  background: white;
-  margin: 20px 20px 20px 20px;
-  display: flex;
-  flex-direction: row;
-`;
-const BrandImage = styled.img`
-  height: 180px;
-  width: 180px;
-`;
-const StyledSwiper = styled(Swiper)`
-  height: 180px;
-`;
+interface BrandCarouselProps {
+  brandImage: string;
+  products: { link: string; image: string; }[];
+}
 
-const BrandCarousel = (props: any) => {
+interface Product {
+  image: string;
+  link: string;
+}
+
+const BrandCarousel: React.FC<BrandCarouselProps> = ({ brandImage, products }) => {
   var screenSlides;
   var width = window.innerWidth;
 
@@ -35,19 +30,10 @@ const BrandCarousel = (props: any) => {
     screenSlides = 5;
   }
 
-  const carouselData: any = []
-  const carouselImages: any = []
-
-  Object.values(props.carousel).forEach((val) => carouselData.push(val));
-
-  //(link, image url)
-  for (var i = 2; i < 11; i++) {
-    carouselImages.push({link: carouselData[i], image: carouselData[i+9]});
-  }
   return (
-    <CarouselContainer>
-      <BrandImage src={props.brand} />
-      <StyledSwiper
+    <div className="bg-white m-20 flex flex-row">
+      <img src={brandImage} className="h-44 w-44"/>
+      <Swiper
         slidesPerView={screenSlides}
         spaceBetween={30}
         slidesPerGroup={3}
@@ -55,15 +41,15 @@ const BrandCarousel = (props: any) => {
         loopFillGroupWithBlank={true}
         navigation={true}
         modules={[Navigation]}
-        className="carousel"
+        className="carousel h-44"
       >
-        {carouselImages.map((product: any) => (
+        {products.map((product: Product) => (
           <SwiperSlide>
-            <CarouselCard image={product.image} link={product.link} />
+            <CarouselCard {...product} />
           </SwiperSlide>
         ))}
-      </StyledSwiper>
-    </CarouselContainer>
+      </Swiper>
+    </div>
   );
 };
 
