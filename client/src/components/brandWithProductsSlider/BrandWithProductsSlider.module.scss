@@ -4,20 +4,27 @@
 
 .productsWithFiltersContainer {
   display: grid;
-  grid-template-columns: 230px 1fr;
+  grid-template-columns: 230px calc(100% - 260px);
+  align-items: flex-start;
   grid-gap: 30px;
   margin-top: 50px;
   margin-bottom: 50px;
 
-  .brandWithProductsSliderContainer {
+  .filterSidebar {
     display: grid;
-    grid-gap: 30px;
+    align-content: flex-start;
+    grid-row-gap: 20px;
+  }
+
+  .brandWithProductsSliderContainer {
+    // display: grid;
+    // grid-gap: 30px;
 
     .brandWithProductsSliderGrid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-gap: 20px;
-      align-items: center;
+      // display: grid;
+      // grid-template-columns: repeat(3, 1fr);
+      // grid-gap: 20px;
+      // align-items: center;
 
       .brandLogo {
         grid-column: 1/5;

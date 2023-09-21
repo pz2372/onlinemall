@@ -15,9 +15,13 @@ import HamburgerIcon from "../svgs/HamburgerIcon";
 import BagIcon from "../svgs/BagIcon";
 import HeartIcon from "../svgs/HeartIcon";
 import LoginIcon from "../svgs/LoginIcon";
+import { fetchAllSizes } from "../../redux/slice/SizeSlice";
+import { fetchAllColors } from "../../redux/slice/ColorSlice";
 
 const Navbar: React.FC = () => {
-  const { categories } = useSelector((state: RootState) => state.category);
+  const { menCategories, womenCategories } = useSelector(
+    (state: RootState) => state.category
+  );
   const { userInfo } = useSelector((state: RootState) => state.user);
   const dispatch: AppDispatch = useDispatch();
 
@@ -25,9 +29,6 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   // sidebar show and toggle
   const [showSidebar, setShowSidebar] = useState(false);
-
-  const [menCategories, setMenCategories] = useState([]);
-  const [womenCategories, setWomenCategories] = useState([]);
 
   const [selectedMenu, setSelectedMenu] = useState("");
 
@@ -51,26 +52,9 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchAllCategories());
+    dispatch(fetchAllColors());
+    dispatch(fetchAllSizes());
   }, []);
-
-  useEffect(() => {
-    if (categories.length) {
-      const menCat: any = [];
-      const womenCat: any = [];
-      categories.forEach((category: any) => {
-        if (category.path.startsWith("MEN") && category.path !== "MEN") {
-          menCat.push(category);
-          setMenCategories(menCat);
-        } else if (
-          category.path.startsWith("WOMEN") &&
-          category.path !== "WOMEN"
-        ) {
-          womenCat.push(category);
-          setWomenCategories(womenCat);
-        }
-      });
-    }
-  }, [categories]);
 
   useEffect(() => {
     switch (location.pathname) {

@@ -10,12 +10,16 @@ import AuthSlice from "./slice/AuthSlice";
 import UserSlice from "./slice/UserSlice";
 import CategorySlice from "./slice/CategorySlice";
 import ProductSlice from "./slice/ProductSlice";
+import ColorSlice from "./slice/ColorSlice";
+import SizeSlice from "./slice/SizeSlice";
 
 const store = configureStore({
   reducer: {
     auth: AuthSlice,
     user: UserSlice,
     category: CategorySlice,
+    color: ColorSlice,
+    size: SizeSlice,
     product: ProductSlice,
     mobile: MobileSlice,
     carousel: CarouselSlice,

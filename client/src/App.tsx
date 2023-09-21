@@ -22,7 +22,7 @@ import BrandsPage from "./pages/BrandsPage";
 import TrendingPage from "./pages/TrendingPage";
 
 const AppContainer = styled.div`
-  background-color: #e6e6e6;
+  background-color: #ffffff;
   height: 100%;
   font-family: Verdana;
 `;

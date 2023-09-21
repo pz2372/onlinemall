@@ -2,6 +2,7 @@ import React from "react";
 import HeartIcon from "../svgs/HeartIcon";
 import BagIcon from "../svgs/BagIcon";
 import QuickViewIcon from "../svgs/QuickViewIcon";
+import styles from "./ProductCard.module.scss";
 
 const ProductCard = ({ product }: any) => {
   const handleAddToFavoritesClick = (productId: string) => {
@@ -24,11 +25,11 @@ const ProductCard = ({ product }: any) => {
         }}
       >
         <div
-          className="flex justify-end"
+          className={`flex justify-end ${styles.addToFavorites}`}
           title="Add to favorites"
           onClick={() => handleAddToFavoritesClick(product._id)}
         >
-          <HeartIcon width="30px" height="30px" fill="white" hover="#FF6D2E" />
+          <HeartIcon width="30px" height="30px" fill="white" />
         </div>
         <div
           className="hidden group-hover:flex items-center justify-center w-11/12 mx-auto bg-white/[.7] hover:bg-white gap-3 py-1 rounded-3xl"
