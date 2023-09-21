@@ -77,9 +77,10 @@
     ul {
       >li {
         border-color: $orange;
+        border-bottom: 2px solid transparent;
 
         p {
-          font-size: 14px;
+          font-size: 12px;
         }
 
         &.active {

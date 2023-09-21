@@ -10,9 +10,9 @@ const upload = multer({
 });
 
 productRouter.get("/getAll", ProductController.getAll);
-productRouter.get(
-  "/getProductsByCategory",
-  ProductController.getProductsByCategory
+productRouter.post(
+  "/getProductsByCategoryWithBrands",
+  ProductController.getProductsByCategoryWithBrands
 );
 productRouter.get("/getById/:id", ProductController.getById);
 productRouter.post(

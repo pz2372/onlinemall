@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import BrandCategoryCards from "../components/brand/BrandCategoryCards";
 import FilterHeading from "../components/category/FilterHeading";
 import Pagination from "../components/Pagination";
@@ -7,40 +8,74 @@ import { tshirtData, options } from "../assets/clothingData";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductsByCategory } from "../redux/slice/ProductSlice";
+import { fetchProductsByCategoryWithBrands } from "../redux/slice/ProductSlice";
 import BrandWithProductsSlider from "../components/brandWithProductsSlider/BrandWithProductsSlider";
 import styles from "../components/brandWithProductsSlider/BrandWithProductsSlider.module.scss";
+import CategoryFilter from "../components/productFilters/CategoryFilter";
+import ColorFilter from "../components/productFilters/ColorFilter";
+import SizeFilter from "../components/productFilters/SizeFilter";
 
 const CategoryPage = () => {
-  const { products } = useSelector((state: RootState) => state.product);
-
-  const { categories } = useSelector((state: RootState) => state.category);
+  const { products, isLoading } = useSelector(
+    (state: RootState) => state.product
+  );
+  const categoryState = useSelector((state: RootState) => state.category);
   const location = useLocation();
   const dispatch: AppDispatch = useDispatch();
   const [searchParams] = useSearchParams();
-  const category = {
-    gender: location.pathname.substring(1),
-    category: searchParams.get("cat"),
+  const subCategoryFromUrl = searchParams.get("cat");
+  const mainCategoryFromUrl = location.pathname.substring(1);
+  const mainCategoryPath = `${mainCategoryFromUrl}/${subCategoryFromUrl}`;
+  const categoryObj = {
+    gender: mainCategoryFromUrl,
+    category: subCategoryFromUrl,
   };
 
-  useEffect(() => {
-    let cat = location.pathname.substring(1);
-    if (searchParams.get("cat")) {
-      cat += `/${searchParams.get("cat")}`;
-    }
+  const [colors, setColors] = useState<any>([]);
+  const [sizes, setSizes] = useState<any>([]);
 
-    const c: any = categories.find((c: any) => c.path === cat.toUpperCase());
-    if (c) {
-      dispatch(fetchProductsByCategory(c._id));
+  useEffect(() => {
+    if (categoryState.categories?.length) {
+      const c: any = categoryState.categories.find(
+        (c: any) => c.path === mainCategoryPath.toUpperCase()
+      );
+      if (c) {
+        const colorIds = colors
+          .filter((c: any) => c.checked)
+          .map((c: any) => c._id);
+        const sizeIds = sizes
+          .filter((s: any) => s.checked)
+          .map((s: any) => s._id);
+        dispatch(
+          fetchProductsByCategoryWithBrands({
+            categoryIds: [c._id],
+            colorIds,
+            sizeIds,
+          })
+        );
+      }
     }
-  }, [location, categories]);
+  }, [location, categoryState.categories, colors, sizes]);
+
   return (
     <>
-      <div className="container mx-auto lg:w-10/12 w-11/12 mt-24 pt-10 md:pt-20">
+      {isLoading ? (
+        <div className="fixed left-0 top-[140px] w-full h-full bg-white/[.7] z-50 flex items-center justify-center">
+          <div className="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
+            <div className="border-t-transparent border-solid animate-spin  rounded-full border-[#FF6D2E] border-8 h-32 w-32"></div>
+          </div>
+          Loading...
+        </div>
+      ) : null}
+      <div className="container mx-auto lg:w-10/12 w-11/12 mt-24 pt-10 md:pt-20 relative">
         {/* Heading */}
-        <FilterHeading category={category} options={options} />
+        <FilterHeading category={categoryObj} options={options} />
         <div className={styles.productsWithFiltersContainer}>
-          <div className={styles.filterSidebar}>Sidebar</div>
+          <div className={`${styles.filterSidebar}`}>
+            {/* <CategoryFilter /> */}
+            <ColorFilter colors={colors} setColors={setColors} />
+            <SizeFilter sizes={sizes} setSizes={setSizes} />
+          </div>
           {Object.values(products).length ? (
             <div className={`${styles.brandWithProductsSliderContainer}`}>
               {Object.values(products).map((product: any, index) => {
@@ -50,7 +85,7 @@ const CategoryPage = () => {
               })}
             </div>
           ) : (
-            <div className="my-20">No products found</div>
+            <div className="mx-auto">No products found</div>
           )}
         </div>
         {/* {brands.map((brand: any, index: number) => {
