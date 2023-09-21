@@ -1,19 +1,6 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
 import plusSign from "../../assets/Plus.png";
 import UploadImageModal from "./UploadImageModal";
-
-const BrandImageDiv = styled.div``;
-
-const Image = styled.img`
-  width: 180px;
-  height: 180px;
-  border: 1px black solid;
-`;
-
-const UploadButton = styled.input`
-  display: none;
-`;
 
 const convertBlobToBase64 = (blob: any) =>
 new Promise((resolve, reject) => {
@@ -50,16 +37,16 @@ const BrandImage = (props: any) => {
   };
 
   return(
-  <BrandImageDiv>
+  <div>
   {showModal ? (
         <UploadImageModal toggle={handleCloseModal} save={handleSave} />
       ) : null}
-      <Image
+      <img className="w-180 h-180 border border-black"
         src={props.img == null ? plusSign : props.img}
         onClick={handleClick}
         style={{ cursor: "pointer" }}
       />
-  </BrandImageDiv>
+  </div>
   );
   }
 export default BrandImage;

@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
 import ReactCrop, {
   centerCrop,
   makeAspectCrop,
@@ -8,73 +7,6 @@ import ReactCrop, {
 } from "react-image-crop";
 import { canvasPreview } from "./CanvasPreview";
 import { useDebounceEffect } from "./useDebounceEffect";
-
-const UploadModal = styled.div`
-  position: fixed;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.25);
-  top: 0;
-  right: 0;
-`;
-
-const ModalContent = styled.div`
-  background-color: white;
-  position: absolute;
-  height: 600px;
-  width: 700px;
-  top: 20%;
-  left: 20%;
-  border-radius: 5px;
-  border: 2px solid black;
-`;
-
-const UploadDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 600px;
-`;
-
-const CropDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: 400px;
-`;
-
-const UploadButton = styled.input`
-  margin: 10px 0 30px 0;
-`;
-
-const CloseButton = styled.span`
-  color: Black;
-  float: right;
-  padding: 20px;
-  position: absolute;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const CropImg = styled.img`
-  max-height: 250px;
-  max-width: 250px;
-`;
-
-interface StyledButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  display?: string;
-}
-const SaveButton = styled.button<StyledButtonProps>`
-  margin: 30px 0 10px 0;
-  border: black solid 1px;
-  border-radius: 5px;
-  padding: 5px;
-  display: ${(props) => props.display || "none"};
-`;
 
 // Demonstate how to make and center a % aspect crop
 const centerAspectCrop = (
@@ -149,17 +81,23 @@ const UploadImageModal = (props: any) => {
   };
 
   return (
-    <UploadModal>
-      <ModalContent>
-        <CloseButton onClick={props.toggle}>&times;</CloseButton>
-        <UploadDiv>
-          <UploadButton
+    <div className="fixed z-10 w-full h-full bg-opacity-25 bg-black top-0 right-0">
+      <div className="bg-white absolute h-600 w-700 top-20 left-20 rounded-5 border-2 border-black">
+        <span
+          className="text-black float-right p-20 absolute hover:cursor-pointer"
+          onClick={props.toggle}
+        >
+          &times;
+        </span>
+        <div className="flex justify-center items-center flex-col h-600">
+          <input
             type="file"
             accept="image/*"
             ref={uploadButton}
             onChange={onSelectFile}
+            className="my-10 mb-30"
           />
-          <CropDiv>
+          <div className="flex flex-row h-400">
             {!!imgSrc && (
               <ReactCrop
                 crop={crop}
@@ -172,7 +110,8 @@ const UploadImageModal = (props: any) => {
                   marginRight: "20px",
                 }}
               >
-                <CropImg
+                <img
+                  className="max-h-250 max-w-250"
                   ref={imgRef}
                   alt="Crop me"
                   src={imgSrc}
@@ -193,15 +132,18 @@ const UploadImageModal = (props: any) => {
                 />
               )}
             </div>
-          </CropDiv>
-          <SaveButton
+          </div>
+          <button
             onClick={handleSubmit}
-            display={imgSrc ? "block" : "none"}
-          >Save
-          </SaveButton>
-        </UploadDiv>
-      </ModalContent>
-    </UploadModal>
+            className={`m-3 mt-10 border border-black rounded-5 p-5 ${
+              imgSrc ? "block" : "hidden"
+            }`}
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
