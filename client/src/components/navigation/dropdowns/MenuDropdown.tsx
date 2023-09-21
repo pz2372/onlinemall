@@ -10,7 +10,7 @@ const MenuDropdown = ({ categories }: any) => {
   const selectedCategory = searchParams.get("cat");
   return (
     <div
-      className={`${styles.menuDropdown} bg-white w-full shadow-dropdown z-50`}
+      className={`${styles.menuDropdown} bg-white w-full shadow-dropdown z-50 xl:block hidden`}
     >
       {/* Dropdown icon */}
       {/* <div className={`absolute top-[-9px] ${styles.arrow}`}>

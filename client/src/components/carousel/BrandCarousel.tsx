@@ -1,8 +1,5 @@
 import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 import "./styles.css";
 import { Pagination, Navigation } from "swiper";
 import logo from "../assets/Logo.png";
@@ -10,7 +7,7 @@ import CarouselCard from "./CarouselCard";
 
 interface BrandCarouselProps {
   brandImage: string;
-  products: { link: string; image: string; }[];
+  products: { link: string; image: string }[];
 }
 
 interface Product {
@@ -18,7 +15,10 @@ interface Product {
   link: string;
 }
 
-const BrandCarousel: React.FC<BrandCarouselProps> = ({ brandImage, products }) => {
+const BrandCarousel: React.FC<BrandCarouselProps> = ({
+  brandImage,
+  products,
+}) => {
   var screenSlides;
   var width = window.innerWidth;
 
@@ -32,7 +32,7 @@ const BrandCarousel: React.FC<BrandCarouselProps> = ({ brandImage, products }) =
 
   return (
     <div className="bg-white m-20 flex flex-row">
-      <img src={brandImage} className="h-44 w-44"/>
+      <img src={brandImage} className="h-44 w-44" />
       <Swiper
         slidesPerView={screenSlides}
         spaceBetween={30}

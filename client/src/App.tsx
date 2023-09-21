@@ -33,7 +33,7 @@ const App = () => {
   }, [accessToken]);
 
   return (
-    <div className="bg-gray-300 h-full font-Verdana">
+    <div className="bg-white h-full font-Verdana">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

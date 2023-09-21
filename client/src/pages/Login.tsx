@@ -32,13 +32,10 @@ const Login = () => {
       if (res.payload.data?.success) {
         toast.success(res.payload.data.message, {
           autoClose: 2000,
-          position: toast.POSITION.BOTTOM_RIGHT,
         });
         navigate("/");
       } else {
-        toast.error(res.payload.message || res.payload, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
+        toast.error(res.payload.message || res.payload);
       }
     });
   };

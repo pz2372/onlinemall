@@ -18,11 +18,25 @@ const BrandWithProductsSlider = ({ product }: any) => {
         </Link>
       </div>
       <Swiper
-        slidesPerView={3}
+        slidesPerView={1}
         spaceBetween={10}
         navigation={true}
         modules={[Navigation]}
         className="px-2.5"
+        breakpoints={{
+          420: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: 4,
+          },
+          1400: {
+            slidesPerView: 5,
+          },
+        }}
       >
         {product.map((p: any) => {
           return (

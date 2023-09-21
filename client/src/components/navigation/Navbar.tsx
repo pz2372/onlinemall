@@ -92,7 +92,7 @@ const Navbar: React.FC = () => {
               <img alt="app-logo" src={logo} style={{ height: "80px" }} />
             </NavLink>
             <div
-              className={`h-full relative md:block hidden ml-14 ${styles.mainMenu}`}
+              className={`h-full relative xl:block hidden ml-14 ${styles.mainMenu}`}
             >
               <ul className="h-full flex items-center justify-center gap-8 text-themeBlack">
                 {/* <li
@@ -146,7 +146,7 @@ const Navbar: React.FC = () => {
             className={`flex justify-end items-center ml-3 gap-6 ${styles.navbarRight}`}
           >
             <div
-              className={`${styles.searchContainer} relative shadow-xl py-2 px-4 rounded-3xl`}
+              className={`${styles.searchContainer} relative shadow-xl py-2 pl-4 pr-10 rounded-3xl md:block hidden`}
             >
               <input
                 type="text"
@@ -178,7 +178,7 @@ const Navbar: React.FC = () => {
             </div>
             {/* hamburger menu */}
             <div
-              className="md:hidden block cursor-pointer"
+              className="xl:hidden block cursor-pointer"
               onClick={() => setShowSidebar(true)}
             >
               <HamburgerIcon width="50px" height="50px" fill="#000000" />

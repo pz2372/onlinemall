@@ -43,7 +43,6 @@ const Register = () => {
       if (res.payload.data?.success) {
         toast.success(res.payload.data.message, {
           autoClose: 2000,
-          position: toast.POSITION.BOTTOM_RIGHT,
         });
         setTimeout(() => {
           navigate("/login");

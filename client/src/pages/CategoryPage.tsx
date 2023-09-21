@@ -11,9 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsByCategoryWithBrands } from "../redux/slice/ProductSlice";
 import BrandWithProductsSlider from "../components/brandWithProductsSlider/BrandWithProductsSlider";
 import styles from "../components/brandWithProductsSlider/BrandWithProductsSlider.module.scss";
-import CategoryFilter from "../components/productFilters/CategoryFilter";
 import ColorFilter from "../components/productFilters/ColorFilter";
 import SizeFilter from "../components/productFilters/SizeFilter";
+import Breadcrumb from "../components/breadcrumb/Breadcrumb";
+import MultiRangeSlider from "../components/multiRangeSlider/MultiRangeSlider";
 
 const CategoryPage = () => {
   const { products, isLoading } = useSelector(
@@ -26,13 +27,12 @@ const CategoryPage = () => {
   const subCategoryFromUrl = searchParams.get("cat");
   const mainCategoryFromUrl = location.pathname.substring(1);
   const mainCategoryPath = `${mainCategoryFromUrl}/${subCategoryFromUrl}`;
-  const categoryObj = {
-    gender: mainCategoryFromUrl,
-    category: subCategoryFromUrl,
-  };
 
   const [colors, setColors] = useState<any>([]);
   const [sizes, setSizes] = useState<any>([]);
+  const breadcrumbs = subCategoryFromUrl
+    ? [`${mainCategoryFromUrl} ${subCategoryFromUrl}`]
+    : [mainCategoryFromUrl];
 
   useEffect(() => {
     if (categoryState.categories?.length) {
@@ -67,14 +67,16 @@ const CategoryPage = () => {
           Loading...
         </div>
       ) : null}
-      <div className="container mx-auto lg:w-10/12 w-11/12 mt-24 pt-10 md:pt-20 relative">
+      <div className="container mx-auto lg:w-10/12 w-11/12 mt-24 relative">
         {/* Heading */}
-        <FilterHeading category={categoryObj} options={options} />
+        <Breadcrumb path={breadcrumbs} />
+        <FilterHeading options={options} />
         <div className={styles.productsWithFiltersContainer}>
           <div className={`${styles.filterSidebar}`}>
             {/* <CategoryFilter /> */}
             <ColorFilter colors={colors} setColors={setColors} />
             <SizeFilter sizes={sizes} setSizes={setSizes} />
+            <MultiRangeSlider min={0} max={1000} />
           </div>
           {Object.values(products).length ? (
             <div className={`${styles.brandWithProductsSliderContainer}`}>
