@@ -3,11 +3,19 @@ import HeartIcon from "../svgs/HeartIcon";
 import BagIcon from "../svgs/BagIcon";
 import QuickViewIcon from "../svgs/QuickViewIcon";
 import styles from "./ProductCard.module.scss";
+import { ProductCardProps } from "../../types/props.type";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, addToFavorites } from "../../redux/slice/ProductSlice";
 
-const ProductCard = ({ product }: any) => {
-  const [favorites, setFavorites] = useState(
-    localStorage.favoritesIds ? JSON.parse(localStorage.favoritesIds) : []
-  );
+type TProductInCart = {
+  id: string;
+  quantity: number;
+};
+
+const ProductCard = ({ product }: ProductCardProps) => {
+  const { favorites } = useSelector((state: RootState) => state.product);
+  const dispatch: AppDispatch = useDispatch();
 
   const handleAddToFavoritesClick = (productId: string) => {
     if (localStorage.favoritesIds) {
@@ -17,16 +25,33 @@ const ProductCard = ({ product }: any) => {
       } else {
         favoritesIds.splice(favoritesIds.indexOf(productId), 1);
       }
-      setFavorites(favoritesIds);
       localStorage.favoritesIds = JSON.stringify(favoritesIds);
+      dispatch(addToFavorites(favoritesIds));
     } else {
       localStorage.favoritesIds = JSON.stringify([productId]);
-      setFavorites([productId]);
+      dispatch(addToFavorites(productId));
     }
   };
 
   const handleAddToCartClick = (productId: string) => {
-    console.log("productId", productId);
+    if (localStorage.productsInCart) {
+      const products = JSON.parse(localStorage.productsInCart);
+      const productIndex = products.findIndex(
+        (p: TProductInCart) => p.id === productId
+      );
+      if (productIndex === -1) {
+        products.push({ id: productId, quantity: 1 });
+      } else {
+        products[productIndex].quantity += 1;
+      }
+      localStorage.productsInCart = JSON.stringify(products);
+      dispatch(addToCart(products));
+    } else {
+      localStorage.productsInCart = JSON.stringify([
+        { id: productId, quantity: 1 },
+      ]);
+      dispatch(addToCart([{ id: productId, quantity: 1 }]));
+    }
   };
 
   const handleQuickViewClick = (productId: string) => {

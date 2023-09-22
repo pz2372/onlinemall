@@ -1,8 +1,10 @@
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import NavDropdowns from "../NavDropdowns";
 import styles from "../Navbar.module.scss";
+import { TProductCategory } from "../../../types/products.type";
+import { TMenuDropdownProps } from "../../../types/props.type";
 
-const MenuDropdown = ({ categories }: any) => {
+const MenuDropdown = ({ categories }: TMenuDropdownProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -36,7 +38,7 @@ const MenuDropdown = ({ categories }: any) => {
           paddingLeft: "170px",
         }}
       >
-        {categories.map((category: any) => {
+        {categories.map((category: TProductCategory) => {
           const splittedPath = category?.path?.toLowerCase().split("/");
           const link = splittedPath[1]
             ? `${splittedPath[0]}?cat=${splittedPath[1]}`

@@ -20,6 +20,8 @@ import { me } from "./redux/slice/UserSlice";
 import BrandsPage from "./pages/BrandsPage";
 import TrendingPage from "./pages/TrendingPage";
 import Terms from "./pages/Terms";
+import Favorites from "./pages/Favorites";
+import Cart from "./pages/Cart";
 
 const App = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -52,7 +54,9 @@ const App = () => {
         <Route path="/women" element={<CategoryPage />} />
         <Route path="/trending" element={<TrendingPage />} />
         <Route path="/brands" element={<BrandsPage />} />
-        <Route path="terms" element={<Terms />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/cart" element={<Cart />} />
         {/* {categories.map((category) => (
           <Route
             key={category.path}

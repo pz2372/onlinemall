@@ -1,17 +1,18 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import styles from "./MultiRangeSlider.module.scss";
+import { TMultiRangeSliderProps } from "../../types/props.type";
 
-type TMultiRangeSlider = {
-  min: number;
-  max: number;
-};
-
-const MultiRangeSlider = ({ min, max }: TMultiRangeSlider) => {
+const MultiRangeSlider = ({
+  min,
+  max,
+  setMinRangeVal,
+  setMaxRangeVal,
+}: TMultiRangeSliderProps) => {
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
-  const minValRef = useRef<any>(min);
-  const maxValRef = useRef<any>(max);
-  const rangeRef = useRef<any>(null);
+  const minValRef = useRef<number>(min);
+  const maxValRef = useRef<number>(max);
+  const rangeRef = useRef<HTMLDivElement>(null);
 
   // Convert to percentage
   const getPercent = useCallback(
@@ -41,7 +42,7 @@ const MultiRangeSlider = ({ min, max }: TMultiRangeSlider) => {
   }, [maxVal, getPercent]);
 
   return (
-    <div>
+    <div className="relative">
       <span className="block mb-5">Price range</span>
       <div className="flex items-center justify-center">
         <input
@@ -49,6 +50,13 @@ const MultiRangeSlider = ({ min, max }: TMultiRangeSlider) => {
           min={min}
           max={max}
           value={minVal}
+          onMouseUp={(event: React.MouseEvent) => {
+            const value = Math.min(
+              Number((event.target as HTMLInputElement).value),
+              maxVal - 1
+            );
+            setMinRangeVal(value);
+          }}
           onChange={(event) => {
             const value = Math.min(Number(event.target.value), maxVal - 1);
             setMinVal(value);
@@ -62,6 +70,13 @@ const MultiRangeSlider = ({ min, max }: TMultiRangeSlider) => {
           min={min}
           max={max}
           value={maxVal}
+          onMouseUp={(event: React.MouseEvent) => {
+            const value = Math.max(
+              Number((event.target as HTMLInputElement).value),
+              minVal + 1
+            );
+            setMaxRangeVal(value);
+          }}
           onChange={(event) => {
             const value = Math.max(Number(event.target.value), minVal + 1);
             setMaxVal(value);
@@ -73,8 +88,8 @@ const MultiRangeSlider = ({ min, max }: TMultiRangeSlider) => {
         <div className={styles.slider}>
           <div className={styles.sliderTrack} />
           <div ref={rangeRef} className={styles.sliderRange} />
-          <div className={styles.sliderLeftValue}>{minVal}</div>
-          <div className={styles.sliderRightValue}>{maxVal}</div>
+          <div className={styles.sliderLeftValue}>{`$${minVal}`}</div>
+          <div className={styles.sliderRightValue}>{`$${maxVal}`}</div>
         </div>
       </div>
     </div>

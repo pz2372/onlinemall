@@ -5,7 +5,12 @@ import PantsOutlet from "./PantsOutlet";
 import JeansOutlet from "./JeansOutlet";
 import FilterHeading from "./FilterHeading";
 import FilterSidebar from "./FilterSidebar";
-import { tshirtData, sweatshirts, pantsData, jeansData, options } from "../../assets/clothingData"
+import {
+  tshirtData,
+  sweatshirts,
+  pantsData,
+  jeansData,
+} from "../../assets/clothingData";
 
 const Filters = () => {
   // btns Data
@@ -35,7 +40,6 @@ const Filters = () => {
     <>
       {/* filter cards */}
       <div className="lg:mt-16 mt-10 lg:mb-32 mb-20">
-
         {/* Categories */}
         <div className="w-full flex items-start justify-between md:flex-row flex-col gap-10 lg:gap-16 mt-8">
           {/* Left Side Buttons */}

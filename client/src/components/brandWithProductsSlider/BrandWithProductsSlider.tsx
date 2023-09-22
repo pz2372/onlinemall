@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import ProductCard from "../productCard/ProductCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
+import { TProduct } from "../../types/products.type";
+import { BrandWithProductsSliderProps } from "../../types/props.type";
 
-const BrandWithProductsSlider = ({ product }: any) => {
+const BrandWithProductsSlider = ({ product }: BrandWithProductsSliderProps) => {
   return (
     <div className={`${styles.brandWithProductsSliderGrid} mb-20`}>
       <div className={`${styles.brandLogo}`}>
@@ -38,7 +40,7 @@ const BrandWithProductsSlider = ({ product }: any) => {
           },
         }}
       >
-        {product.map((p: any) => {
+        {product.map((p: TProduct) => {
           return (
             <SwiperSlide key={p._id}>
               <ProductCard product={p} />

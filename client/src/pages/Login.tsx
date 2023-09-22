@@ -9,6 +9,11 @@ import { AppDispatch } from "../redux/store";
 import { login } from "../redux/slice/AuthSlice";
 import { toast } from "react-toastify";
 
+type TError = {
+  email: string;
+  password: string;
+};
+
 const Login = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,8 +27,7 @@ const Login = () => {
     password: "",
   });
 
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     if (!isFormValid()) {
       return;
     }
@@ -42,7 +46,7 @@ const Login = () => {
 
   const isFormValid = () => {
     let isValid = true;
-    let cloneErrors: any = { ...errors };
+    let cloneErrors: TError = { ...errors };
     if (!formData.email) {
       isValid = false;
       cloneErrors.email = "Email address is required.";

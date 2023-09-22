@@ -17,12 +17,17 @@ import HeartIcon from "../svgs/HeartIcon";
 import LoginIcon from "../svgs/LoginIcon";
 import { fetchAllSizes } from "../../redux/slice/SizeSlice";
 import { fetchAllColors } from "../../redux/slice/ColorSlice";
+import Badge from "../badge/Badge";
 
 const Navbar: React.FC = () => {
   const { menCategories, womenCategories } = useSelector(
     (state: RootState) => state.category
   );
   const { userInfo } = useSelector((state: RootState) => state.user);
+  const { productsInCart, favorites } = useSelector(
+    (state: RootState) => state.product
+  );
+
   const dispatch: AppDispatch = useDispatch();
 
   const location = useLocation();
@@ -157,10 +162,24 @@ const Navbar: React.FC = () => {
                 <SearchIcon width="30px" height="30px" fill="#000000" />
               </div>
             </div>
-            <div title="Favorites">
+            <div
+              className="relative cursor-pointer"
+              title="Favorites"
+              onClick={() => navigate("/favorites")}
+            >
+              {favorites.length > 0 ? (
+                <Badge quantity={favorites.length} />
+              ) : null}
               <HeartIcon width="30px" height="30px" fill="#000000" />
             </div>
-            <div className={styles.shoppingCart} title="Cart">
+            <div
+              className="relative cursor-pointer"
+              title="Cart"
+              onClick={() => navigate("/cart")}
+            >
+              {productsInCart.length > 0 ? (
+                <Badge quantity={productsInCart.length} />
+              ) : null}
               <BagIcon width="30px" height="30px" fill="#000000" />
             </div>
             <div>

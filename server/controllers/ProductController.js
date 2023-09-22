@@ -38,8 +38,19 @@ const getAll = async (req, res) => {
 
 const getProductsByCategoryWithBrands = async (req, res) => {
   try {
-    const { page = 1, limit, categoryIds, colorIds, sizeIds } = req.body;
-    const where = {};
+    const {
+      page = 1,
+      limit,
+      sort,
+      categoryIds,
+      colorIds,
+      sizeIds,
+      minRangeVal,
+      maxRangeVal,
+    } = req.body;
+    const where = {
+      price: { $lte: maxRangeVal || 100, $gte: minRangeVal || 0 },
+    };
     if (categoryIds && categoryIds.length) {
       where.category = { $in: categoryIds };
     }
@@ -49,6 +60,7 @@ const getProductsByCategoryWithBrands = async (req, res) => {
     if (sizeIds && sizeIds.length) {
       where.sizes = { $in: sizeIds };
     }
+
     const products = await Product.find(where)
       .populate("sizes")
       .populate("colors")
@@ -59,6 +71,7 @@ const getProductsByCategoryWithBrands = async (req, res) => {
         },
       })
       .populate("category")
+      .sort(sort)
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
