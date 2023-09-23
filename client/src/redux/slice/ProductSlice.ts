@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const fetchProductsByCategory = createAsyncThunk(
+export const fetchProductsByCategoryWithBrands = createAsyncThunk(
   "product/getByCategory",
-  async (categoryId: string) => {
+  async (filters: any) => {
     try {
-      const response: any = await axios.get(
-        `/api/product/getProductsByCategory?categoryId=${categoryId}`
+      const response: any = await axios.post(
+        `/api/product/getProductsByCategoryWithBrands`,
+        filters
       );
       return response;
     } catch (err: any) {
@@ -20,26 +21,49 @@ const productSlice = createSlice({
   initialState: {
     isLoading: false,
     products: {},
+    productsInCart: localStorage.productsInCart
+      ? JSON.parse(localStorage.productsInCart)
+      : [],
+    favorites: localStorage.favoritesIds
+      ? JSON.parse(localStorage.favoritesIds)
+      : [],
     isError: false,
   },
-  reducers: {},
+  reducers: {
+    addToCart: (state, action) => {
+      state.productsInCart = action.payload;
+    },
+    addToFavorites: (state, action) => {
+      state.favorites = action.payload;
+    },
+  },
   extraReducers: (builder) => {
-    builder.addCase(fetchProductsByCategory.pending, (state, action) => {
-      state.isLoading = true;
-    });
-    builder.addCase(fetchProductsByCategory.fulfilled, (state, action) => {
-      state.isLoading = false;
-      if (action.payload?.success || action.payload?.data?.success) {
-        state.products = action.payload.data.data;
-      } else {
+    builder.addCase(
+      fetchProductsByCategoryWithBrands.pending,
+      (state, action) => {
+        state.isLoading = true;
+      }
+    );
+    builder.addCase(
+      fetchProductsByCategoryWithBrands.fulfilled,
+      (state, action) => {
+        state.isLoading = false;
+        if (action.payload?.success || action.payload?.data?.success) {
+          state.products = action.payload.data.data;
+        } else {
+          state.isError = true;
+        }
+      }
+    );
+    builder.addCase(
+      fetchProductsByCategoryWithBrands.rejected,
+      (state, action) => {
+        state.isLoading = false;
         state.isError = true;
       }
-    });
-    builder.addCase(fetchProductsByCategory.rejected, (state, action) => {
-      state.isLoading = false;
-      state.isError = true;
-    });
+    );
   },
 });
 
+export const { addToCart, addToFavorites } = productSlice.actions;
 export default productSlice.reducer;

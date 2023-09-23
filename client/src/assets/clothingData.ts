@@ -229,23 +229,3 @@ export const jeansData = [
     img: "../images/sweatshirts.png",
   },
 ];
-
-// options
-export const options = [
-  {
-    id: 1,
-    option: "Popular",
-  },
-  {
-    id: 2,
-    option: "Popular Two",
-  },
-  {
-    id: 3,
-    option: "Popular Three",
-  },
-  {
-    id: 4,
-    option: "Popular Four",
-  },
-];

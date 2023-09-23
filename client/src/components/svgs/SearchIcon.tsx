@@ -1,7 +1,7 @@
 import React from "react";
-import { TIcon } from "../../types/icons.type";
+import { TIconProps } from "../../types/props.type";
 
-const SearchIcon = ({ width, height, fill }: TIcon) => {
+const SearchIcon = ({ width, height, fill }: TIconProps) => {
   return (
     <svg
       width={width}

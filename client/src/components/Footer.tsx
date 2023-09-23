@@ -54,52 +54,6 @@ const Footer = () => {
 
           {/* Fourth Col */}
           <div className="w-full">
-            <h5 className="text-lg text-footerHeading font-medium">
-              Newsletter Signup
-            </h5>
-
-            <p className="leading-[148%] text-footerText mt-6 md:text-sm lg:text-base">
-              Subscribe to our newsletter and get 10% off your first purchase
-            </p>
-
-            <form className="w-full p-1 border border-followText rounded-lg mt-2 flex gap-2">
-              {/* input field */}
-              <div className="w-10/12">
-                <input
-                  type="text"
-                  placeholder="Your email address"
-                  className="bg-transparent py-3 px-4 placeholder:text-newsletterInput text-themeBlack"
-                />
-              </div>
-
-              {/* button */}
-              <button className="w-2/12 bg-themeOrange p-3 rounded-lg flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <mask
-                    id="mask0_18_866"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="0"
-                    width="24"
-                    height="24"
-                  >
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_18_866)">
-                    <path
-                      d="M6.39991 17.6442L5.35571 16.6L15.1961 6.74995H6.24994V5.25H17.7499V16.75H16.2499V7.80378L6.39991 17.6442Z"
-                      fill="#FAFAFA"
-                    />
-                  </g>
-                </svg>
-              </button>
-            </form>
           </div>
         </div>
 

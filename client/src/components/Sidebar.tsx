@@ -126,7 +126,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }: SidebarProps) => {
   return (
     <div>
       <div
-        className={`h-[100svh] w-[65%] bg-themeOrange fixed top-0 z-50 overflow-y-auto md:hidden block duration-500 ${
+        className={`h-[100svh] w-[65%] bg-themeOrange fixed top-0 z-50 overflow-y-auto xl:hidden block duration-500 ${
           showSidebar === true ? "right-0" : "-right-full"
         }`}
       >

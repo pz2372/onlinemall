@@ -1,56 +1,144 @@
-import { useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import BrandCategoryCards from "../components/brand/BrandCategoryCards";
-import FilterHeading from "../components/category/FilterHeading";
 import Pagination from "../components/Pagination";
 import { brands } from "../assets/Categories";
-import { tshirtData, options } from "../assets/clothingData";
+import { tshirtData } from "../assets/clothingData";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductsByCategory } from "../redux/slice/ProductSlice";
+import { fetchProductsByCategoryWithBrands } from "../redux/slice/ProductSlice";
 import BrandWithProductsSlider from "../components/brandWithProductsSlider/BrandWithProductsSlider";
 import styles from "../components/brandWithProductsSlider/BrandWithProductsSlider.module.scss";
+import ColorFilter from "../components/productFilters/ColorFilter";
+import SizeFilter from "../components/productFilters/SizeFilter";
+import Breadcrumb from "../components/breadcrumb/Breadcrumb";
+import MultiRangeSlider from "../components/multiRangeSlider/MultiRangeSlider";
+import SortByDropdown from "../components/dropdowns/sortByDropdown/SortByDropdown";
+import { TSortDropdownOption } from "../types/dropdowns.type";
+import {
+  TProduct,
+  TProductCategory,
+  TProductColor,
+  TProductSize,
+  TProductSort,
+} from "../types/products.type";
 
 const CategoryPage = () => {
-  const { products } = useSelector((state: RootState) => state.product);
-
-  const { categories } = useSelector((state: RootState) => state.category);
+  const { products, isLoading } = useSelector(
+    (state: RootState) => state.product
+  );
+  const categoryState = useSelector((state: RootState) => state.category);
   const location = useLocation();
   const dispatch: AppDispatch = useDispatch();
   const [searchParams] = useSearchParams();
-  const category = {
-    gender: location.pathname.substring(1),
-    category: searchParams.get("cat"),
-  };
+  const subCategoryFromUrl = searchParams.get("cat");
+  const mainCategoryFromUrl = location.pathname.substring(1);
+  const mainCategoryPath = `${mainCategoryFromUrl}/${subCategoryFromUrl}`;
+  const breadcrumbs = subCategoryFromUrl
+    ? [`${mainCategoryFromUrl} ${subCategoryFromUrl}`]
+    : [mainCategoryFromUrl];
+
+  const [colors, setColors] = useState<TProductColor[]>([]);
+  const [sizes, setSizes] = useState<TProductSize[]>([]);
+  const [minRangeVal, setMinRangeVal] = useState<number>(0);
+  const [maxRangeVal, setMaxRangeVal] = useState<number>(100);
+  const [sortValue, setSortValue] = useState<string>("");
+
+  const sortOptions: TSortDropdownOption[] = [
+    {
+      id: 1,
+      label: "Price high to low",
+      value: "priceHighToLow",
+    },
+    {
+      id: 2,
+      label: "Price low to high",
+      value: "priceLowToHigh",
+    },
+  ];
 
   useEffect(() => {
-    let cat = location.pathname.substring(1);
-    if (searchParams.get("cat")) {
-      cat += `/${searchParams.get("cat")}`;
+    if (categoryState.categories?.length) {
+      const isCategoryExist = categoryState.categories.find(
+        (c: TProductCategory) => c.path === mainCategoryPath.toUpperCase()
+      );
+      if (isCategoryExist) {
+        const category: TProductCategory = isCategoryExist;
+        const colorIds = colors
+          .filter((c: TProductColor) => c.checked)
+          .map((c: TProductColor) => c._id);
+        const sizeIds = sizes
+          .filter((s: TProductSize) => s.checked)
+          .map((s: TProductSize) => s._id);
+        const sort: TProductSort = {};
+        if (sortValue === "priceHighToLow") {
+          sort.price = "desc";
+        } else if (sortValue === "priceLowToHigh") {
+          sort.price = "asc";
+        }
+        dispatch(
+          fetchProductsByCategoryWithBrands({
+            categoryIds: [category._id],
+            colorIds,
+            sizeIds,
+            minRangeVal,
+            maxRangeVal,
+            sort,
+          })
+        );
+      }
     }
+  }, [
+    location,
+    categoryState.categories,
+    colors,
+    sizes,
+    minRangeVal,
+    maxRangeVal,
+    sortValue,
+  ]);
 
-    const c: any = categories.find((c: any) => c.path === cat.toUpperCase());
-    if (c) {
-      dispatch(fetchProductsByCategory(c._id));
-    }
-  }, [location, categories]);
   return (
     <>
-      <div className="container mx-auto lg:w-10/12 w-11/12 mt-24 pt-10 md:pt-20">
+      {isLoading ? (
+        <div className="fixed left-0 top-[140px] w-full h-full bg-white/[.7] z-50 flex items-center justify-center">
+          <div className="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
+            <div className="border-t-transparent border-solid animate-spin rounded-full border-primary border-8 h-32 w-32"></div>
+          </div>
+          Loading...
+        </div>
+      ) : null}
+      <div className="container mx-auto lg:w-10/12 w-11/12 mt-24 relative">
         {/* Heading */}
-        <FilterHeading category={category} options={options} />
+        <Breadcrumb path={breadcrumbs} />
+        <SortByDropdown
+          options={sortOptions}
+          value={sortValue}
+          setValue={setSortValue}
+        />
         <div className={styles.productsWithFiltersContainer}>
-          <div className={styles.filterSidebar}>Sidebar</div>
+          <div className={`${styles.filterSidebar}`}>
+            {/* <CategoryFilter /> */}
+            <ColorFilter colors={colors} setColors={setColors} />
+            <SizeFilter sizes={sizes} setSizes={setSizes} />
+            <MultiRangeSlider
+              min={0}
+              max={100}
+              setMinRangeVal={setMinRangeVal}
+              setMaxRangeVal={setMaxRangeVal}
+            />
+          </div>
           {Object.values(products).length ? (
             <div className={`${styles.brandWithProductsSliderContainer}`}>
-              {Object.values(products).map((product: any, index) => {
+              {Object.values(products).map((product: any, index: number) => {
                 return (
                   <BrandWithProductsSlider key={index} product={product} />
                 );
               })}
             </div>
           ) : (
-            <div className="my-20">No products found</div>
+            <div className="mx-auto">No products found</div>
           )}
         </div>
         {/* {brands.map((brand: any, index: number) => {

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 import "./App.scss";
-import styled from "styled-components";
 import Navbar from "./components/navigation/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -20,12 +19,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { me } from "./redux/slice/UserSlice";
 import BrandsPage from "./pages/BrandsPage";
 import TrendingPage from "./pages/TrendingPage";
-
-const AppContainer = styled.div`
-  background-color: #e6e6e6;
-  height: 100%;
-  font-family: Verdana;
-`;
+import Terms from "./pages/Terms";
+import Favorites from "./pages/Favorites";
+import Cart from "./pages/Cart";
 
 const App = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -39,7 +35,7 @@ const App = () => {
   }, [accessToken]);
 
   return (
-    <AppContainer>
+    <div className="bg-white h-full font-Verdana">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -58,6 +54,9 @@ const App = () => {
         <Route path="/women" element={<CategoryPage />} />
         <Route path="/trending" element={<TrendingPage />} />
         <Route path="/brands" element={<BrandsPage />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/cart" element={<Cart />} />
         {/* {categories.map((category) => (
           <Route
             key={category.path}
@@ -71,7 +70,7 @@ const App = () => {
       </Routes>
       <ToastContainer />
       <Footer />
-    </AppContainer>
+    </div>
   );
 };
 

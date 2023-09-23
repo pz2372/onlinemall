@@ -1,4 +1,3 @@
-import Navbar from "../components/navigation/Navbar";
 import Blogs from "../components/home/Blogs";
 import BrandsLogo from "../components/home/BrandsLogo";
 import Categories from "../components/home/Categories";

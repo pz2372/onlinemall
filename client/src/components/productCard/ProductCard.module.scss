@@ -1,0 +1,28 @@
+@import "../../assets/scss/mixins";
+@import "../../assets/scss/variables";
+
+.addToFavorites {
+  &.active {
+    svg {
+      fill: $orange;
+
+      path {
+        stroke: $orange;
+      }
+    }
+  }
+
+  svg {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    border-radius: 50%;
+
+    &:hover {
+      fill: $orange;
+
+      path {
+        stroke: $orange;
+      }
+    }
+  }
+}

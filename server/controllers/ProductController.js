@@ -36,10 +36,32 @@ const getAll = async (req, res) => {
   }
 };
 
-const getProductsByCategory = async (req, res) => {
+const getProductsByCategoryWithBrands = async (req, res) => {
   try {
-    const { categoryId, page = 1, limit } = req.query;
-    const products = await Product.find({ category: categoryId })
+    const {
+      page = 1,
+      limit,
+      sort,
+      categoryIds,
+      colorIds,
+      sizeIds,
+      minRangeVal,
+      maxRangeVal,
+    } = req.body;
+    const where = {
+      price: { $lte: maxRangeVal || 100, $gte: minRangeVal || 0 },
+    };
+    if (categoryIds && categoryIds.length) {
+      where.category = { $in: categoryIds };
+    }
+    if (colorIds && colorIds.length) {
+      where.colors = { $in: colorIds };
+    }
+    if (sizeIds && sizeIds.length) {
+      where.sizes = { $in: sizeIds };
+    }
+
+    const products = await Product.find(where)
       .populate("sizes")
       .populate("colors")
       .populate({
@@ -49,6 +71,7 @@ const getProductsByCategory = async (req, res) => {
         },
       })
       .populate("category")
+      .sort(sort)
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
@@ -273,7 +296,7 @@ const deleteById = async (req, res) => {
 
 module.exports = {
   getAll,
-  getProductsByCategory,
+  getProductsByCategoryWithBrands,
   getById,
   create,
   update,

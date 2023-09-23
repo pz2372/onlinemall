@@ -1,7 +1,7 @@
 import React from "react";
-import { TIcon } from "../../types/icons.type";
+import { TIconProps } from "../../types/props.type";
 
-const HeartIcon = ({ width, height, fill, hover }: TIcon) => {
+const HeartIcon = ({ width, height, fill, hover }: TIconProps) => {
   return (
     <svg
       className={`hover:fill-[${hover}]`}
