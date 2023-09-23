@@ -1,5 +1,3 @@
-# This branch is for Peter
-
 ## Run frontend
 
 In order to run the frontend app, do the following commands:
