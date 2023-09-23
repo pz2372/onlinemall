@@ -21,9 +21,22 @@ const productSlice = createSlice({
   initialState: {
     isLoading: false,
     products: {},
+    productsInCart: localStorage.productsInCart
+      ? JSON.parse(localStorage.productsInCart)
+      : [],
+    favorites: localStorage.favoritesIds
+      ? JSON.parse(localStorage.favoritesIds)
+      : [],
     isError: false,
   },
-  reducers: {},
+  reducers: {
+    addToCart: (state, action) => {
+      state.productsInCart = action.payload;
+    },
+    addToFavorites: (state, action) => {
+      state.favorites = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(
       fetchProductsByCategoryWithBrands.pending,
@@ -52,4 +65,5 @@ const productSlice = createSlice({
   },
 });
 
+export const { addToCart, addToFavorites } = productSlice.actions;
 export default productSlice.reducer;

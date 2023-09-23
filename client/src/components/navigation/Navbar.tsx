@@ -17,12 +17,17 @@ import HeartIcon from "../svgs/HeartIcon";
 import LoginIcon from "../svgs/LoginIcon";
 import { fetchAllSizes } from "../../redux/slice/SizeSlice";
 import { fetchAllColors } from "../../redux/slice/ColorSlice";
+import Badge from "../badge/Badge";
 
 const Navbar: React.FC = () => {
   const { menCategories, womenCategories } = useSelector(
     (state: RootState) => state.category
   );
   const { userInfo } = useSelector((state: RootState) => state.user);
+  const { productsInCart, favorites } = useSelector(
+    (state: RootState) => state.product
+  );
+
   const dispatch: AppDispatch = useDispatch();
 
   const location = useLocation();
@@ -92,7 +97,7 @@ const Navbar: React.FC = () => {
               <img alt="app-logo" src={logo} style={{ height: "80px" }} />
             </NavLink>
             <div
-              className={`h-full relative md:block hidden ml-14 ${styles.mainMenu}`}
+              className={`h-full relative xl:block hidden ml-14 ${styles.mainMenu}`}
             >
               <ul className="h-full flex items-center justify-center gap-8 text-themeBlack">
                 {/* <li
@@ -146,7 +151,7 @@ const Navbar: React.FC = () => {
             className={`flex justify-end items-center ml-3 gap-6 ${styles.navbarRight}`}
           >
             <div
-              className={`${styles.searchContainer} relative shadow-xl py-2 px-4 rounded-3xl`}
+              className={`${styles.searchContainer} relative shadow-xl py-2 pl-4 pr-10 rounded-3xl md:block hidden`}
             >
               <input
                 type="text"
@@ -157,10 +162,24 @@ const Navbar: React.FC = () => {
                 <SearchIcon width="30px" height="30px" fill="#000000" />
               </div>
             </div>
-            <div title="Favorites">
+            <div
+              className="relative cursor-pointer"
+              title="Favorites"
+              onClick={() => navigate("/favorites")}
+            >
+              {favorites.length > 0 ? (
+                <Badge quantity={favorites.length} />
+              ) : null}
               <HeartIcon width="30px" height="30px" fill="#000000" />
             </div>
-            <div className={styles.shoppingCart} title="Cart">
+            <div
+              className="relative cursor-pointer"
+              title="Cart"
+              onClick={() => navigate("/cart")}
+            >
+              {productsInCart.length > 0 ? (
+                <Badge quantity={productsInCart.length} />
+              ) : null}
               <BagIcon width="30px" height="30px" fill="#000000" />
             </div>
             <div>
@@ -178,7 +197,7 @@ const Navbar: React.FC = () => {
             </div>
             {/* hamburger menu */}
             <div
-              className="md:hidden block cursor-pointer"
+              className="xl:hidden block cursor-pointer"
               onClick={() => setShowSidebar(true)}
             >
               <HamburgerIcon width="50px" height="50px" fill="#000000" />

@@ -4,15 +4,20 @@ import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import MinusIcon from "../svgs/MinusIcon";
 import CheckMarkIcon from "../svgs/CheckMarkIcon";
+import { TSizeFilterProps } from "../../types/props.type";
+import { TProductSize } from "../../types/products.type";
 
-const SizeFilter = ({ sizes, setSizes }: any) => {
+const SizeFilter = ({ sizes, setSizes }: TSizeFilterProps) => {
   const sizeState = useSelector((state: RootState) => state.size);
 
   const [toggleSize, setToggleSize] = useState(false);
 
-  const handleSizeChange = (e: any, id: string) => {
+  const handleSizeChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
     setSizes(
-      sizes.map((item: any) =>
+      sizes.map((item: TProductSize) =>
         item._id === id ? { ...item, checked: e.target.checked } : item
       )
     );
@@ -39,7 +44,7 @@ const SizeFilter = ({ sizes, setSizes }: any) => {
       </div>
       {toggleSize ? (
         <div className={`px-3`}>
-          {sizes.map((size: any) => {
+          {sizes.map((size: TProductSize) => {
             return (
               <div className="flex items-center" key={size._id}>
                 <label
@@ -50,7 +55,7 @@ const SizeFilter = ({ sizes, setSizes }: any) => {
                   <input
                     id={size._id}
                     type="checkbox"
-                    className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-black transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-[#FF6D2E] checked:bg-[#FF6D2E] checked:before:bg-[#FF6D2E] hover:before:opacity-10"
+                    className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-black transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary checked:before:bg-primary hover:before:opacity-10"
                     checked={size.checked}
                     onChange={(e) => handleSizeChange(e, size._id)}
                   />
@@ -70,14 +75,16 @@ const SizeFilter = ({ sizes, setSizes }: any) => {
         </div>
       ) : (
         <>
-          {sizes.filter((s: any) => s.checked).length ? (
+          {sizes.filter((s: TProductSize) => s.checked).length ? (
             <div className={`p-3`}>
               {sizes
-                .filter((s: any) => s.checked)
-                .map((size: any, index: number) => {
+                .filter((s: TProductSize) => s.checked)
+                .map((size: TProductSize, index: number) => {
                   return (
                     <span className="text-sm" key={size._id}>
-                      {sizes.filter((s: any) => s.checked).length - 1 !== index
+                      {sizes.filter((s: TProductSize) => s.checked).length -
+                        1 !==
+                      index
                         ? size.name + ", "
                         : size.name}
                     </span>

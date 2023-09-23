@@ -1,9 +1,9 @@
 import React from "react";
 import ChevronRightIcon from "../svgs/ChevronRightIcon";
 import { useNavigate } from "react-router-dom";
-import { TBreadcrumb } from "../../types/breadcrumbs.type";
+import { TBreadcrumbProps } from "../../types/props.type";
 
-const Breadcrumb = ({ path }: TBreadcrumb) => {
+const Breadcrumb = ({ path }: TBreadcrumbProps) => {
   const navigate = useNavigate();
   return (
     <ul className="flex items-center gap-2">

@@ -10,6 +10,16 @@ import { AppDispatch, RootState } from "../redux/store";
 import { signup } from "../redux/slice/AuthSlice";
 import { toast } from "react-toastify";
 
+type TError = {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  phone: string;
+  email: string;
+  username: string;
+  password: string;
+};
+
 const Register = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,8 +44,7 @@ const Register = () => {
     password: "",
   });
 
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     if (!isFormValid()) {
       return;
     }
@@ -43,7 +52,6 @@ const Register = () => {
       if (res.payload.data?.success) {
         toast.success(res.payload.data.message, {
           autoClose: 2000,
-          position: toast.POSITION.BOTTOM_RIGHT,
         });
         setTimeout(() => {
           navigate("/login");
@@ -54,7 +62,7 @@ const Register = () => {
 
   const isFormValid = () => {
     let isValid = true;
-    let cloneErrors: any = { ...errors };
+    let cloneErrors: TError = { ...errors };
     if (!formData.firstName) {
       isValid = false;
       cloneErrors.firstName = "First name is required.";

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Button.module.scss";
-import { TButtonProps } from "../../types/buttons.type";
+import { TButtonProps } from "../../types/props.type";
 
 const Button: React.FC<TButtonProps> = ({
   variant,
