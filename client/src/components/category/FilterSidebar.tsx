@@ -1,6 +1,8 @@
+import { TProductCategory } from "../../types/products.type";
+
 // Define the interface for the props
 interface FilterSidebarProps {
-  btnsData: { id: number; title: string }[]; // Assuming btnsData is an array of objects with 'id' and 'title' properties
+  btnsData: TProductCategory[]; // Assuming btnsData is an array of objects with 'id' and 'title' properties
   activeBtn: number; // Assuming activeBtn is a number
   setActiveBtn: (id: number) => void; // Assuming setActiveBtn is a function that takes a number as an argument and returns void
 }
@@ -25,15 +27,15 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
         {btnsData?.map((btn) => (
           <button
-            onClick={() => setActiveBtn(btn.id)}
-            key={btn.id}
+            onClick={() => setActiveBtn(Number(btn._id))}
+            key={btn._id}
             className={`px-[14px] py-2 border-b border-b-categoryBorder text-placeholderColor2 w-full text-start cursor-pointer hover:bg-dropdownHoverBG border-x-0 border-t-0 outline-none ${
-              activeBtn === btn.id
+              activeBtn === Number(btn._id)
                 ? "bg-dropdownHoverBG text-themeOrange"
                 : "bg-transparent"
             } duration-200`}
           >
-            {btn.title}
+            {btn.name}
           </button>
         ))}
       </div>

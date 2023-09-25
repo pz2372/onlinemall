@@ -43,14 +43,14 @@ const Filters = () => {
         {/* Categories */}
         <div className="w-full flex items-start justify-between md:flex-row flex-col gap-10 lg:gap-16 mt-8">
           {/* Left Side Buttons */}
-          <FilterSidebar
+          {/* <FilterSidebar
             key={"sidebar"}
-            btnsData={btnsData}
+            btnsData={brandCategories}
             activeBtn={activeBtn}
             setActiveBtn={setActiveBtn}
-          />
+          /> */}
 
-          <div className="w-full md:w-[75%] lg:w-[80%]">
+          {/* <div className="w-full md:w-[75%] lg:w-[80%]">
             {activeBtn === 1 ? (
               <TshirtOutlet key="Tshirts" data={tshirtData} />
             ) : activeBtn === 2 ? (
@@ -60,7 +60,7 @@ const Filters = () => {
             ) : activeBtn === 4 ? (
               <JeansOutlet key="Jeans" data={jeansData} />
             ) : null}
-          </div>
+          </div> */}
         </div>
       </div>
     </>

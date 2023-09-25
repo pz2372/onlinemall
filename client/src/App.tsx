@@ -57,6 +57,7 @@ const App = () => {
         <Route path="/terms" element={<Terms />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="brand/:id" element={<BrandPage />} />
         {/* {categories.map((category) => (
           <Route
             key={category.path}
@@ -64,9 +65,9 @@ const App = () => {
             element={<CategoryPage category={category} />}
           />
         ))} */}
-        {brands.map((brand) => (
+        {/* {brands.map((brand) => (
           <Route key={brand} path={`brand/${brand}`} element={<BrandPage />} />
-        ))}
+        ))} */}
       </Routes>
       <ToastContainer />
       <Footer />

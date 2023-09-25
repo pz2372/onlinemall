@@ -14,6 +14,13 @@
     display: grid;
     align-content: flex-start;
     grid-gap: 20px;
+    position: sticky;
+    top: 160px;
+
+    @include lg {
+      position: relative;
+      top: 0px;
+    }
   }
 
   .brandWithProductsSliderContainer {
@@ -27,7 +34,6 @@
       // align-items: center;
 
       .brandLogo {
-        grid-column: 1/5;
 
         img {
           width: 100px;
