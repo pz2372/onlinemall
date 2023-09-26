@@ -1,0 +1,67 @@
+@import "../../assets/scss/mixins";
+@import "../../assets/scss/variables";
+
+.productPageGrid {
+  display: grid;
+  grid-template-columns: 517px 1fr;
+  grid-gap: 30px;
+
+  .inputNumber {
+    position: relative;
+    width: 100px;
+    height: 40px;
+    background-color: transparent;
+    overflow: hidden;
+    border-radius: 20px;
+    margin: 2px;
+
+    span {
+      position: absolute;
+      left: 50%;
+      margin-left: -20px;
+      display: inline-block;
+      background-color: $orange;
+      height: 100%;
+      width: 40px;
+      border-radius: 20px;
+      text-align: center;
+      line-height: 40px;
+      font-size: 16px;
+      color: $white;
+      letter-spacing: -1px;
+    }
+
+    button {
+      display: inline-block;
+      width: 50px;
+      height: 100%;
+      background-color: transparent;
+      border: none;
+      color: $orange;
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #ff6d2e33;
+      transition: background-color .2s ease;
+
+      &:nth-of-type(1) {
+        padding-right: 20px
+      }
+
+      &:nth-of-type(2) {
+        padding-left: 20px;
+      }
+
+      &:hover {
+        background-color: #ff6d2e40;
+      }
+    }
+  }
+
+  @include xl {
+    grid-template-columns: 400px 1fr;
+  }
+
+  @include lg {
+    grid-template-columns: 1fr;
+  }
+}

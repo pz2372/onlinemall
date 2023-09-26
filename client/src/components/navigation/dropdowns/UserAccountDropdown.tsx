@@ -5,7 +5,7 @@ import LoginIcon from "../../svgs/LoginIcon";
 import MyAccountIcon from "../../svgs/MyAccountIcon";
 import OrderIcon from "../../svgs/OrderIcon";
 import PaymentMethodIcon from "../../svgs/PaymentMethodIcon";
-import { useOutsideClick } from "../../../hooks/useOutsideClick ";
+import { useOutsideClick } from "../../../hooks/useOutsideClick";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { useNavigate } from "react-router-dom";

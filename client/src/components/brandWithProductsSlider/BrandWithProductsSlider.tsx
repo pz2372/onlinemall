@@ -10,8 +10,7 @@ import { BrandWithProductsSliderProps } from "../../types/props.type";
 const BrandWithProductsSlider = ({ product }: BrandWithProductsSliderProps) => {
   return (
     <div className={`${styles.brandWithProductsSliderGrid} mb-20`}>
-      <div className={`${styles.brandLogo} relative flex justify-center mb-8`}>
-        <div className="absolute -top-2 h-[2px] w-[66px] bg-black"></div>
+      <div className={`${styles.brandLogo}`}>
         <Link to={`/brand/${product[0].brand._id}`}>
           <img
             alt={product[0].brand.name}
