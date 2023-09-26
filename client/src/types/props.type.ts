@@ -2,6 +2,7 @@ import { MouseEventHandler } from "react";
 import { TSortDropdownOption } from "./dropdowns.type";
 import {
   TProduct,
+  TProductBrand,
   TProductCategory,
   TProductColor,
   TProductSize,
@@ -61,4 +62,15 @@ export type TSizeFilterProps = {
 
 export type TBadgeProps = {
   quantity: number;
+};
+
+export type TBrandHeroSectonProps = {
+  brand: TProductBrand;
+};
+
+export type TBrandSidebarFilterProps = {
+  categories: TProductCategory[];
+  brandProducts: TProduct[];
+  selectedCategoryIndex: number;
+  setSelectedCategoryIndex: (n: number) => void;
 };

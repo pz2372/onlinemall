@@ -1,0 +1,53 @@
+@import '../../assets/scss/mixins';
+@import '../../assets/scss/variables';
+
+.brandPageGrid {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  grid-gap: 30px;
+  align-items: flex-start;
+
+  .brandSidebarFilter {
+    position: sticky;
+    top: 110px;
+
+    .category {
+
+      &:hover,
+      &.active {
+        border-left: 3px solid $orange;
+      }
+    }
+
+    @include md {
+      position: relative;
+      top: 0px;
+    }
+  }
+
+  .brandProductsGrid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
+
+    @include xxl {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @include xl {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include md {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include sm {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @include md {
+    grid-template-columns: 1fr;
+  }
+}
