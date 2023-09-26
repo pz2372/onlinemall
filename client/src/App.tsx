@@ -22,11 +22,19 @@ import TrendingPage from "./pages/TrendingPage";
 import Terms from "./pages/Terms";
 import Favorites from "./pages/Favorites";
 import Cart from "./pages/Cart";
+import ProductPage from "./pages/ProductPage";
+import "reactjs-popup/dist/index.css";
+import Popup from "reactjs-popup";
+import SingleProduct from "./components/product/SingleProduct";
+import { toggleQuickviewPopup } from "./redux/slice/PopupSlice";
+import { TQuickview } from "./types/redux.type";
 
 const App = () => {
   const dispatch: AppDispatch = useDispatch();
   const { accessToken } = useSelector((state: RootState) => state.auth);
   const { userInfo } = useSelector((state: RootState) => state.user);
+  const popupState = useSelector((state: RootState) => state.popup);
+  const quickviewPopup: TQuickview = popupState.quickviewPopup;
 
   useEffect(() => {
     if (sessionStorage.access_token) {
@@ -58,6 +66,7 @@ const App = () => {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="brand/:id" element={<BrandPage />} />
+        <Route path="product/:id" element={<ProductPage />} />
         {/* {categories.map((category) => (
           <Route
             key={category.path}
@@ -71,6 +80,21 @@ const App = () => {
       </Routes>
       <ToastContainer />
       <Footer />
+      <Popup
+        contentStyle={{
+          width: "90%",
+          maxHeight: "calc(100vh - 10%)",
+          overflowY: "auto",
+        }}
+        open={quickviewPopup.show}
+        modal
+        lockScroll
+        onClose={() =>
+          dispatch(toggleQuickviewPopup({ show: false, productId: undefined }))
+        }
+      >
+        <SingleProduct productId={quickviewPopup.productId} />
+      </Popup>
     </div>
   );
 };

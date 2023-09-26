@@ -2,21 +2,40 @@
 @import "../../assets/scss/variables";
 
 button {
+
   &.primary {
-    border-radius: 99px;
-    border: none;
-    padding: 10px 24px;
-    color: $white ;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
     transition: 0.3s all ease-in;
-    background: $orange;
+    border-radius: 99px;
+    padding: 10px 24px;
     cursor: pointer;
+    border: none;
+    color: $white ;
+    background-color: $orange;
 
     &:hover {
-      background-color: #eb916a !important;
+      opacity: 0.7;
+    }
+  }
+
+  &.secondary {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s all ease-in;
+    border-radius: 99px;
+    padding: 10px 24px;
+    cursor: pointer;
+    border: 1px solid $orange;
+    color: $orange;
+    background-color: transparent;
+
+    &:hover {
+      opacity: 0.7;
     }
   }
 }
