@@ -9,7 +9,11 @@ const Button: React.FC<TButtonProps> = ({
   ...attributes
 }) => {
   return (
-    <button className={`${styles[variant]}`} onClick={onClick} {...attributes}>
+    <button
+      className={`flex items-center gap-2 ${styles[variant]}`}
+      onClick={onClick}
+      {...attributes}
+    >
       {children}
     </button>
   );

@@ -27,7 +27,7 @@ const BrandSidebarFilter = ({
               onClick={() => setSelectedCategoryIndex(index)}
             >
               <span className="mr-2">{category.name}</span>
-              <sub className="capitalize">{`(${category.path
+              {/* <sub className="capitalize">{`(${category.path
                 .split("/")[0]
                 .toLowerCase()})`}</sub>
               <span className="ml-5 inline-flex items-center rounded-full bg-primary px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-gray-500/10">
@@ -37,7 +37,7 @@ const BrandSidebarFilter = ({
                       product.category._id === categories[index]._id
                   ).length
                 }
-              </span>
+              </span> */}
             </div>
           ) : null;
         })}
