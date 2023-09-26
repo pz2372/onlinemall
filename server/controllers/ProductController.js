@@ -176,6 +176,38 @@ const getById = async (req, res) => {
   }
 };
 
+const getProductsByBrand = async (req, res) => {
+  try {
+    const brandId = req.params?.id;
+    if (mongoose.Types.ObjectId.isValid(brandId)) {
+      const products = await Product.find({ brand: brandId })
+        .populate("sizes")
+        .populate("colors")
+        .populate({
+          path: "brand",
+          populate: {
+            path: "categories",
+          },
+        })
+        .populate("category");
+      if (!products.length) {
+        res.status(404).send({ message: "No products found.", success: false });
+      } else {
+        res.status(200).send({
+          success: true,
+          data: products,
+        });
+      }
+    } else {
+      res.status(500).send({ message: "Invalid id provided.", success: false });
+    }
+  } catch (e) {
+    res
+      .status(500)
+      .send({ message: e.message, error: e.errors, success: false });
+  }
+};
+
 const create = async (req, res) => {
   try {
     const { errors } = validationResult(req);
@@ -298,6 +330,7 @@ module.exports = {
   getAll,
   getProductsByCategoryWithBrands,
   getById,
+  getProductsByBrand,
   create,
   update,
   deleteById,

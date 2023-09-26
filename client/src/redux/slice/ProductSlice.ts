@@ -16,11 +16,26 @@ export const fetchProductsByCategoryWithBrands = createAsyncThunk(
   }
 );
 
+export const fetchProductsByBrand = createAsyncThunk(
+  "product/getByBrand",
+  async (brandId: string) => {
+    try {
+      const response: any = await axios.get(
+        `/api/product/getProductsByBrand/${brandId}`
+      );
+      return response;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState: {
     isLoading: false,
     products: {},
+    brandProducts: [],
     productsInCart: localStorage.productsInCart
       ? JSON.parse(localStorage.productsInCart)
       : [],
@@ -62,6 +77,21 @@ const productSlice = createSlice({
         state.isError = true;
       }
     );
+    builder.addCase(fetchProductsByBrand.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchProductsByBrand.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload?.success || action.payload?.data?.success) {
+        state.brandProducts = action.payload.data.data;
+      } else {
+        state.isError = true;
+      }
+    });
+    builder.addCase(fetchProductsByBrand.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
   },
 });
 

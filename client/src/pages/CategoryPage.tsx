@@ -23,6 +23,7 @@ import {
   TProductSize,
   TProductSort,
 } from "../types/products.type";
+import Loader from "../components/loader/Loader";
 
 const CategoryPage = () => {
   const { products, isLoading } = useSelector(
@@ -101,14 +102,7 @@ const CategoryPage = () => {
 
   return (
     <>
-      {isLoading ? (
-        <div className="fixed left-0 top-[140px] w-full h-full bg-white/[.7] z-50 flex items-center justify-center">
-          <div className="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
-            <div className="border-t-transparent border-solid animate-spin rounded-full border-primary border-8 h-32 w-32"></div>
-          </div>
-          Loading...
-        </div>
-      ) : null}
+      {isLoading ? <Loader /> : null}
       <div className="container mx-auto lg:w-10/12 w-11/12 mt-24 relative">
         {/* Heading */}
         <Breadcrumb path={breadcrumbs} />

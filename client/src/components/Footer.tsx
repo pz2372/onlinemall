@@ -18,7 +18,7 @@ const Footer = () => {
               elit auctor, finibus quam in, phar
             </p>
 
-            <img src="./images/payment-method.png" alt="payment-method" />
+            <img src="/images/payment-method.png" alt="payment-method" />
           </div>
 
           {/* Second Col */}
@@ -53,8 +53,7 @@ const Footer = () => {
           </div>
 
           {/* Fourth Col */}
-          <div className="w-full">
-          </div>
+          <div className="w-full"></div>
         </div>
 
         {/* Lower part */}
