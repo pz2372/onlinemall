@@ -10,7 +10,6 @@ import BrandPage from "./pages/BrandPage";
 import CategoryPage from "./pages/CategoryPage";
 import BrandProductUpload from "./brandUser/BrandProductUpload";
 import AdminDashboard from "./admin/AdminDashboard";
-import { categories, brands } from "./assets/Categories";
 import Footer from "./components/Footer";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -67,17 +66,8 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="brand/:id" element={<BrandPage />} />
         <Route path="product/:id" element={<ProductPage />} />
-        {/* {categories.map((category) => (
-          <Route
-            key={category.path}
-            path={`/${category.path}`}
-            element={<CategoryPage category={category} />}
-          />
-        ))} */}
-        {/* {brands.map((brand) => (
-          <Route key={brand} path={`brand/${brand}`} element={<BrandPage />} />
-        ))} */}
       </Routes>
+
       <ToastContainer />
       <Footer />
       <Popup

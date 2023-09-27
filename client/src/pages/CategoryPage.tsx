@@ -1,9 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import BrandCategoryCards from "../components/brand/BrandCategoryCards";
-import Pagination from "../components/Pagination";
-import { brands } from "../assets/Categories";
-import { tshirtData } from "../assets/clothingData";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -104,7 +100,6 @@ const CategoryPage = () => {
     <>
       {isLoading ? <Loader /> : null}
       <div className="container mx-auto lg:w-10/12 w-11/12 mt-24 relative">
-        {/* Heading */}
         <Breadcrumb path={breadcrumbs} />
         <SortByDropdown
           options={sortOptions}
@@ -113,12 +108,13 @@ const CategoryPage = () => {
         />
         <div className={styles.productsWithFiltersContainer}>
           <div className={`${styles.filterSidebar}`}>
-            {/* <CategoryFilter /> */}
             <ColorFilter colors={colors} setColors={setColors} />
             <SizeFilter sizes={sizes} setSizes={setSizes} />
             <MultiRangeSlider
               min={0}
               max={100}
+              minRangeVal={minRangeVal}
+              maxRangeVal={maxRangeVal}
               setMinRangeVal={setMinRangeVal}
               setMaxRangeVal={setMaxRangeVal}
             />
@@ -135,16 +131,6 @@ const CategoryPage = () => {
             <div className="mx-auto">No products found</div>
           )}
         </div>
-        {/* {brands.map((brand: any, index: number) => {
-          return (
-            <BrandCategoryCards
-              key={index}
-              brand={brand}
-              brandImg="./images/brands/nike.png"
-              data={tshirtData}
-            />
-          );
-        })} */}
 
         {/* Pagination */}
         {/* <Pagination /> */}

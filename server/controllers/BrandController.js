@@ -31,7 +31,7 @@ const getById = async (req, res) => {
   try {
     const _id = req.params?.id;
     if (mongoose.Types.ObjectId.isValid(_id)) {
-      const brand = await Brand.findOne({ _id });
+      const brand = await Brand.findOne({ _id }).populate("categories");
       if (!brand) {
         res.status(404).send({ message: "Brand not found", success: false });
       } else {

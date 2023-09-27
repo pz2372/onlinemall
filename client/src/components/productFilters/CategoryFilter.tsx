@@ -1,48 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CheckMarkIcon from "../svgs/CheckMarkIcon";
 import MinusIcon from "../svgs/MinusIcon";
 import PlusIcon from "../svgs/PlusIcon";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 import { TProductCategory } from "../../types/products.type";
+import { TCategoryFilterProps } from "../../types/props.type";
 
-const CategoryFilter = () => {
-  const categoryState = useSelector((state: RootState) => state.category);
-
-  const [menCategories, setMenCategories] = useState<TProductCategory[]>([]);
-  const [womenCategories, setWomenCategories] = useState<TProductCategory[]>(
-    []
-  );
+const CategoryFilter = ({
+  menCategories,
+  setMenCategories,
+  womenCategories,
+  setWomenCategories,
+}: TCategoryFilterProps) => {
   const [toggleCategory, setToggleCategory] = useState(false);
 
   const handleMenCategoryChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: string
   ) => {
-    setMenCategories(
-      menCategories.map((item: TProductCategory) =>
-        item._id === id ? { ...item, checked: e.target.checked } : item
-      )
-    );
+    if (menCategories) {
+      setMenCategories(
+        menCategories.map((item: TProductCategory) =>
+          item._id === id ? { ...item, checked: e.target.checked } : item
+        )
+      );
+    }
   };
 
   const handleWomenCategoryChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: string
   ) => {
-    setWomenCategories(
-      womenCategories.map((item: TProductCategory) =>
-        item._id === id ? { ...item, checked: e.target.checked } : item
-      )
-    );
-  };
-
-  useEffect(() => {
-    if (categoryState.categories?.length) {
-      setMenCategories(categoryState.menCategories);
-      setWomenCategories(categoryState.womenCategories);
+    if (womenCategories) {
+      setWomenCategories(
+        womenCategories.map((item: TProductCategory) =>
+          item._id === id ? { ...item, checked: e.target.checked } : item
+        )
+      );
     }
-  }, [categoryState.categories]);
+  };
 
   return (
     <div className={`bg-[#f5f4f2]`}>
@@ -59,9 +54,9 @@ const CategoryFilter = () => {
       </div>
       {toggleCategory ? (
         <div className={`px-3`}>
-          <div className="font-bold text-sm">Men's</div>
+          <div className="font-bold text-sm mt-4">Men</div>
           <div>
-            {menCategories.map((categ: TProductCategory) => {
+            {menCategories?.map((categ: TProductCategory) => {
               return (
                 <div className="flex items-center" key={categ._id}>
                   <label
@@ -90,9 +85,9 @@ const CategoryFilter = () => {
               );
             })}
           </div>
-          <div className="font-bold text-sm">Women's</div>
+          <div className="font-bold text-sm mt-4">Women</div>
           <div>
-            {womenCategories.map((categ: TProductCategory) => {
+            {womenCategories?.map((categ: TProductCategory) => {
               return (
                 <div className="flex items-center" key={categ._id}>
                   <label
@@ -103,7 +98,7 @@ const CategoryFilter = () => {
                     <input
                       id={categ._id}
                       type="checkbox"
-                      className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary checked:before:bg-primary hover:before:opacity-10"
+                      className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-black transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary checked:before:bg-primary hover:before:opacity-10"
                       checked={categ.checked}
                       onChange={(e) => handleWomenCategoryChange(e, categ._id)}
                     />
