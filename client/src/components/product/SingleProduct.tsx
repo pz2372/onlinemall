@@ -122,7 +122,7 @@ const SingleProduct = ({ productId }: TSingleProductProps) => {
   useEffect(() => {
     if (productId) {
       dispatch(fetchProductById(productId))
-        .then((res) => {
+        .then((res: any) => {
           if (res.payload.data?.success) {
             const images: TProductImage[] = [];
             res.payload.data.data.images.forEach((image: string) => {

@@ -11,6 +11,8 @@ import {
 export type TMultiRangeSliderProps = {
   min: number;
   max: number;
+  minRangeVal: number;
+  maxRangeVal: number;
   setMinRangeVal: (num: number) => void;
   setMaxRangeVal: (num: number) => void;
 };
@@ -65,12 +67,29 @@ export type TBadgeProps = {
 };
 
 export type TBrandHeroSectonProps = {
-  brand: TProductBrand;
+  brand: TProductBrand | undefined;
 };
 
 export type TBrandSidebarFilterProps = {
-  categories: TProductCategory[];
-  brandProducts: TProduct[];
+  menCategories: TProductCategory[] | undefined;
+  setMenCategories: (categories: TProductCategory[]) => void;
+  womenCategories: TProductCategory[] | undefined;
+  setWomenCategories: (categories: TProductCategory[]) => void;
   selectedCategoryIndex: number;
   setSelectedCategoryIndex: (n: number) => void;
+  colors: TProductColor[];
+  setColors: (colors: TProductColor[]) => void;
+  sizes: TProductSize[];
+  setSizes: (sizes: TProductSize[]) => void;
+  minRangeVal: number;
+  maxRangeVal: number;
+  setMinRangeVal: (num: number) => void;
+  setMaxRangeVal: (num: number) => void;
+};
+
+export type TCategoryFilterProps = {
+  menCategories: TProductCategory[] | undefined;
+  setMenCategories: (categories: TProductCategory[]) => void;
+  womenCategories: TProductCategory[] | undefined;
+  setWomenCategories: (categories: TProductCategory[]) => void;
 };

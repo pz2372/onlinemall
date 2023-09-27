@@ -13,6 +13,7 @@ import ProductSlice from "./slice/ProductSlice";
 import ColorSlice from "./slice/ColorSlice";
 import SizeSlice from "./slice/SizeSlice";
 import PopupSlice from "./slice/PopupSlice";
+import BrandSlice from "./slice/BrandSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     user: UserSlice,
     category: CategorySlice,
     color: ColorSlice,
+    brand: BrandSlice,
     size: SizeSlice,
     product: ProductSlice,
     popup: PopupSlice,

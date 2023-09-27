@@ -5,11 +5,13 @@ import { TMultiRangeSliderProps } from "../../types/props.type";
 const MultiRangeSlider = ({
   min,
   max,
+  minRangeVal,
+  maxRangeVal,
   setMinRangeVal,
   setMaxRangeVal,
 }: TMultiRangeSliderProps) => {
-  const [minVal, setMinVal] = useState(min);
-  const [maxVal, setMaxVal] = useState(max);
+  const [minVal, setMinVal] = useState(minRangeVal);
+  const [maxVal, setMaxVal] = useState(maxRangeVal);
   const minValRef = useRef<number>(min);
   const maxValRef = useRef<number>(max);
   const rangeRef = useRef<HTMLDivElement>(null);
