@@ -18,10 +18,11 @@ export const fetchProductsByCategoryWithBrands = createAsyncThunk(
 
 export const fetchProductsByBrand = createAsyncThunk(
   "product/getByBrand",
-  async (brandId: string) => {
+  async (filters: any) => {
     try {
-      const response: any = await axios.get(
-        `/api/product/getProductsByBrand/${brandId}`
+      const response: any = await axios.post(
+        `/api/product/getProductsByBrand/`,
+        filters
       );
       return response;
     } catch (err: any) {
@@ -96,11 +97,11 @@ const productSlice = createSlice({
     });
     builder.addCase(fetchProductsByBrand.fulfilled, (state, action) => {
       state.isLoading = false;
-      if (action.payload?.success || action.payload?.data?.success) {
-        state.brandProducts = action.payload.data.data;
-      } else {
-        state.isError = true;
-      }
+      // if (action.payload?.success || action.payload?.data?.success) {
+      //   state.brandProducts = action.payload.data.data;
+      // } else {
+      //   state.isError = true;
+      // }
     });
     builder.addCase(fetchProductsByBrand.rejected, (state, action) => {
       state.isLoading = false;

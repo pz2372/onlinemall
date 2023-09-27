@@ -9,8 +9,8 @@ const upload = multer({
   storage: multer.memoryStorage(),
 });
 
-brandRouter.get("/getAll", auth, BrandController.getAll);
-brandRouter.get("/getById/:id", auth, BrandController.getById);
+brandRouter.get("/getAll", BrandController.getAll);
+brandRouter.get("/getById/:id", BrandController.getById);
 brandRouter.post(
   "/create",
   auth,

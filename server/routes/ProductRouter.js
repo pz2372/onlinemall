@@ -15,10 +15,7 @@ productRouter.post(
   ProductController.getProductsByCategoryWithBrands
 );
 productRouter.get("/getById/:id", ProductController.getById);
-productRouter.get(
-  "/getProductsByBrand/:id",
-  ProductController.getProductsByBrand
-);
+productRouter.post("/getProductsByBrand", ProductController.getProductsByBrand);
 productRouter.post(
   "/create",
   auth,
