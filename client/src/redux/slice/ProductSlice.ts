@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { TAddReview } from "../../types/redux.type";
 
 export const fetchProductsByCategoryWithBrands = createAsyncThunk(
   "product/getByCategory",
@@ -45,10 +46,23 @@ export const fetchProductById = createAsyncThunk(
   }
 );
 
+export const addReviewToProduct = createAsyncThunk(
+  "product/addReview",
+  async (data: TAddReview) => {
+    try {
+      const response: any = await axios.post(`/api/product/addReview`, data);
+      return response;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState: {
     isLoading: false,
+    isAddReviewLoading: false,
     products: {},
     brandProducts: [],
     productsInCart: localStorage.productsInCart
@@ -116,6 +130,16 @@ const productSlice = createSlice({
     builder.addCase(fetchProductById.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
+    });
+
+    builder.addCase(addReviewToProduct.pending, (state, action) => {
+      state.isAddReviewLoading = true;
+    });
+    builder.addCase(addReviewToProduct.fulfilled, (state, action) => {
+      state.isAddReviewLoading = false;
+    });
+    builder.addCase(addReviewToProduct.rejected, (state, action) => {
+      state.isAddReviewLoading = false;
     });
   },
 });

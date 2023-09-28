@@ -16,6 +16,11 @@ const brandSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
+  website: {
+    type: String,
+    required: false,
+    default: null,
+  },
   categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
   createdAt: {
     type: Date,

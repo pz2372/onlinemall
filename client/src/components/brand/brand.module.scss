@@ -1,13 +1,13 @@
 @import '../../assets/scss/mixins';
 @import '../../assets/scss/variables';
 
-.brandHeroSecton {
-  clip-path: polygon(0 0, 60% 0, 100% 100%, 40% 100%);
+// .brandHeroSecton {
+//   clip-path: polygon(0 0, 60% 0, 100% 100%, 40% 100%);
 
-  @include md {
-    clip-path: none;
-  }
-}
+//   @include md {
+//     clip-path: none;
+//   }
+// }
 
 .brandPageGrid {
   display: grid;

@@ -25,9 +25,11 @@ export type TIconProps = {
 };
 
 export type TButtonProps = {
+  classNames?: string;
   variant: string;
   children?: React.ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 };
 
 export type TBreadcrumbProps = {
