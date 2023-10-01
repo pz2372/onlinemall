@@ -72,6 +72,7 @@ const App = () => {
       <Footer />
       <Popup
         contentStyle={{
+          position: "relative",
           width: "90%",
           maxHeight: "calc(100vh - 10%)",
           overflowY: "auto",
@@ -83,7 +84,17 @@ const App = () => {
           dispatch(toggleQuickviewPopup({ show: false, productId: undefined }))
         }
       >
-        <SingleProduct productId={quickviewPopup.productId} />
+        <span
+          className="absolute top-[20px] right-[20px] text-[40px] leading-[20px] cursor-pointer"
+          onClick={() =>
+            dispatch(
+              toggleQuickviewPopup({ show: false, productId: undefined })
+            )
+          }
+        >
+          &times;
+        </span>
+        <SingleProduct productId={quickviewPopup.productId} hideReviews />
       </Popup>
     </div>
   );

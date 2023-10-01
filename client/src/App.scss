@@ -35,8 +35,12 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-::-webkit-scrollbar {
+body::-webkit-scrollbar {
   width: 12px;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
 }
 
 ::-webkit-scrollbar-thumb {

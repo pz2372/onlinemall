@@ -1,3 +1,5 @@
+import { TUser } from "./users.type";
+
 export type TProductColor = {
   _id: string;
   name: string;
@@ -38,6 +40,7 @@ export type TProductBrand = {
   name: string;
   logo: string;
   description: string;
+  website: string;
   categories: TProductCategory[];
   createdAt: string;
   deletedAt: string;
@@ -55,7 +58,22 @@ export type TProduct = {
   images: string[];
   colors: TProductColor[];
   sizes: TProductSize[];
+  reviews: TProductReview[];
+  ratings: TProductRating[];
   createdAt: string;
   deletedAt: string;
   modifiedAt: string;
+};
+
+export type TProductReview = {
+  _id: string;
+  user: TUser;
+  text: string;
+  createdAt: string;
+};
+
+export type TProductRating = {
+  _id: string;
+  user: TUser;
+  rate: number;
 };

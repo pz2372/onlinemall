@@ -2,6 +2,10 @@
 @import "../../assets/scss/variables";
 
 button {
+  &:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
 
   &.primary {
     font-size: 14px;
