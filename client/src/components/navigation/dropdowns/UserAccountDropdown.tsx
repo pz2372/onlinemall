@@ -12,9 +12,12 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/slice/UserSlice";
 import FeedIcon from "../../svgs/FeedIcon";
 import LogoutIcon from "../../svgs/LogoutIcon";
+import { TUserState } from "../../../types/redux.type";
+import { TUser } from "../../../types/users.type";
 
 const UserAccountDropdown = () => {
-  const { userInfo } = useSelector((state: RootState) => state.user);
+  const userState: TUserState = useSelector((state: RootState) => state.user);
+  const userInfo: TUser | null = userState.userInfo;
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -29,7 +32,15 @@ const UserAccountDropdown = () => {
         className={`cursor-pointer`}
         onClick={() => setShowDropdown(!showDropdown)}
       >
-        <AvatarIcon width="30px" height="30px" fill="#000000" />
+        {userInfo?.avatar ? (
+          <img
+            className="w-8 h-8 rounded-full"
+            src={process.env.REACT_APP_S3_BUCKET_URL + userInfo.avatar}
+            alt="avatar"
+          />
+        ) : (
+          <AvatarIcon width="30px" height="30px" fill="#000000" />
+        )}
         {showDropdown ? (
           <div
             className={`${styles.dropdownContainer} bg-white w-max py-3 rounded-xl shadow-dropdown absolute right-0 top-[63px] z-50`}

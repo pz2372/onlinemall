@@ -1,5 +1,19 @@
 const mongoose = require("mongoose");
 
+const reviewSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  text: String,
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
+});
+
+const ratingSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  rate: Number,
+});
+
 const productSchema = new mongoose.Schema({
   name: String,
   description: String,
@@ -11,6 +25,8 @@ const productSchema = new mongoose.Schema({
   brand: { type: mongoose.Types.ObjectId, ref: "Brand" },
   category: { type: mongoose.Types.ObjectId, ref: "Category" },
   inventoryID: Number,
+  reviews: [reviewSchema],
+  ratings: [ratingSchema],
   createdAt: {
     type: Date,
     default: new Date(),

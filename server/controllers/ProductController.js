@@ -157,7 +157,9 @@ const getById = async (req, res) => {
             path: "categories",
           },
         })
-        .populate("category");
+        .populate("category")
+        .populate("reviews.user")
+        .populate("ratings.user");
       if (!product) {
         res.status(404).send({ message: "Product not found.", success: false });
       } else {
@@ -223,6 +225,51 @@ const getProductsByBrand = async (req, res) => {
         data: products,
       });
     }
+  } catch (e) {
+    res
+      .status(500)
+      .send({ message: e.message, error: e.errors, success: false });
+  }
+};
+
+const addReview = async (req, res) => {
+  try {
+    const body = req.body;
+    const newReview = {
+      user: body.user,
+      text: body.reviewText,
+      createdAt: new Date(),
+    };
+    const newRating = {
+      user: body.user,
+      rate: body.ratingValue,
+    };
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: body.productId },
+      { $push: { reviews: newReview, ratings: newRating } },
+      {
+        new: true,
+      }
+    );
+
+    const product = await Product.findOne({ _id: updatedProduct._id })
+      .populate("sizes")
+      .populate("colors")
+      .populate({
+        path: "brand",
+        populate: {
+          path: "categories",
+        },
+      })
+      .populate("category")
+      .populate("reviews.user")
+      .populate("ratings.user");
+
+    res.status(200).send({
+      message: "Your review has been added!",
+      success: true,
+      data: product,
+    });
   } catch (e) {
     res
       .status(500)
@@ -356,4 +403,5 @@ module.exports = {
   create,
   update,
   deleteById,
+  addReview,
 };
