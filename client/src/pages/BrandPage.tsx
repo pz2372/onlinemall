@@ -9,6 +9,7 @@ import {
   TProductBrand,
   TProductCategory,
   TProductColor,
+  TProductRating,
   TProductSize,
 } from "../types/products.type";
 import BrandHeroSecton from "../components/brand/BrandHeroSecton";
@@ -162,7 +163,16 @@ const BrandPage = () => {
               {products?.length ? (
                 <div className={styles.brandProductsGrid}>
                   {products.map((product: TProduct) => {
-                    return <ProductCard key={product._id} product={product} />;
+                    let prod = { ...product };
+                    const sum = prod.ratings.reduce(
+                      (accumulator: number, object: TProductRating) => {
+                        return accumulator + object.rate;
+                      },
+                      0
+                    );
+                    let total = sum > 0 ? sum / prod.ratings.length : 0;
+                    prod.totalRatings = Number(total.toFixed(1));
+                    return <ProductCard key={prod._id} product={prod} />;
                   })}
                 </div>
               ) : (
