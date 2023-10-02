@@ -4,19 +4,12 @@ const User = require("../models/user");
 const { validationResult } = require("express-validator");
 const { sendMail } = require("../utils/sendMail");
 const { generatePassword } = require("../utils/generatePassword");
+const Admin = require("../models/admin");
 
 const signup = async (req, res) => {
   try {
-    const {
-      username,
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
-      role,
-      gender,
-    } = req.body;
+    const { username, firstName, lastName, email, phone, password, gender } =
+      req.body;
     let hashPassword = password;
     if (password && password.length >= 8) {
       hashPassword = await bcrypt.hash(password, 10);
@@ -28,7 +21,6 @@ const signup = async (req, res) => {
       email,
       phone,
       password: hashPassword,
-      role,
       gender,
     });
     await newUser.save();
@@ -136,8 +128,76 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const adminLogin = async (req, res) => {
+  try {
+    const { errors } = validationResult(req);
+    if (errors.length) {
+      const err = errors.filter(
+        (v, i, a) => a.findIndex((v2) => v2.path === v.path) === i
+      );
+      res
+        .status(500)
+        .send({ message: "Validation failed.", error: err, success: false });
+    } else {
+      const { email, password } = req.body;
+      const admin = await Admin.findOne({ email });
+      if (!admin) {
+        res.status(404).send({ message: "Admin not found!", success: false });
+      } else {
+        const hashedPassword = admin.password;
+        if (await bcrypt.compare(password, hashedPassword)) {
+          const tokenPayload = {
+            email: admin.email,
+          };
+          const accessToken = jwt.sign(
+            tokenPayload,
+            process.env.ACCESS_TOKEN_SECRET
+          );
+          res.status(200).send({
+            message: "You have successfully logged In.",
+            success: true,
+            accessToken,
+          });
+        } else {
+          res
+            .status(500)
+            .send({ message: "Password is incorrect.", success: false });
+        }
+      }
+    }
+  } catch (e) {
+    res
+      .status(500)
+      .send({ message: e.message, error: e.errors, success: false });
+  }
+};
+
+const adminCreate = async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+    let hashPassword = password;
+    if (password && password.length >= 8) {
+      hashPassword = await bcrypt.hash(password, 10);
+    }
+    const newAdmin = new Admin({
+      name,
+      email,
+      password: hashPassword,
+      role,
+    });
+    await newAdmin.save();
+    res.status(201).send({ message: "Admin created!", success: true });
+  } catch (e) {
+    res
+      .status(500)
+      .send({ message: e.message, error: e.errors, success: false });
+  }
+};
+
 module.exports = {
   signup,
   login,
   resetPassword,
+  adminLogin,
+  adminCreate,
 };
