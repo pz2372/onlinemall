@@ -29,9 +29,12 @@ import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { me } from "redux/slice/AdminSlice";
 
+import "./App.scss";
+
 export default function App() {
   const reduxDispatch = useDispatch();
   const { accessToken } = useSelector((state) => state.auth);
+  const { adminInfo } = useSelector((state) => state.admin);
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -116,7 +119,7 @@ export default function App() {
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {(adminInfo || sessionStorage.access_token) && layout === "dashboard" && (
         <>
           <Sidenav
             color={sidenavColor}
@@ -126,11 +129,11 @@ export default function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
-          <Configurator />
-          {configsButton}
+          {/* <Configurator /> */}
+          {/* {configsButton} */}
         </>
       )}
-      {layout === "vr" && <Configurator />}
+      {(adminInfo || sessionStorage.access_token) && layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />

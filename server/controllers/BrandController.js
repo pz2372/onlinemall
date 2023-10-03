@@ -58,7 +58,7 @@ const create = async (req, res) => {
         .status(500)
         .send({ message: "Validation failed.", error: errors, success: false });
     } else {
-      const { name, description, categories } = req.body;
+      const { name, description, categories, website } = req.body;
       const logo = req.file;
       let logoUrl = "";
       if (logo) {
@@ -70,6 +70,7 @@ const create = async (req, res) => {
         description,
         logo: logoUrl,
         categories,
+        website,
       });
 
       await newBrand.save();

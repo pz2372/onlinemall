@@ -25,7 +25,7 @@ const routes = [
   {
     type: "collapse",
     name: "Products",
-    key: "product",
+    key: "products",
     icon: <Icon fontSize="small">production_quantity_limits</Icon>,
     route: "/products",
     component: <Products />,
@@ -33,7 +33,7 @@ const routes = [
   {
     type: "collapse",
     name: "Brands",
-    key: "brand",
+    key: "brands",
     icon: <Icon fontSize="small">branding_watermark</Icon>,
     route: "/brands",
     component: <Brands />,
@@ -41,7 +41,7 @@ const routes = [
   {
     type: "collapse",
     name: "Edit Home Page",
-    key: "editHomePage",
+    key: "edit-homepage",
     icon: <Icon fontSize="small">home</Icon>,
     route: "/edit-homepage",
     component: <EditHomePage />,
@@ -49,7 +49,7 @@ const routes = [
   {
     type: "collapse",
     name: "Orders",
-    key: "order",
+    key: "orders",
     icon: <Icon fontSize="small">shopping_cart</Icon>,
     route: "/orders",
     component: <Orders />,
@@ -57,7 +57,7 @@ const routes = [
   {
     type: "collapse",
     name: "Users",
-    key: "user",
+    key: "users",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/users",
     component: <Users />,
@@ -65,7 +65,7 @@ const routes = [
   {
     type: "collapse",
     name: "Settings",
-    key: "setting",
+    key: "settings",
     icon: <Icon fontSize="small">settings</Icon>,
     route: "/settings",
     component: <Settings />,

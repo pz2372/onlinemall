@@ -91,7 +91,11 @@ function Basic() {
     });
   }, [errors]);
 
-  return !adminInfo ? (
+  if (adminInfo || sessionStorage.access_token) {
+    return <Navigate to={"/dashboard"} />;
+  }
+
+  return (
     <BasicLayout image={bgImage}>
       <Card>
         <MDBox
@@ -152,8 +156,6 @@ function Basic() {
         </MDBox>
       </Card>
     </BasicLayout>
-  ) : (
-    <Navigate to={"/dashboard"} />
   );
 }
 

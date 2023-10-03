@@ -1,22 +1,7 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useEffect } from "react";
 
 // react-router-dom components
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -26,8 +11,10 @@ import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React context
 import { useMaterialUIController, setLayout } from "context";
+import { useSelector } from "react-redux";
 
 function DashboardLayout({ children }) {
+  const { adminInfo } = useSelector((state) => state.admin);
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav } = controller;
   const { pathname } = useLocation();
@@ -35,6 +22,10 @@ function DashboardLayout({ children }) {
   useEffect(() => {
     setLayout(dispatch, "dashboard");
   }, [pathname]);
+
+  if (!adminInfo && !sessionStorage.access_token) {
+    return <Navigate to="/sign-in" />;
+  }
 
   return (
     <MDBox
