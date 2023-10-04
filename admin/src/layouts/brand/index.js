@@ -1,4 +1,5 @@
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -39,6 +40,9 @@ import { fetchAllCategories } from "redux/slice/CategorySlice";
 import { styled } from "@mui/material/styles";
 import { toast } from "react-toastify";
 import { createBrand } from "redux/slice/BrandSlice";
+import { updateBrand } from "redux/slice/BrandSlice";
+import { deleteBrand } from "redux/slice/BrandSlice";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -73,7 +77,10 @@ const Brands = () => {
   const dispatch = useDispatch();
   const logoRef = useRef(null);
 
+  const [editingBrand, setEditingBrand] = useState(null);
+  const [deletingBrand, setDeletingBrand] = useState(null);
   const [openCreateBrandDialog, setOpenCreateBrandDialog] = useState(false);
+  const [openDeleteBrandDialog, setOpenDeleteBrandDialog] = useState(false);
   const [selectedMenCategories, setSelectedMenCategories] = useState([]);
   const [selectedWomenCategories, setSelectedWomenCategories] = useState([]);
   const [formData, setFormData] = useState({
@@ -93,8 +100,27 @@ const Brands = () => {
     setOpenCreateBrandDialog(true);
   };
 
+  const handleOpenDeleteBrandDialog = () => {
+    setOpenDeleteBrandDialog(true);
+  };
+
   const handleCloseCreateBrandDialog = () => {
+    if (editingBrand) {
+      setFormData({
+        name: "",
+        description: "",
+        website: "",
+        categories: [],
+        logo: null,
+      });
+      setSelectedMenCategories([]);
+      setSelectedWomenCategories([]);
+    }
     setOpenCreateBrandDialog(false);
+    setEditingBrand(null);
+  };
+  const handleCloseDeleteBrandDialog = () => {
+    setOpenDeleteBrandDialog(false);
   };
 
   const handleMenCategoryChange = (event) => {
@@ -119,7 +145,7 @@ const Brands = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let fd = new FormData();
     fd.append("name", formData.name);
     fd.append("description", formData.description);
@@ -127,7 +153,11 @@ const Brands = () => {
     fd.append("website", formData.website);
     formData.categories.forEach((cat) => fd.append("categories[]", cat));
 
-    dispatch(createBrand(fd));
+    if (editingBrand) {
+      await dispatch(updateBrand({ _id: editingBrand._id, data: fd }));
+    } else {
+      await dispatch(createBrand(fd));
+    }
     setFormData({
       name: "",
       description: "",
@@ -135,7 +165,42 @@ const Brands = () => {
       categories: [],
       logo: null,
     });
+    setSelectedMenCategories([]);
+    setSelectedWomenCategories([]);
     setOpenCreateBrandDialog(false);
+  };
+
+  const handleEditBrandClick = (brand) => {
+    const menCat = [];
+    const womenCat = [];
+    brand.categories.forEach((category) => {
+      if (category.path.startsWith("MEN")) {
+        menCat.push(category._id);
+      } else {
+        womenCat.push(category._id);
+      }
+    });
+    setSelectedMenCategories(menCat);
+    setSelectedWomenCategories(womenCat);
+    setFormData({
+      name: brand.name,
+      description: brand.description,
+      website: brand.website,
+      categories: [],
+      logo: brand?.logo || null,
+    });
+    setEditingBrand(brand);
+    handleOpenCreateBrandDialog();
+  };
+
+  const handleDeleteBrandClick = (brand) => {
+    handleOpenDeleteBrandDialog();
+    setDeletingBrand(brand);
+  };
+
+  const handleSubmitDeleteBrand = () => {
+    dispatch(deleteBrand(deletingBrand._id));
+    handleCloseDeleteBrandDialog();
   };
 
   useEffect(() => {
@@ -169,37 +234,63 @@ const Brands = () => {
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {brands.map((brand) => (
-              <TableRow key={brand._id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                <TableCell>
-                  <Avatar alt={brand.name} src={process.env.REACT_APP_S3_BUCKET_URL + brand.logo} />
-                </TableCell>
-                <TableCell>{brand.name}</TableCell>
-                <TableCell>{brand.description}</TableCell>
-                <TableCell>
-                  <a
-                    style={{ color: "#1A73E8" }}
-                    href={brand.website}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {brand.website}
-                  </a>
-                </TableCell>
-                <TableCell>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <IconButton aria-label="edit" color="info">
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton aria-label="delete" color="error">
-                      <DeleteIcon />
-                    </IconButton>
+          {brands.length ? (
+            <TableBody>
+              {brands.map((brand) => (
+                <TableRow
+                  key={brand._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>
+                    <Avatar
+                      alt={brand.name}
+                      src={process.env.REACT_APP_S3_BUCKET_URL + brand.logo}
+                    />
+                  </TableCell>
+                  <TableCell>{brand.name}</TableCell>
+                  <TableCell>{brand.description}</TableCell>
+                  <TableCell>
+                    <a
+                      style={{ color: "#1A73E8" }}
+                      href={brand.website}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {brand.website}
+                    </a>
+                  </TableCell>
+                  <TableCell>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <IconButton
+                        aria-label="edit"
+                        color="info"
+                        onClick={() => handleEditBrandClick(brand)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="delete"
+                        color="error"
+                        onClick={() => handleDeleteBrandClick(brand)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          ) : (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <Stack sx={{ width: "100%" }} spacing={2}>
+                    <Alert severity="info">No Data !</Alert>
                   </Stack>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
+            </TableBody>
+          )}
         </Table>
       </TableContainer>
       <Dialog
@@ -208,7 +299,25 @@ const Brands = () => {
         keepMounted
         onClose={handleCloseCreateBrandDialog}
       >
-        <DialogTitle>Create New Brand</DialogTitle>
+        {editingBrand ? (
+          <DialogTitle
+            sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+          >
+            {`Updating ${editingBrand.name}`}
+            <IconButton onClick={handleCloseCreateBrandDialog}>
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+        ) : (
+          <DialogTitle
+            sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+          >
+            Create New Brand
+            <IconButton onClick={handleCloseCreateBrandDialog}>
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+        )}
         <DialogContent sx={{ paddingTop: "1rem!important" }}>
           <Box mb={3}>
             <TextField
@@ -319,11 +428,19 @@ const Brands = () => {
                 alignItems: "flex-end",
               }}
             >
-              <Avatar
-                alt="image-preview"
-                src={URL.createObjectURL(formData.logo)}
-                sx={{ width: 100, height: 100 }}
-              />
+              {typeof formData.logo === "string" ? (
+                <Avatar
+                  alt="image-preview"
+                  src={process.env.REACT_APP_S3_BUCKET_URL + formData.logo}
+                  sx={{ width: 100, height: 100 }}
+                />
+              ) : (
+                <Avatar
+                  alt="image-preview"
+                  src={URL.createObjectURL(formData.logo)}
+                  sx={{ width: 100, height: 100 }}
+                />
+              )}
               <MDButton
                 variant="gradient"
                 color="error"
@@ -339,13 +456,43 @@ const Brands = () => {
           ) : null}
         </DialogContent>
         <DialogActions>
-          <MDButton
-            variant="gradient"
-            color="success"
-            onClick={handleSubmit}
-            disabled={!formData.name || !formData.categories.length}
-          >
-            Submit
+          {!editingBrand ? (
+            <MDButton
+              variant="gradient"
+              color="success"
+              onClick={handleSubmit}
+              disabled={!formData.name || !formData.categories.length}
+            >
+              Submit
+            </MDButton>
+          ) : (
+            <MDButton
+              variant="gradient"
+              color="success"
+              onClick={handleSubmit}
+              disabled={!formData.name || !formData.categories.length}
+            >
+              Update
+            </MDButton>
+          )}
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openDeleteBrandDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleCloseDeleteBrandDialog}
+      >
+        <DialogContent sx={{ paddingTop: "1rem!important", textAlign: "center", fontSize: "20px" }}>
+          Are you sure you want to delete brand
+          <b style={{ margin: "0 5px" }}>{deletingBrand?.name}</b>?
+        </DialogContent>
+        <DialogActions>
+          <MDButton variant="gradient" color="dark" onClick={handleCloseDeleteBrandDialog}>
+            Cancel
+          </MDButton>
+          <MDButton variant="gradient" color="success" onClick={handleSubmitDeleteBrand}>
+            Yes
           </MDButton>
         </DialogActions>
       </Dialog>

@@ -39,6 +39,7 @@ const adminSchema = new mongoose.Schema({
     default: "BRANDOWNER",
     validate: validateRole,
   },
+  brand: { type: mongoose.Types.ObjectId, ref: "Brand" },
   createdAt: {
     type: Date,
     default: new Date(),

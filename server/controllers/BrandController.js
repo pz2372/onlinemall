@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 const Brand = require("../models/brand");
+const Product = require("../models/product");
 const { S3UploadImg, S3DeleteImg } = require("../utils/s3");
 
 const getAll = async (req, res) => {
@@ -74,9 +75,14 @@ const create = async (req, res) => {
       });
 
       await newBrand.save();
+
+      const brand = await Brand.findOne({ _id: newBrand._id }).populate(
+        "categories"
+      );
+
       res
         .status(201)
-        .send({ message: "Brand created!", success: true, data: newBrand });
+        .send({ message: "Brand created!", success: true, data: brand });
     }
   } catch (e) {
     res
@@ -91,6 +97,9 @@ const update = async (req, res) => {
     if (mongoose.Types.ObjectId.isValid(_id)) {
       const where = { _id };
       let update = req.body;
+      if (update.logo == "null") {
+        update.logo = null;
+      }
       const brand = await Brand.findOne(where);
       if (!brand) {
         res.status(404).send({ message: "Brand not found", success: false });
@@ -102,11 +111,17 @@ const update = async (req, res) => {
           logoUrl = `brands/${Date.now()}-${logo.originalname}`;
           await S3UploadImg(logoUrl, logo.buffer, 100);
           update.logo = logoUrl;
+        } else if (!update.logo && brand.logo) {
+          await S3DeleteImg(brand.logo);
         }
         update.modifiedAt = new Date();
-        const updatedBrand = await Brand.findOneAndUpdate(where, update, {
+        const updateBrand = await Brand.findOneAndUpdate(where, update, {
           new: true,
         });
+
+        const updatedBrand = await Brand.findOne({
+          _id: updateBrand._id,
+        }).populate("categories");
 
         res.status(200).send({
           message: "Brand updated!",
@@ -136,9 +151,11 @@ const deleteById = async (req, res) => {
           await S3DeleteImg(brand.logo);
         }
         await Brand.deleteOne({ _id: brand._id });
+        await Product.deleteMany({ brand: brand._id });
         res.status(200).send({
           message: "Brand deleted!",
           success: true,
+          _id: brand._id,
         });
       }
     } else {

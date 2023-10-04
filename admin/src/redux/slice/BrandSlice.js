@@ -30,9 +30,9 @@ export const createBrand = createAsyncThunk("brand/create", async (data) => {
   }
 });
 
-export const updateBrand = createAsyncThunk("brand/update", async (brandId, data) => {
+export const updateBrand = createAsyncThunk("brand/update", async (data) => {
   try {
-    const response = await axios.put(`/api/brand/update/${brandId}`, data, {
+    const response = await axios.put(`/api/brand/update/${data._id}`, data.data, {
       headers: { Authorization: `Bearer ${sessionStorage.access_token}` },
     });
     return response;
@@ -41,7 +41,7 @@ export const updateBrand = createAsyncThunk("brand/update", async (brandId, data
   }
 });
 
-export const deleteBrand = createAsyncThunk("brand/delete", async (brandId, data) => {
+export const deleteBrand = createAsyncThunk("brand/delete", async (brandId) => {
   try {
     const response = await axios.delete(`/api/brand/delete/${brandId}`, {
       headers: { Authorization: `Bearer ${sessionStorage.access_token}` },
@@ -105,6 +105,14 @@ const brandSlice = createSlice({
     });
     builder.addCase(updateBrand.fulfilled, (state, action) => {
       state.isLoading = false;
+      if (action.payload.data?.success) {
+        const brandIndex = state.brands.findIndex(
+          (brand) => brand._id === action.payload.data?.data._id
+        );
+        const cloneBrands = [...state.brands];
+        cloneBrands[brandIndex] = action.payload.data?.data;
+        state.brands = cloneBrands;
+      }
     });
     builder.addCase(updateBrand.rejected, (state, action) => {
       state.isLoading = false;
@@ -116,6 +124,9 @@ const brandSlice = createSlice({
     });
     builder.addCase(deleteBrand.fulfilled, (state, action) => {
       state.isLoading = false;
+      if (action.payload.data?.success) {
+        state.brands = state.brands.filter((brand) => brand._id !== action.payload.data?._id);
+      }
     });
     builder.addCase(deleteBrand.rejected, (state, action) => {
       state.isLoading = false;

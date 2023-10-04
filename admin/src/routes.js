@@ -12,6 +12,7 @@ import EditHomePage from "layouts/homepage";
 import Orders from "layouts/order";
 import Users from "layouts/user";
 import Settings from "layouts/setting";
+import Admins from "layouts/admin";
 
 const routes = [
   {
@@ -24,19 +25,27 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Products",
-    key: "products",
-    icon: <Icon fontSize="small">production_quantity_limits</Icon>,
-    route: "/products",
-    component: <Products />,
-  },
-  {
-    type: "collapse",
     name: "Brands",
     key: "brands",
     icon: <Icon fontSize="small">branding_watermark</Icon>,
     route: "/brands",
     component: <Brands />,
+  },
+  {
+    type: "collapse",
+    name: "Admins",
+    key: "admins",
+    icon: <Icon fontSize="small">supervisor_account</Icon>,
+    route: "/admins",
+    component: <Admins />,
+  },
+  {
+    type: "collapse",
+    name: "Products",
+    key: "products",
+    icon: <Icon fontSize="small">production_quantity_limits</Icon>,
+    route: "/products",
+    component: <Products />,
   },
   {
     type: "collapse",
