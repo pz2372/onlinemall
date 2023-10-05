@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const auth = require("../middlewares/authenticate");
+const isSuperAdmin = require("../middlewares/isSuperAdmin");
 const ProductController = require("../controllers/ProductController");
 const { body } = require("express-validator");
 const productRouter = express.Router();
@@ -19,7 +20,7 @@ productRouter.post("/getProductsByBrand", ProductController.getProductsByBrand);
 productRouter.post("/addReview", auth, ProductController.addReview);
 productRouter.post(
   "/create",
-  auth,
+  isSuperAdmin,
   upload.array("images", 20),
   [
     body("name").notEmpty().withMessage("Name is required."),
@@ -34,10 +35,10 @@ productRouter.post(
 );
 productRouter.put(
   "/update/:id",
-  auth,
+  isSuperAdmin,
   upload.array("images", 20),
   ProductController.update
 );
-productRouter.delete("/delete/:id", auth, ProductController.deleteById);
+productRouter.delete("/delete/:id", isSuperAdmin, ProductController.deleteById);
 
 module.exports = productRouter;

@@ -1,9 +1,11 @@
 import {
   Alert,
   Avatar,
+  Backdrop,
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,6 +14,7 @@ import {
   FormControl,
   Icon,
   IconButton,
+  InputAdornment,
   InputLabel,
   ListItemText,
   MenuItem,
@@ -26,6 +29,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from "@mui/material";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -40,6 +44,13 @@ import { styled } from "@mui/material/styles";
 import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
 import { fetchAllAdmins } from "redux/slice/AdminSlice";
+import { validateEmailAddress } from "utils/validateEmail";
+import { validatePassword } from "utils/validatePassword";
+import { createAdmin } from "redux/slice/AdminSlice";
+import { updateAdmin } from "redux/slice/AdminSlice";
+import { deleteAdmin } from "redux/slice/AdminSlice";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -57,14 +68,17 @@ const MenuProps = {
 };
 
 const Admins = () => {
-  const { brands } = useSelector((state) => state.brand);
-  const { admins } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
+  const { brands } = useSelector((state) => state.brand);
+  const { admins, isLoading: isAdminLoading } = useSelector((state) => state.admin);
+
+  const [isLoading, setIsLoading] = useState(isAdminLoading);
   const [editingAdmin, setEditingAdmin] = useState(null);
   const [deletingAdmin, setDeletingAdmin] = useState(null);
   const [openCreateAdminDialog, setOpenCreateAdminDialog] = useState(false);
   const [openDeleteAdminDialog, setOpenDeleteAdminDialog] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -72,11 +86,21 @@ const Admins = () => {
     role: "BRANDOWNER",
     brand: "",
   });
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+    brand: "",
+  });
 
   useEffect(() => {
     dispatch(fetchAllAdmins());
     dispatch(fetchAllBrands());
   }, []);
+
+  useEffect(() => {
+    setIsLoading(isAdminLoading);
+  }, [isAdminLoading]);
 
   const handleOpenCreateAdminDialog = () => {
     setOpenCreateAdminDialog(true);
@@ -87,6 +111,7 @@ const Admins = () => {
   };
 
   const handleCloseCreateAdminDialog = () => {
+    setOpenCreateAdminDialog(false);
     if (editingAdmin) {
       setFormData({
         name: "",
@@ -96,38 +121,59 @@ const Admins = () => {
         brand: "",
       });
     }
-    setOpenCreateAdminDialog(false);
     setEditingAdmin(null);
   };
 
   const handleCloseDeleteAdminDialog = () => {
     setOpenDeleteAdminDialog(false);
+    setEditingAdmin(null);
   };
 
   const handleSubmit = async () => {
-    console.log("formData", formData);
-    // if (editingAdmin) {
-    //   await dispatch(updateAdmin({ _id: editingAdmin._id, data: formData }));
-    // } else {
-    //   await dispatch(createAdmin(formData));
-    // }
-    // setFormData({
-    //   name: "",
-    //   email: "",
-    //   password: "",
-    //   role: "BRANDOWNER",
-    //   brand: "",
-    // });
-    // setOpenCreateAdminDialog(false);
+    if (!isFormValid()) {
+      return;
+    }
+    if (editingAdmin) {
+      await dispatch(updateAdmin({ _id: editingAdmin._id, data: formData }))
+        .then((res) => {
+          if (!res.payload.data?.success) {
+            toast.error(res.payload.message || res.payload);
+          }
+        })
+        .catch((err) => {
+          toast.error(err.message, {
+            autoClose: 2000,
+          });
+        });
+    } else {
+      await dispatch(createAdmin(formData))
+        .then((res) => {
+          if (!res.payload.data?.success) {
+            toast.error(res.payload.message || res.payload);
+          }
+        })
+        .catch((err) => {
+          toast.error(err.message, {
+            autoClose: 2000,
+          });
+        });
+    }
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      role: "BRANDOWNER",
+      brand: "",
+    });
+    handleCloseCreateAdminDialog();
   };
 
   const handleEditAdminClick = (admin) => {
     setFormData({
       name: admin.name,
       email: admin.email,
-      password: admin.password,
       role: "BRANDOWNER",
-      brand: admin.brand,
+      brand: admin.brand._id,
     });
     setEditingAdmin(admin);
     handleOpenCreateAdminDialog();
@@ -139,9 +185,55 @@ const Admins = () => {
   };
 
   const handleSubmitDeleteAdmin = () => {
-    // dispatch(deleteBrand(deletingBrand._id));
+    dispatch(deleteAdmin(deletingAdmin._id))
+      .then((res) => {
+        if (!res.payload.data?.success) {
+          toast.error(res.payload.message || res.payload);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message, {
+          autoClose: 2000,
+        });
+      });
     handleCloseDeleteAdminDialog();
   };
+
+  const isFormValid = () => {
+    let isValid = true;
+    let cloneErrors = { ...errors };
+    if (formData.name.length < 3) {
+      isValid = false;
+      cloneErrors.name = "Name must be at least 3 characters.";
+    } else {
+      cloneErrors.name = "";
+    }
+    if (!validateEmailAddress(formData.email)) {
+      isValid = false;
+      cloneErrors.email = "Email address is not valid.";
+    } else {
+      cloneErrors.email = "";
+    }
+    if (!editingAdmin) {
+      if (!validatePassword(formData.password)) {
+        isValid = false;
+        cloneErrors.password =
+          "Password must be minimum 8 characters, at least one letter and one number";
+      } else {
+        cloneErrors.password = "";
+      }
+    }
+    setErrors(cloneErrors);
+    return isValid;
+  };
+
+  useEffect(() => {
+    Object.values(errors).forEach((err) => {
+      if (err) {
+        toast.error(err);
+      }
+    });
+  }, [errors]);
 
   return (
     <DashboardLayout>
@@ -218,7 +310,12 @@ const Admins = () => {
           <DialogTitle
             sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
           >
-            {`Updating ${editingAdmin.name}`}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              Updating
+              <Typography color={"#1A73E8"} sx={{ marginLeft: "5px", fontWeight: "bold" }}>
+                {editingAdmin.name}
+              </Typography>
+            </Box>
             <IconButton onClick={handleCloseCreateAdminDialog}>
               <CloseIcon />
             </IconButton>
@@ -256,17 +353,32 @@ const Admins = () => {
               fullWidth
             />
           </Box>
-          <Box mb={3}>
-            <TextField
-              id="password"
-              label="Password"
-              type="password"
-              sx={{ minWidth: "500px" }}
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              fullWidth
-            />
-          </Box>
+          {!editingAdmin ? (
+            <Box mb={3}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword((show) => !show)}
+                        onMouseDown={(event) => event.preventDefault()}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                />
+              </FormControl>
+            </Box>
+          ) : null}
           <Box mb={3}>
             <FormControl fullWidth>
               <InputLabel id="admin-brand">Brand</InputLabel>
@@ -296,7 +408,7 @@ const Admins = () => {
               variant="gradient"
               color="success"
               onClick={handleSubmit}
-              disabled={!formData.name}
+              disabled={!formData.name || !formData.email || !formData.password || !formData.brand}
             >
               Submit
             </MDButton>
@@ -305,7 +417,7 @@ const Admins = () => {
               variant="gradient"
               color="success"
               onClick={handleSubmit}
-              disabled={!formData.name}
+              disabled={!formData.name || !formData.email || !formData.brand}
             >
               Update
             </MDButton>
@@ -318,9 +430,20 @@ const Admins = () => {
         keepMounted
         onClose={handleCloseDeleteAdminDialog}
       >
-        <DialogContent sx={{ paddingTop: "1rem!important", textAlign: "center", fontSize: "20px" }}>
+        <DialogContent
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            paddingTop: "1rem!important",
+            textAlign: "center",
+            fontSize: "20px",
+          }}
+        >
           Are you sure you want to delete admin
-          <b style={{ margin: "0 5px" }}>{deletingAdmin?.name}</b>?
+          <Typography color={"#F44335"} sx={{ margin: "0px 5px", fontWeight: "bold" }}>
+            {deletingAdmin?.name}
+          </Typography>
+          ?
         </DialogContent>
         <DialogActions>
           <MDButton variant="gradient" color="dark" onClick={handleCloseDeleteAdminDialog}>
@@ -331,6 +454,9 @@ const Admins = () => {
           </MDButton>
         </DialogActions>
       </Dialog>
+      <Backdrop sx={{ color: "#fff", zIndex: 9999 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </DashboardLayout>
   );
 };

@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 const Brand = require("../models/brand");
 const Product = require("../models/product");
+const Admin = require("../models/admin");
 const { S3UploadImg, S3DeleteImg } = require("../utils/s3");
 
 const getAll = async (req, res) => {
@@ -152,6 +153,7 @@ const deleteById = async (req, res) => {
         }
         await Brand.deleteOne({ _id: brand._id });
         await Product.deleteMany({ brand: brand._id });
+        await Admin.deleteMany({ brand: brand._id });
         res.status(200).send({
           message: "Brand deleted!",
           success: true,

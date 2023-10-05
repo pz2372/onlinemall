@@ -1,9 +1,11 @@
 import {
   Alert,
   Avatar,
+  Backdrop,
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -26,6 +28,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from "@mui/material";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -72,11 +75,13 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const Brands = () => {
-  const { brands } = useSelector((state) => state.brand);
+  const { brands, isLoading: isBrandLoading } = useSelector((state) => state.brand);
   const categoriesState = useSelector((state) => state.category);
+
   const dispatch = useDispatch();
   const logoRef = useRef(null);
 
+  const [isLoading, setIsLoading] = useState(isBrandLoading);
   const [editingBrand, setEditingBrand] = useState(null);
   const [deletingBrand, setDeletingBrand] = useState(null);
   const [openCreateBrandDialog, setOpenCreateBrandDialog] = useState(false);
@@ -95,6 +100,10 @@ const Brands = () => {
     dispatch(fetchAllBrands());
     dispatch(fetchAllCategories());
   }, []);
+
+  useEffect(() => {
+    setIsLoading(isBrandLoading);
+  }, [isBrandLoading]);
 
   const handleOpenCreateBrandDialog = () => {
     setOpenCreateBrandDialog(true);
@@ -154,9 +163,29 @@ const Brands = () => {
     formData.categories.forEach((cat) => fd.append("categories[]", cat));
 
     if (editingBrand) {
-      await dispatch(updateBrand({ _id: editingBrand._id, data: fd }));
+      await dispatch(updateBrand({ _id: editingBrand._id, data: fd }))
+        .then((res) => {
+          if (!res.payload.data?.success) {
+            toast.error(res.payload.message || res.payload);
+          }
+        })
+        .catch((err) => {
+          toast.error(err.message, {
+            autoClose: 2000,
+          });
+        });
     } else {
-      await dispatch(createBrand(fd));
+      await dispatch(createBrand(fd))
+        .then((res) => {
+          if (!res.payload.data?.success) {
+            toast.error(res.payload.message || res.payload);
+          }
+        })
+        .catch((err) => {
+          toast.error(err.message, {
+            autoClose: 2000,
+          });
+        });
     }
     setFormData({
       name: "",
@@ -167,7 +196,7 @@ const Brands = () => {
     });
     setSelectedMenCategories([]);
     setSelectedWomenCategories([]);
-    setOpenCreateBrandDialog(false);
+    handleCloseCreateBrandDialog();
   };
 
   const handleEditBrandClick = (brand) => {
@@ -199,7 +228,17 @@ const Brands = () => {
   };
 
   const handleSubmitDeleteBrand = () => {
-    dispatch(deleteBrand(deletingBrand._id));
+    dispatch(deleteBrand(deletingBrand._id))
+      .then((res) => {
+        if (!res.payload.data?.success) {
+          toast.error(res.payload.message || res.payload);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message, {
+          autoClose: 2000,
+        });
+      });
     handleCloseDeleteBrandDialog();
   };
 
@@ -303,7 +342,12 @@ const Brands = () => {
           <DialogTitle
             sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
           >
-            {`Updating ${editingBrand.name}`}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              Updating
+              <Typography color={"#1A73E8"} sx={{ marginLeft: "5px", fontWeight: "bold" }}>
+                {editingBrand.name}
+              </Typography>
+            </Box>
             <IconButton onClick={handleCloseCreateBrandDialog}>
               <CloseIcon />
             </IconButton>
@@ -483,9 +527,20 @@ const Brands = () => {
         keepMounted
         onClose={handleCloseDeleteBrandDialog}
       >
-        <DialogContent sx={{ paddingTop: "1rem!important", textAlign: "center", fontSize: "20px" }}>
+        <DialogContent
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            paddingTop: "1rem!important",
+            textAlign: "center",
+            fontSize: "20px",
+          }}
+        >
           Are you sure you want to delete brand
-          <b style={{ margin: "0 5px" }}>{deletingBrand?.name}</b>?
+          <Typography color={"#F44335"} sx={{ margin: "0px 5px", fontWeight: "bold" }}>
+            {deletingBrand?.name}
+          </Typography>
+          ?
         </DialogContent>
         <DialogActions>
           <MDButton variant="gradient" color="dark" onClick={handleCloseDeleteBrandDialog}>
@@ -496,6 +551,9 @@ const Brands = () => {
           </MDButton>
         </DialogActions>
       </Dialog>
+      <Backdrop sx={{ color: "#fff", zIndex: 9999 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </DashboardLayout>
   );
 };

@@ -52,6 +52,7 @@ const login = async (req, res) => {
         if (await bcrypt.compare(password, hashedPassword)) {
           const tokenPayload = {
             email: user.email,
+            role: user.role,
           };
           const accessToken = jwt.sign(
             tokenPayload,
@@ -148,6 +149,7 @@ const adminLogin = async (req, res) => {
         if (await bcrypt.compare(password, hashedPassword)) {
           const tokenPayload = {
             email: admin.email,
+            role: admin.role,
           };
           const accessToken = jwt.sign(
             tokenPayload,
@@ -174,7 +176,7 @@ const adminLogin = async (req, res) => {
 
 const adminCreate = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, brand } = req.body;
     let hashPassword = password;
     if (password && password.length >= 8) {
       hashPassword = await bcrypt.hash(password, 10);
@@ -184,9 +186,15 @@ const adminCreate = async (req, res) => {
       email,
       password: hashPassword,
       role,
+      brand,
     });
     await newAdmin.save();
-    res.status(201).send({ message: "Admin created!", success: true });
+
+    const admin = await Admin.findOne({ _id: newAdmin._id }).populate("brand");
+
+    res
+      .status(201)
+      .send({ message: "Admin created!", success: true, data: admin });
   } catch (e) {
     res
       .status(500)

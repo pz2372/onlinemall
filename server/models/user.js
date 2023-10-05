@@ -49,6 +49,14 @@ const userSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
+  role: {
+    type: String,
+    enum: {
+      values: ["USER"],
+      message: "{VALUE} role is not supported.",
+    },
+    default: "USER",
+  },
   createdAt: {
     type: Date,
     default: new Date(),

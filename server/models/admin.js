@@ -10,7 +10,7 @@ const validateEmail = async function (email) {
 
 const validateRole = async function (role) {
   const admin = await this.constructor.findOne({ role });
-  if (admin.role === "SUPERADMIN")
+  if (admin && admin.role === "SUPERADMIN")
     throw new Error("An admin is already registered with this role.");
 };
 

@@ -13,6 +13,9 @@ import Orders from "layouts/order";
 import Users from "layouts/user";
 import Settings from "layouts/setting";
 import Admins from "layouts/admin";
+import Categories from "layouts/category";
+import Colors from "layouts/color";
+import Sizes from "layouts/size";
 
 const routes = [
   {
@@ -33,10 +36,10 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Admins",
-    key: "admins",
+    name: "Brand Owners",
+    key: "brand-owners",
     icon: <Icon fontSize="small">supervisor_account</Icon>,
-    route: "/admins",
+    route: "/brand-owners",
     component: <Admins />,
   },
   {
@@ -46,6 +49,30 @@ const routes = [
     icon: <Icon fontSize="small">production_quantity_limits</Icon>,
     route: "/products",
     component: <Products />,
+  },
+  {
+    type: "collapse",
+    name: "Categories",
+    key: "categories",
+    icon: <Icon fontSize="small">category</Icon>,
+    route: "/categories",
+    component: <Categories />,
+  },
+  {
+    type: "collapse",
+    name: "Colors",
+    key: "colors",
+    icon: <Icon fontSize="small">color_lens</Icon>,
+    route: "/colors",
+    component: <Colors />,
+  },
+  {
+    type: "collapse",
+    name: "Sizes",
+    key: "sizes",
+    icon: <Icon fontSize="small">format_size</Icon>,
+    route: "/sizes",
+    component: <Sizes />,
   },
   {
     type: "collapse",

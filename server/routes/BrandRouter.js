@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const BrandController = require("../controllers/BrandController");
 const { body } = require("express-validator");
-const auth = require("../middlewares/authenticate");
+const isSuperAdmin = require("../middlewares/isSuperAdmin");
 const brandRouter = express.Router();
 
 const upload = multer({
@@ -13,17 +13,17 @@ brandRouter.get("/getAll", BrandController.getAll);
 brandRouter.get("/getById/:id", BrandController.getById);
 brandRouter.post(
   "/create",
-  auth,
+  isSuperAdmin,
   upload.single("logo"),
   [body("name").notEmpty().withMessage("Name is required.")],
   BrandController.create
 );
 brandRouter.put(
   "/update/:id",
-  auth,
+  isSuperAdmin,
   upload.single("logo"),
   BrandController.update
 );
-brandRouter.delete("/delete/:id", auth, BrandController.deleteById);
+brandRouter.delete("/delete/:id", isSuperAdmin, BrandController.deleteById);
 
 module.exports = brandRouter;

@@ -23,6 +23,39 @@ export const fetchAllAdmins = createAsyncThunk("admin/fecthAll", async () => {
   }
 });
 
+export const createAdmin = createAsyncThunk("admin/create", async (data) => {
+  try {
+    const response = await axios.post(`/api/auth/adminCreate`, data, {
+      headers: { Authorization: `Bearer ${sessionStorage.access_token}` },
+    });
+    return response;
+  } catch (err) {
+    return err.response.data;
+  }
+});
+
+export const updateAdmin = createAsyncThunk("admin/update", async (data) => {
+  try {
+    const response = await axios.put(`/api/admin/update/${data._id}`, data.data, {
+      headers: { Authorization: `Bearer ${sessionStorage.access_token}` },
+    });
+    return response;
+  } catch (err) {
+    return err.response.data;
+  }
+});
+
+export const deleteAdmin = createAsyncThunk("admin/delete", async (adminId) => {
+  try {
+    const response = await axios.delete(`/api/admin/delete/${adminId}`, {
+      headers: { Authorization: `Bearer ${sessionStorage.access_token}` },
+    });
+    return response;
+  } catch (err) {
+    return err.response.data;
+  }
+});
+
 const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -64,6 +97,53 @@ const adminSlice = createSlice({
       }
     });
     builder.addCase(fetchAllAdmins.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+
+    builder.addCase(createAdmin.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createAdmin.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload.data?.success) {
+        state.admins.push(action.payload.data?.data);
+      }
+    });
+    builder.addCase(createAdmin.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+
+    builder.addCase(updateAdmin.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateAdmin.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload.data?.success) {
+        const adminIndex = state.admins.findIndex(
+          (admin) => admin._id === action.payload.data?.data._id
+        );
+        const cloneAdmins = [...state.admins];
+        cloneAdmins[adminIndex] = action.payload.data?.data;
+        state.admins = cloneAdmins;
+      }
+    });
+    builder.addCase(updateAdmin.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+
+    builder.addCase(deleteAdmin.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteAdmin.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload.data?.success) {
+        state.admins = state.admins.filter((admin) => admin._id !== action.payload.data?._id);
+      }
+    });
+    builder.addCase(deleteAdmin.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
     });
