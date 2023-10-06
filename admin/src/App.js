@@ -47,7 +47,6 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
-  const [filteredRoutes, setFilteredRoutes] = useState(routes);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -68,19 +67,6 @@ export default function App() {
   // Change the openConfigurator state
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
-  useEffect(() => {
-    if (adminInfo && adminInfo.role !== "SUPERADMIN") {
-      const cloneRoutes = routes.filter(
-        (route) =>
-          route.key === "dashboard" ||
-          route.key === "products" ||
-          route.key === "orders" ||
-          route.key === "sign-out"
-      );
-      setFilteredRoutes(cloneRoutes);
-    }
-  }, [adminInfo]);
-
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -88,7 +74,7 @@ export default function App() {
   }, [pathname]);
 
   useEffect(() => {
-    if (sessionStorage.access_token) {
+    if (sessionStorage.access_token && !adminInfo) {
       reduxDispatch(me());
     }
   }, [accessToken]);
@@ -139,7 +125,7 @@ export default function App() {
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
             brandName="Siilk admin"
-            routes={filteredRoutes}
+            routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
@@ -149,7 +135,7 @@ export default function App() {
       )}
       {(adminInfo || sessionStorage.access_token) && layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(filteredRoutes)}
+        {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
       <ToastContainer />

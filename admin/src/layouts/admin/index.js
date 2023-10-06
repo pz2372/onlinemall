@@ -138,6 +138,15 @@ const Admins = () => {
         .then((res) => {
           if (!res.payload.data?.success) {
             toast.error(res.payload.message || res.payload);
+          } else {
+            setFormData({
+              name: "",
+              email: "",
+              password: "",
+              role: "BRANDOWNER",
+              brand: "",
+            });
+            handleCloseCreateAdminDialog();
           }
         })
         .catch((err) => {
@@ -150,6 +159,15 @@ const Admins = () => {
         .then((res) => {
           if (!res.payload.data?.success) {
             toast.error(res.payload.message || res.payload);
+          } else {
+            setFormData({
+              name: "",
+              email: "",
+              password: "",
+              role: "BRANDOWNER",
+              brand: "",
+            });
+            handleCloseCreateAdminDialog();
           }
         })
         .catch((err) => {
@@ -158,14 +176,6 @@ const Admins = () => {
           });
         });
     }
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      role: "BRANDOWNER",
-      brand: "",
-    });
-    handleCloseCreateAdminDialog();
   };
 
   const handleEditAdminClick = (admin) => {
@@ -189,6 +199,8 @@ const Admins = () => {
       .then((res) => {
         if (!res.payload.data?.success) {
           toast.error(res.payload.message || res.payload);
+        } else {
+          handleCloseDeleteAdminDialog();
         }
       })
       .catch((err) => {
@@ -196,7 +208,6 @@ const Admins = () => {
           autoClose: 2000,
         });
       });
-    handleCloseDeleteAdminDialog();
   };
 
   const isFormValid = () => {

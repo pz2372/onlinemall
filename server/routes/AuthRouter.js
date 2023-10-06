@@ -1,6 +1,7 @@
 const express = require("express");
 const AuthController = require("../controllers/AuthController");
 const { body } = require("express-validator");
+const isSuperAdmin = require("../middlewares/isSuperAdmin");
 const authRouter = express.Router();
 
 authRouter.post("/signup", AuthController.signup);
@@ -41,6 +42,6 @@ authRouter.post(
   ],
   AuthController.adminLogin
 );
-authRouter.post("/adminCreate", AuthController.adminCreate);
+authRouter.post("/adminCreate", isSuperAdmin, AuthController.adminCreate);
 
 module.exports = authRouter;

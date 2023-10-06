@@ -6,7 +6,7 @@ const { validationResult } = require("express-validator");
 
 const getAll = async (req, res) => {
   try {
-    const { page = 1, limit } = req.query;
+    const { page = 1, limit = 10 } = req.query;
     const products = await Product.find()
       .populate("sizes")
       .populate("colors")
@@ -26,8 +26,9 @@ const getAll = async (req, res) => {
     res.status(200).send({
       success: true,
       data: products,
-      currentPage: page,
+      currentPage: Number(page),
       totalPages: Math.ceil(count / limit),
+      totalCount: Number(count),
     });
   } catch (e) {
     res

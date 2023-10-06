@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 // react-router-dom components
 import { useLocation, NavLink } from "react-router-dom";
@@ -31,15 +31,18 @@ import {
   setTransparentSidenav,
   setWhiteSidenav,
 } from "context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "redux/slice/AdminSlice";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
+  const { adminInfo, isLoading } = useSelector((state) => state.admin);
   const reduxDispatch = useDispatch();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
+
+  const [filteredRoutes, setFilteredRoutes] = useState([]);
 
   let textColor = "white";
 
@@ -71,8 +74,23 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
 
+  useEffect(() => {
+    if (adminInfo && adminInfo.role !== "SUPERADMIN") {
+      const cloneRoutes = routes.filter(
+        (route) =>
+          route.key === "dashboard" ||
+          route.key === "products" ||
+          route.key === "orders" ||
+          route.key === "sign-out"
+      );
+      setFilteredRoutes(cloneRoutes);
+    } else {
+      setFilteredRoutes(routes);
+    }
+  }, [adminInfo]);
+
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes
+  const renderRoutes = filteredRoutes
     .filter((route) => route.key !== "sign-in")
     .map(({ type, name, icon, title, noCollapse, key, href, route }) => {
       let returnValue;
@@ -100,7 +118,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                 <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
               </NavLink>
             ) : (
-              <NavLink to={"/sign-in"} onClick={() => reduxDispatch(logout())}>
+              <NavLink onClick={() => reduxDispatch(logout())}>
                 <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
               </NavLink>
             )}

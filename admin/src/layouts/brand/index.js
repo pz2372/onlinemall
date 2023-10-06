@@ -167,6 +167,17 @@ const Brands = () => {
         .then((res) => {
           if (!res.payload.data?.success) {
             toast.error(res.payload.message || res.payload);
+          } else {
+            setFormData({
+              name: "",
+              description: "",
+              website: "",
+              categories: [],
+              logo: null,
+            });
+            setSelectedMenCategories([]);
+            setSelectedWomenCategories([]);
+            handleCloseCreateBrandDialog();
           }
         })
         .catch((err) => {
@@ -179,6 +190,17 @@ const Brands = () => {
         .then((res) => {
           if (!res.payload.data?.success) {
             toast.error(res.payload.message || res.payload);
+          } else {
+            setFormData({
+              name: "",
+              description: "",
+              website: "",
+              categories: [],
+              logo: null,
+            });
+            setSelectedMenCategories([]);
+            setSelectedWomenCategories([]);
+            handleCloseCreateBrandDialog();
           }
         })
         .catch((err) => {
@@ -187,16 +209,6 @@ const Brands = () => {
           });
         });
     }
-    setFormData({
-      name: "",
-      description: "",
-      website: "",
-      categories: [],
-      logo: null,
-    });
-    setSelectedMenCategories([]);
-    setSelectedWomenCategories([]);
-    handleCloseCreateBrandDialog();
   };
 
   const handleEditBrandClick = (brand) => {
@@ -232,6 +244,8 @@ const Brands = () => {
       .then((res) => {
         if (!res.payload.data?.success) {
           toast.error(res.payload.message || res.payload);
+        } else {
+          handleCloseDeleteBrandDialog();
         }
       })
       .catch((err) => {
@@ -239,7 +253,6 @@ const Brands = () => {
           autoClose: 2000,
         });
       });
-    handleCloseDeleteBrandDialog();
   };
 
   useEffect(() => {
