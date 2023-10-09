@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     switch (location.pathname) {
       case "/":
-        setSelectedMenu("women");
+        setSelectedMenu("");
         break;
       case "/men":
         setSelectedMenu("men");

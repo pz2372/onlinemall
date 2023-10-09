@@ -34,7 +34,7 @@ const Home = () => {
       <Tshirts />
 
       {/* Recent Blogs */}
-      <Blogs />
+      {/* <Blogs /> */}
 
       {/* Logos */}
       <BrandsLogo />

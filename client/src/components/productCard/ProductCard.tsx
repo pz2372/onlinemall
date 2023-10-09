@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HeartIcon from "../svgs/HeartIcon";
 import QuickViewIcon from "../svgs/QuickViewIcon";
 import styles from "./ProductCard.module.scss";
@@ -9,6 +9,8 @@ import { addToFavorites } from "../../redux/slice/ProductSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { toggleQuickviewPopup } from "../../redux/slice/PopupSlice";
+// @ts-ignore
+import ReactStars from "react-rating-stars-component";
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { favorites } = useSelector((state: RootState) => state.product);
@@ -44,7 +46,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className="relative group p-3 bg-transparent rounded-2xl hover:shadow-2xl rounded-lg overflow-hidden cursor-pointer">
       <div
-        className="absolute top-0 left-0 w-full h-full z-10"
+        className="absolute top-0 left-0 w-full h-[82%] z-10"
         onClick={() => navigate(`/product/${product._id}`)}
       ></div>
       <div
@@ -70,12 +72,26 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <span className="text-sm">Quickview</span>
         </div>
       </div>
-      <div className="flex items-center justify-between mt-3">
-        <div>
-          <p className="uppercase tracking-wide text-sm font-bold text-gray-700">
-            {product.name}
-          </p>
+      <div className="mt-3" onClick={() => navigate(`/product/${product._id}`)}>
+        <p
+          className="uppercase tracking-wide text-sm font-bold text-gray-700 truncate"
+          title={product.name}
+        >
+          {product.name}
+        </p>
+        <div className="flex items-center justify-between">
           <p className="text-sm text-gray-900">{`$${product.price}`}</p>
+          <div title={`${product.totalRatings} OUT OF 5`}>
+            <ReactStars
+              key={product._id}
+              count={5}
+              size={16}
+              activeColor="#FF6D2E"
+              isHalf
+              value={product.totalRatings}
+              edit={false}
+            />
+          </div>
         </div>
       </div>
     </div>

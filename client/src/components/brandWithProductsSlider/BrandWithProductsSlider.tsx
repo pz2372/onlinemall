@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ProductCard from "../productCard/ProductCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
-import { TProduct } from "../../types/products.type";
+import { TProduct, TProductRating } from "../../types/products.type";
 import { BrandWithProductsSliderProps } from "../../types/props.type";
 
 const BrandWithProductsSlider = ({ product }: BrandWithProductsSliderProps) => {
@@ -41,9 +41,18 @@ const BrandWithProductsSlider = ({ product }: BrandWithProductsSliderProps) => {
         }}
       >
         {product.map((p: TProduct) => {
+          let prod = { ...p };
+          const sum = prod.ratings.reduce(
+            (accumulator: number, object: TProductRating) => {
+              return accumulator + object.rate;
+            },
+            0
+          );
+          let total = sum > 0 ? sum / prod.ratings.length : 0;
+          prod.totalRatings = Number(total.toFixed(1));
           return (
-            <SwiperSlide key={p._id}>
-              <ProductCard product={p} />
+            <SwiperSlide key={prod._id}>
+              <ProductCard product={prod} />
             </SwiperSlide>
           );
         })}

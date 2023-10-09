@@ -60,6 +60,7 @@ export type TProduct = {
   sizes: TProductSize[];
   reviews: TProductReview[];
   ratings: TProductRating[];
+  totalRatings?: number;
   createdAt: string;
   deletedAt: string;
   modifiedAt: string;

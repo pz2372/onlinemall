@@ -28,6 +28,7 @@ const getAll = async (req, res) => {
   try {
     const { page = 1, limit } = req.query;
     const users = await User.find()
+      .select("username firstName lastName email phone gender avatar")
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
@@ -51,7 +52,9 @@ const getById = async (req, res) => {
   try {
     const _id = req.params?.id;
     if (mongoose.Types.ObjectId.isValid(_id)) {
-      const user = await User.findOne({ _id });
+      const user = await User.findOne({ _id }).select(
+        "username firstName lastName email phone gender avatar"
+      );
       if (!user) {
         res.status(404).send({ message: "User not found", success: false });
       } else {

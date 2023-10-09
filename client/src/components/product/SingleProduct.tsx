@@ -32,6 +32,7 @@ import { TUser } from "../../types/users.type";
 import { TAddReview, TUserState } from "../../types/redux.type";
 import moment from "moment";
 import AvatarIcon from "../svgs/AvatarIcon";
+import Breadcrumb from "../breadcrumb/Breadcrumb";
 
 type TProductImage = {
   original: string;
@@ -71,6 +72,7 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
   const [ratingValue, setRatingValue] = useState<number>(0);
   const [ratingKey, setRatingKey] = useState<number>(1);
   const [totalRatings, setTotalRatings] = useState<number>(0);
+  const [breadcrumbs, setBreadcrumbs] = useState<string[]>([]);
 
   const handleIncrement = () => {
     if (quantityValue >= 10) return;
@@ -224,6 +226,12 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
             setProduct(res.payload.data.data);
             setProductImages(images);
             setFilteredProductImages(images);
+            setBreadcrumbs([
+              res.payload.data.data.category.path
+                .toLowerCase()
+                .replaceAll("/", " "),
+              res.payload.data.data.name,
+            ]);
           } else {
             toast.error(res.payload.message || res.payload);
           }
@@ -250,6 +258,9 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
 
   return !isLoading && product ? (
     <div className="container mx-auto my-20 lg:w-10/12 w-11/12">
+      <div className="mb-20">
+        <Breadcrumb path={breadcrumbs} />
+      </div>
       <div className={styles.productPageGrid}>
         <div>
           <ImageGallery
@@ -261,7 +272,7 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
         </div>
         <div>
           <div
-            className="mb-5 cursor-pointer flex justify-between"
+            className="mb-5 cursor-pointer inline-flex justify-between"
             onClick={() => {
               dispatch(
                 toggleQuickviewPopup({ show: false, productId: undefined })
@@ -274,19 +285,18 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
               src={`${process.env.REACT_APP_S3_BUCKET_URL}${product?.brand.logo}`}
               alt={product?.brand.name}
             />
-            <div title={`${totalRatings} OUT OF 5`}>
-              <ReactStars
-                count={5}
-                size={24}
-                activeColor="#FF6D2E"
-                isHalf
-                value={totalRatings}
-                edit={false}
-              />
-            </div>
           </div>
-          <h1 className="text-2xl font-bold mb-1">{product?.name}</h1>
-          <p className="mb-1 font-sm text-[#636363]">{product?.description}</p>
+          <h1 className="text-2xl font-bold">{product?.name}</h1>
+          <div className="my-2" title={`${totalRatings} OUT OF 5`}>
+            <ReactStars
+              count={5}
+              size={24}
+              activeColor="#FF6D2E"
+              isHalf
+              value={totalRatings}
+              edit={false}
+            />
+          </div>
           <p className="font-bold mb-5">${product?.price}</p>
           <div className="mb-5">
             <p className="mb-3">

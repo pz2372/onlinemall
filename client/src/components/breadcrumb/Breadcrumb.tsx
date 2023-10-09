@@ -15,8 +15,27 @@ const Breadcrumb = ({ path }: TBreadcrumbProps) => {
         <ChevronRightIcon width="15px" height="15px" fill="#FF6D2E" />
       </li>
       {path.map((p: string, index: number) => {
-        return (
+        return path.length === 1 ? (
           <li key={index} className="flex items-center gap-2">
+            <span
+              className={`capitalize ${
+                path.length - 1 !== index ? "font-bold" : ""
+              }`}
+            >
+              {p}
+            </span>
+            {path.length - 1 !== index ? (
+              <ChevronRightIcon width="15px" height="15px" fill="#FF6D2E" />
+            ) : null}
+          </li>
+        ) : (
+          <li
+            key={index}
+            className={`flex items-center gap-2 ${
+              index === 0 ? "cursor-pointer" : ""
+            }`}
+            onClick={() => index === 0 && navigate(-1)}
+          >
             <span
               className={`capitalize ${
                 path.length - 1 !== index ? "font-bold" : ""
