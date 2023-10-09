@@ -52,6 +52,9 @@ const create = async (req, res) => {
     const { name } = req.body;
     const newSize = new Size({
       name,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      deletedAt: new Date(),
     });
 
     await newSize.save();

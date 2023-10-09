@@ -234,12 +234,14 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
             ]);
           } else {
             toast.error(res.payload.message || res.payload);
+            navigate("/");
           }
         })
         .catch((err) => {
           toast.error(err.message, {
             autoClose: 2000,
           });
+          navigate("/");
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -249,7 +251,7 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
     if (selectedColor) {
       let images = [...productImages];
       images = images.filter((image: TProductImage) =>
-        image.original.includes(selectedColor.name)
+        image.original.toLowerCase().includes(selectedColor.name.toLowerCase())
       );
       setFilteredProductImages(images);
     }

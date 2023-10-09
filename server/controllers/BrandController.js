@@ -73,6 +73,9 @@ const create = async (req, res) => {
         logo: logoUrl,
         categories,
         website,
+        createdAt: new Date(),
+        modifiedAt: new Date(),
+        deletedAt: new Date(),
       });
 
       await newBrand.save();

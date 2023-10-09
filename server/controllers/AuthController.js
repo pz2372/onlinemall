@@ -22,6 +22,9 @@ const signup = async (req, res) => {
       phone,
       password: hashPassword,
       gender,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      deletedAt: new Date(),
     });
     await newUser.save();
     res.status(201).send({ message: "User created!", success: true });
@@ -187,6 +190,9 @@ const adminCreate = async (req, res) => {
       password: hashPassword,
       role,
       brand,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      deletedAt: new Date(),
     });
     await newAdmin.save();
 

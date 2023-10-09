@@ -66,6 +66,9 @@ const create = async (req, res) => {
           state,
           zipCode,
           country,
+          createdAt: new Date(),
+          modifiedAt: new Date(),
+          deletedAt: new Date(),
         });
         await newAddress.save();
         res.status(200).send({

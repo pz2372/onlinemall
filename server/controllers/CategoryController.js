@@ -57,6 +57,9 @@ const create = async (req, res) => {
       description,
       path,
       key: name.replaceAll(" ", "_").toUpperCase(),
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      deletedAt: new Date(),
     });
 
     await newCategory.save();

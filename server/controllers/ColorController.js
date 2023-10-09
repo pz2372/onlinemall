@@ -53,6 +53,9 @@ const create = async (req, res) => {
     const newColor = new Color({
       name,
       hex,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      deletedAt: new Date(),
     });
 
     await newColor.save();
