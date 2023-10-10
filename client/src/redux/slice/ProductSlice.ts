@@ -1,6 +1,48 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { TAddReview } from "../../types/redux.type";
+import { TAddReview, TQuery } from "../../types/redux.type";
+
+export const fetchAllProducts = createAsyncThunk(
+  "product/getAll",
+  async (query: TQuery) => {
+    try {
+      const response = await axios.get(
+        `/api/product/getAll?page=${query.page}&limit=${query.limit}`
+      );
+      return response;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  }
+);
+
+export const fetchTrendingProducts = createAsyncThunk(
+  "product/getTrendings",
+  async (query: TQuery) => {
+    try {
+      const response = await axios.get(
+        `/api/product/getAll?page=${query.page}&limit=${query.limit}`
+      );
+      return response;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  }
+);
+
+export const fetchMenTShirtsProducts = createAsyncThunk(
+  "product/getMenTShirtss",
+  async (query: TQuery) => {
+    try {
+      const response = await axios.get(
+        `/api/product/getAll?page=${query.page}&limit=${query.limit}&category=${query.categoryId}`
+      );
+      return response;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  }
+);
 
 export const fetchProductsByCategoryWithBrands = createAsyncThunk(
   "product/getByCategory",
@@ -63,6 +105,12 @@ const productSlice = createSlice({
   initialState: {
     isLoading: false,
     isAddReviewLoading: false,
+    allProducts: [],
+    trendingProducts: [],
+    menTShirtsProducts: [],
+    currentPage: 1,
+    totalCount: 0,
+    totalPages: 0,
     products: {},
     brandProducts: [],
     productsInCart: localStorage.productsInCart
@@ -82,6 +130,57 @@ const productSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchAllProducts.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchAllProducts.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload?.success || action.payload?.data?.success) {
+        state.allProducts = action.payload.data.data;
+        state.currentPage = action.payload.data.currentPage;
+        state.totalCount = action.payload.data.totalCount;
+        state.totalPages = action.payload.data.totalPages;
+      } else {
+        state.isError = true;
+      }
+    });
+    builder.addCase(fetchAllProducts.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+
+    builder.addCase(fetchTrendingProducts.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchTrendingProducts.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload?.success || action.payload?.data?.success) {
+        state.trendingProducts = action.payload.data.data;
+      } else {
+        state.isError = true;
+      }
+    });
+    builder.addCase(fetchTrendingProducts.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+
+    builder.addCase(fetchMenTShirtsProducts.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchMenTShirtsProducts.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload?.success || action.payload?.data?.success) {
+        state.menTShirtsProducts = action.payload.data.data;
+      } else {
+        state.isError = true;
+      }
+    });
+    builder.addCase(fetchMenTShirtsProducts.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+
     builder.addCase(
       fetchProductsByCategoryWithBrands.pending,
       (state, action) => {

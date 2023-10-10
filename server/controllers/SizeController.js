@@ -111,6 +111,7 @@ const deleteById = async (req, res) => {
         res.status(200).send({
           message: "Size deleted!",
           success: true,
+          _id: size._id,
         });
       }
     } else {

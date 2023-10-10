@@ -112,6 +112,7 @@ const deleteById = async (req, res) => {
         res.status(200).send({
           message: "Color deleted!",
           success: true,
+          _id: color._id,
         });
       }
     } else {

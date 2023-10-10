@@ -3,13 +3,11 @@ import {
   Avatar,
   Backdrop,
   Box,
-  Button,
   Checkbox,
   CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   FormControl,
   Icon,
@@ -44,9 +42,6 @@ import Slide from "@mui/material/Slide";
 import { fetchAllCategories } from "redux/slice/CategorySlice";
 import { styled } from "@mui/material/styles";
 import { toast } from "react-toastify";
-import { createBrand } from "redux/slice/BrandSlice";
-import { updateBrand } from "redux/slice/BrandSlice";
-import { deleteBrand } from "redux/slice/BrandSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import { fetchAllProducts } from "redux/slice/ProductSlice";
 import ReactStars from "react-rating-stars-component";
@@ -54,6 +49,7 @@ import { fetchAllColors } from "redux/slice/ColorSlice";
 import { fetchAllSizes } from "redux/slice/SizeSlice";
 import { createProduct } from "redux/slice/ProductSlice";
 import { updateProduct } from "redux/slice/ProductSlice";
+import { deleteProduct } from "redux/slice/ProductSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -88,7 +84,6 @@ const Products = () => {
     isLoading: isProductLoading,
     currentPage,
     totalCount,
-    totalPages,
   } = useSelector((state) => state.product);
   const { brands } = useSelector((state) => state.brand);
   const { categories } = useSelector((state) => state.category);
@@ -161,7 +156,7 @@ const Products = () => {
     setOpenCreateProductDialog(false);
     setEditingProduct(null);
   };
-  const handleCloseDeleteBrandDialog = () => {
+  const handleCloseDeleteProductDialog = () => {
     setOpenDeleteProductDialog(false);
   };
 
@@ -182,7 +177,7 @@ const Products = () => {
   const handleFileInput = (e) => {
     const files = Array.from(e.target.files);
     const fdImages = [...formData.images];
-    const isValid = true;
+    let isValid = true;
     files.forEach((image) => {
       if (image.type === "image/png" || image.type === "image/jpeg") {
         fdImages.push(image);
@@ -285,19 +280,20 @@ const Products = () => {
   };
 
   const handleSubmitDeleteProduct = () => {
-    // dispatch(deleteBrand(deletingBraProduct))
-    //   .then((res) => {
-    //     if (!res.payload.data?.success) {
-    //       toast.error(res.payload.message || res.payload);
-    //     } else {
-    //       handleCloseDeleteBrandDialog();
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err.message, {
-    //       autoClose: 2000,
-    //     });
-    //   });
+    dispatch(deleteProduct(deletingProduct._id))
+      .then((res) => {
+        if (!res.payload.data?.success) {
+          toast.error(res.payload.message || res.payload);
+        } else {
+          handleCloseDeleteProductDialog();
+          setPage(0);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message, {
+          autoClose: 2000,
+        });
+      });
   };
 
   useEffect(() => {
@@ -316,17 +312,6 @@ const Products = () => {
       setFormIsValid(true);
     }
   }, [formData]);
-
-  // useEffect(() => {
-  //   const arr = [];
-  //   selectedColors.forEach((cat) => {
-  //     arr.push(cat);
-  //   });
-  //   selectedSizes.forEach((cat) => {
-  //     arr.push(cat);
-  //   });
-  //   setFormData({ ...formData, categories: arr });
-  // }, [selectedColors, selectedSizes]);
 
   return (
     <DashboardLayout>
@@ -749,7 +734,7 @@ const Products = () => {
         open={openDeleteProductDialog}
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleCloseDeleteBrandDialog}
+        onClose={handleCloseDeleteProductDialog}
       >
         <DialogContent
           sx={{
@@ -774,7 +759,7 @@ const Products = () => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <MDButton variant="gradient" color="dark" onClick={handleCloseDeleteBrandDialog}>
+          <MDButton variant="gradient" color="dark" onClick={handleCloseDeleteProductDialog}>
             Cancel
           </MDButton>
           <MDButton variant="gradient" color="success" onClick={handleSubmitDeleteProduct}>

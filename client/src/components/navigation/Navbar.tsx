@@ -18,6 +18,7 @@ import LoginIcon from "../svgs/LoginIcon";
 import { fetchAllSizes } from "../../redux/slice/SizeSlice";
 import { fetchAllColors } from "../../redux/slice/ColorSlice";
 import Badge from "../badge/Badge";
+import { fetchAllBrands } from "../../redux/slice/BrandSlice";
 
 const Navbar: React.FC = () => {
   const { menCategories, womenCategories } = useSelector(
@@ -57,6 +58,7 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchAllCategories());
+    dispatch(fetchAllBrands());
     dispatch(fetchAllColors());
     dispatch(fetchAllSizes());
   }, []);

@@ -6,8 +6,12 @@ const { validationResult } = require("express-validator");
 
 const getAll = async (req, res) => {
   try {
-    const { page = 1, limit = 10 } = req.query;
-    const products = await Product.find()
+    const { page = 1, limit = 10, category } = req.query;
+    let where = {};
+    if (category && category !== "undefined") {
+      where.category = category;
+    }
+    const products = await Product.find(where)
       .populate("sizes")
       .populate("colors")
       .populate({
@@ -446,9 +450,33 @@ const deleteById = async (req, res) => {
           });
         }
         await Product.deleteOne({ _id: product._id });
+
+        const products = await Product.find()
+          .populate("sizes")
+          .populate("colors")
+          .populate({
+            path: "brand",
+            populate: {
+              path: "categories",
+            },
+          })
+          .populate("category")
+          .populate("reviews.user")
+          .populate("ratings.user")
+          .skip(0)
+          .limit(10)
+          .sort({ modifiedAt: -1 })
+          .exec();
+
+        const count = await Product.count();
+
         res.status(200).send({
           message: "Product deleted!",
           success: true,
+          data: products,
+          currentPage: 1,
+          totalPages: Math.ceil(count / 10),
+          totalCount: Number(count),
         });
       }
     } else {
