@@ -6,7 +6,6 @@ import { useState } from "react";
 import logo from "../../assets/logo.png";
 import styles from "./Navbar.module.scss";
 import SearchIcon from "../svgs/SearchIcon";
-import ShoppingCartIcon from "../svgs/ShoppingCartIcon";
 import UserAccountDropdown from "./dropdowns/UserAccountDropdown";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";

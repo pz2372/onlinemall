@@ -36,6 +36,8 @@ const MenuDropdown = ({ categories }: TMenuDropdownProps) => {
         style={{
           clipPath: "polygon(0 0, 95% 0, 100% 100%, 5% 100%)",
           paddingLeft: "170px",
+          paddingRight: "50px",
+          overflowX: "auto",
         }}
       >
         {categories.map((category: TProductCategory) => {
