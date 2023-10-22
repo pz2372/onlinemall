@@ -75,12 +75,17 @@
 
   .menuDropdown {
     ul {
+      &::-webkit-scrollbar {
+        height: 0px;
+      }
+
       >li {
         border-color: $orange;
         border-bottom: 2px solid transparent;
 
         p {
           font-size: 12px;
+          white-space: nowrap;
         }
 
         &.active {

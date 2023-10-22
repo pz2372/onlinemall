@@ -6,7 +6,6 @@ import { useState } from "react";
 import logo from "../../assets/logo.png";
 import styles from "./Navbar.module.scss";
 import SearchIcon from "../svgs/SearchIcon";
-import ShoppingCartIcon from "../svgs/ShoppingCartIcon";
 import UserAccountDropdown from "./dropdowns/UserAccountDropdown";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +17,7 @@ import LoginIcon from "../svgs/LoginIcon";
 import { fetchAllSizes } from "../../redux/slice/SizeSlice";
 import { fetchAllColors } from "../../redux/slice/ColorSlice";
 import Badge from "../badge/Badge";
+import { fetchAllBrands } from "../../redux/slice/BrandSlice";
 
 const Navbar: React.FC = () => {
   const { menCategories, womenCategories } = useSelector(
@@ -57,6 +57,7 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchAllCategories());
+    dispatch(fetchAllBrands());
     dispatch(fetchAllColors());
     dispatch(fetchAllSizes());
   }, []);

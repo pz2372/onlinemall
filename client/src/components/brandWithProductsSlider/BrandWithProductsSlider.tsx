@@ -14,7 +14,7 @@ const BrandWithProductsSlider = ({ product }: BrandWithProductsSliderProps) => {
         <Link to={`/brand/${product[0].brand._id}`}>
           <img
             alt={product[0].brand.name}
-            src={`${process.env.REACT_APP_S3_BUCKET_URL}${product[0].brand.logo}`}
+            src={`${process.env.REACT_APP_S3_BUCKET_URL}/${product[0].brand.logo}`}
             loading="lazy"
           />
         </Link>

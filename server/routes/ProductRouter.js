@@ -21,7 +21,7 @@ productRouter.post("/addReview", auth, ProductController.addReview);
 productRouter.post(
   "/create",
   isSuperAdmin,
-  upload.array("images", 20),
+  upload.array("images", 50),
   [
     body("name").notEmpty().withMessage("Name is required."),
     body("SKU").notEmpty().withMessage("SKU is required."),
@@ -36,7 +36,7 @@ productRouter.post(
 productRouter.put(
   "/update/:id",
   isSuperAdmin,
-  upload.array("images", 20),
+  upload.array("images", 50),
   ProductController.update
 );
 productRouter.delete("/delete/:id", isSuperAdmin, ProductController.deleteById);

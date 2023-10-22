@@ -52,7 +52,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <div
         className="bg-cover bg-center h-72 p-4 rounded-2xl relative flex flex-col justify-between"
         style={{
-          backgroundImage: `url(${process.env.REACT_APP_S3_BUCKET_URL}${product.images[0]})`,
+          backgroundImage: `url(${process.env.REACT_APP_S3_BUCKET_URL}/${product.images[0]})`,
         }}
       >
         <div

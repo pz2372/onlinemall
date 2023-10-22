@@ -1,3 +1,4 @@
+import { TProductBrand } from "./products.type";
 import { TUser } from "./users.type";
 
 export type TQuickview = {
@@ -16,4 +17,16 @@ export type TUserState = {
   isLoading: boolean;
   isError: boolean;
   userInfo: TUser | null;
+};
+
+export type TBrandState = {
+  isLoading: boolean;
+  isError: boolean;
+  brands: TProductBrand[];
+};
+
+export type TQuery = {
+  page: number;
+  limit: number;
+  categoryId?: string;
 };

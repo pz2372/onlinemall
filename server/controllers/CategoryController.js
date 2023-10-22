@@ -51,12 +51,15 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { name, description, path } = req.body;
+    const { name, description, key, path } = req.body;
     const newCategory = new Category({
       name,
       description,
       path,
-      key: name.replaceAll(" ", "_").toUpperCase(),
+      key,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      deletedAt: new Date(),
     });
 
     await newCategory.save();
@@ -116,6 +119,7 @@ const deleteById = async (req, res) => {
         res.status(200).send({
           message: "Category deleted!",
           success: true,
+          _id: category._id,
         });
       }
     } else {

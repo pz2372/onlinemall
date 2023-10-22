@@ -35,7 +35,7 @@ const UserAccountDropdown = () => {
         {userInfo?.avatar ? (
           <img
             className="w-8 h-8 rounded-full"
-            src={process.env.REACT_APP_S3_BUCKET_URL + userInfo.avatar}
+            src={`${process.env.REACT_APP_S3_BUCKET_URL}/${userInfo.avatar}`}
             alt="avatar"
           />
         ) : (

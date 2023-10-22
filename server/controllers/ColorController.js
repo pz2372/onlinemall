@@ -53,6 +53,9 @@ const create = async (req, res) => {
     const newColor = new Color({
       name,
       hex,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+      deletedAt: new Date(),
     });
 
     await newColor.save();
@@ -109,6 +112,7 @@ const deleteById = async (req, res) => {
         res.status(200).send({
           message: "Color deleted!",
           success: true,
+          _id: color._id,
         });
       }
     } else {

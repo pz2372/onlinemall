@@ -147,10 +147,10 @@ const Brands = () => {
   };
 
   const handleFileInput = (e) => {
-    if (e.target.files[0]?.type === "image/png") {
+    if (e.target.files[0]?.type === "image/png" || e.target.files[0]?.type === "image/jpeg") {
       setFormData({ ...formData, logo: e.target.files[0] });
     } else {
-      toast.error("Please upload PNG files only.");
+      toast.error("Please upload PNG or JPEG files only.");
     }
   };
 
@@ -296,7 +296,7 @@ const Brands = () => {
                   <TableCell>
                     <Avatar
                       alt={brand.name}
-                      src={process.env.REACT_APP_S3_BUCKET_URL + brand.logo}
+                      src={`${process.env.REACT_APP_S3_BUCKET_URL}/${brand.logo}`}
                     />
                   </TableCell>
                   <TableCell>{brand.name}</TableCell>
@@ -396,6 +396,8 @@ const Brands = () => {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               fullWidth
+              multiline
+              rows={4}
             />
           </Box>
           <Box mb={3}>
@@ -488,7 +490,7 @@ const Brands = () => {
               {typeof formData.logo === "string" ? (
                 <Avatar
                   alt="image-preview"
-                  src={process.env.REACT_APP_S3_BUCKET_URL + formData.logo}
+                  src={`${process.env.REACT_APP_S3_BUCKET_URL}/${formData.logo}`}
                   sx={{ width: 100, height: 100 }}
                 />
               ) : (

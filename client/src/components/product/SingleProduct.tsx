@@ -210,8 +210,8 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
             const images: TProductImage[] = [];
             res.payload.data.data.images.forEach((image: string) => {
               images.push({
-                original: process.env.REACT_APP_S3_BUCKET_URL + image,
-                thumbnail: process.env.REACT_APP_S3_BUCKET_URL + image,
+                original: `${process.env.REACT_APP_S3_BUCKET_URL}/${image}`,
+                thumbnail: `${process.env.REACT_APP_S3_BUCKET_URL}/${image}`,
               });
             });
             const sum = res.payload.data.data.ratings.reduce(
@@ -234,12 +234,14 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
             ]);
           } else {
             toast.error(res.payload.message || res.payload);
+            navigate("/");
           }
         })
         .catch((err) => {
           toast.error(err.message, {
             autoClose: 2000,
           });
+          navigate("/");
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -249,7 +251,7 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
     if (selectedColor) {
       let images = [...productImages];
       images = images.filter((image: TProductImage) =>
-        image.original.includes(selectedColor.name)
+        image.original.toLowerCase().includes(selectedColor.name.toLowerCase())
       );
       setFilteredProductImages(images);
     }
@@ -282,7 +284,7 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
           >
             <img
               className="w-auto h-[50px]"
-              src={`${process.env.REACT_APP_S3_BUCKET_URL}${product?.brand.logo}`}
+              src={`${process.env.REACT_APP_S3_BUCKET_URL}/${product?.brand.logo}`}
               alt={product?.brand.name}
             />
           </div>
@@ -410,10 +412,7 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
                         {review.user.avatar ? (
                           <img
                             className="w-10 h-10 rounded-full mr-4"
-                            src={
-                              process.env.REACT_APP_S3_BUCKET_URL +
-                              review.user.avatar
-                            }
+                            src={`${process.env.REACT_APP_S3_BUCKET_URL}/${review.user.avatar}`}
                             alt="avatar"
                           />
                         ) : (
@@ -467,9 +466,7 @@ const SingleProduct = ({ productId, hideReviews }: TSingleProductProps) => {
                   {userInfo?.avatar ? (
                     <img
                       className="w-10 h-10 rounded-full mr-4"
-                      src={
-                        process.env.REACT_APP_S3_BUCKET_URL + userInfo.avatar
-                      }
+                      src={`${process.env.REACT_APP_S3_BUCKET_URL}/${userInfo.avatar}`}
                       alt="avatar"
                     />
                   ) : (
