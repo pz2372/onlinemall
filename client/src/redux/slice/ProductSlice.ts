@@ -88,6 +88,21 @@ export const fetchProductById = createAsyncThunk(
   }
 );
 
+export const fetchProductsByIds = createAsyncThunk(
+  "product/getByIds",
+  async (productIds: string[]) => {
+    try {
+      const response: any = await axios.post(
+        `/api/product/getByIds`,
+        productIds
+      );
+      return response;
+    } catch (err: any) {
+      return err.response.data;
+    }
+  }
+);
+
 export const addReviewToProduct = createAsyncThunk(
   "product/addReview",
   async (data: TAddReview) => {
@@ -220,6 +235,7 @@ const productSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
     });
+
     builder.addCase(fetchProductById.pending, (state, action) => {
       state.isLoading = true;
     });
@@ -227,6 +243,17 @@ const productSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(fetchProductById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+
+    builder.addCase(fetchProductsByIds.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchProductsByIds.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(fetchProductsByIds.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
     });

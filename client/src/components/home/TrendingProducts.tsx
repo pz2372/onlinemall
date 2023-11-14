@@ -18,9 +18,8 @@ const TrendingProducts = () => {
 
   return trendingProducts.length ? (
     <div className="container mx-auto lg:w-10/12 w-11/12">
-      <div className="pb-20 lg:pb-32">
+      <div className="py-20 lg:pb-32">
         {/* Heading */}
-        <Heading title="Trending Products" />
 
         {/* Contents */}
         <div className="mt-10">

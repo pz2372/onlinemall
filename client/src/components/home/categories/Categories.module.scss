@@ -1,0 +1,10 @@
+@import '../../../assets/scss/mixins';
+
+.card {
+  height: 270px;
+  padding-bottom: 10px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  @include flexbox(row, center, flex-end);
+}
