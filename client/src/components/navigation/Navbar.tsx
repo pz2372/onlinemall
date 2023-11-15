@@ -132,7 +132,7 @@ const Navbar: React.FC = () => {
                   }`}
                   onClick={() => navigate("/trending")}
                 >
-                  <span className={`${styles.menuItem}`}>Trending</span>
+                  <span className={`${styles.menuItem}`}>Christmas Sales</span>
                 </li>
 
                 <li

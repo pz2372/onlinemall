@@ -35,3 +35,19 @@
     @content;
   }
 }
+
+
+@mixin typography($size, $weight, $color, $align, $spacing) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+  text-align: $align;
+  letter-spacing: $spacing;
+}
+
+@mixin flexbox($direction, $jc, $ai) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $jc;
+  align-items: $ai;
+}

@@ -16,6 +16,7 @@ productRouter.post(
   ProductController.getProductsByCategoryWithBrands
 );
 productRouter.get("/getById/:id", ProductController.getById);
+productRouter.post("/getByIds", ProductController.getByIds);
 productRouter.post("/getProductsByBrand", ProductController.getProductsByBrand);
 productRouter.post("/addReview", auth, ProductController.addReview);
 productRouter.post(

@@ -188,6 +188,36 @@ const getById = async (req, res) => {
   }
 };
 
+const getByIds = async (req, res) => {
+  try {
+    const productIds = req.body;
+    const products = await Product.find({ _id: { $in: productIds } })
+      .populate("sizes")
+      .populate("colors")
+      .populate({
+        path: "brand",
+        populate: {
+          path: "categories",
+        },
+      })
+      .populate("category")
+      .populate("reviews.user")
+      .populate("ratings.user");
+    if (!products.length) {
+      res.status(404).send({ message: "No products found.", success: false });
+    } else {
+      res.status(200).send({
+        success: true,
+        data: products,
+      });
+    }
+  } catch (e) {
+    res
+      .status(500)
+      .send({ message: e.message, error: e.errors, success: false });
+  }
+};
+
 const getProductsByBrand = async (req, res) => {
   try {
     const {
@@ -493,6 +523,7 @@ module.exports = {
   getAll,
   getProductsByCategoryWithBrands,
   getById,
+  getByIds,
   getProductsByBrand,
   create,
   update,

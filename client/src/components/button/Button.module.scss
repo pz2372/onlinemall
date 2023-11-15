@@ -42,4 +42,18 @@ button {
       opacity: 0.7;
     }
   }
+
+  &.dark {
+    padding: 10px 25px;
+    border: 2px solid $dark;
+    border-radius: 20px;
+    background-color: $dark;
+    transition: .5s;
+    @include typography(16px, 700, $white, center, 5px);
+
+    &:hover {
+      background-color: transparent;
+      color: $dark;
+    }
+  }
 }
