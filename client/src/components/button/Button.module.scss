@@ -56,4 +56,36 @@ button {
       color: $dark;
     }
   }
+
+  &.light {
+    padding: 10px;
+    border: 2px solid white;
+    background-color: transparent;
+    transition: .5s;
+    @include typography(16px, 700, $white, center, 5px);
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: $white;
+      color: $dark;
+    }
+  }
+
+  &.friday-btn {
+    padding: 8px 40px;
+    background-color: $red;
+    border: 2px solid $red;
+    @include typography(16px, 700, $white, center, 4px);
+    text-transform: uppercase;
+    clip-path: polygon(0px 0px, 88% 0px, 100% 100%, 11% 100%);
+
+    transition: .5s;
+
+    &:hover {
+      background-color: transparent;
+      border-right-color: transparent;
+      border-left-color: transparent;
+      color: $red;
+    }
+  }
 }

@@ -19,8 +19,8 @@ import { me } from "./redux/slice/UserSlice";
 import BrandsPage from "./pages/BrandsPage";
 import TrendingPage from "./pages/TrendingPage";
 import Terms from "./pages/Terms";
-import Favorites from "./pages/Favorites";
-import Cart from "./pages/Cart";
+import Favorites from "./pages/favorites/Favorites";
+import Card from "./pages/card/Card";
 import ProductPage from "./pages/ProductPage";
 import "reactjs-popup/dist/index.css";
 import Popup from "reactjs-popup";
@@ -63,7 +63,7 @@ const App = () => {
         <Route path="/brands" element={<BrandsPage />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/card" element={<Card />} />
         <Route path="brand/:id" element={<BrandPage />} />
         <Route path="product/:id" element={<ProductPage />} />
       </Routes>

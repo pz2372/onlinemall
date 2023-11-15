@@ -137,7 +137,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }: SidebarProps) => {
             </NavLink>
           </div>
 
-          <div className=" w-full">
+          {/* <div className=" w-full">
             <div
               className="flex items-center justify-between"
               onClick={() => setShowMenItem(!showMenItem)}
@@ -149,7 +149,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }: SidebarProps) => {
                 } duration-300`}
               ></i>
             </div>
-            {/* Dropdown */}
+            
             {showMenItem === true ? (
               <div className="mt-4">
                 <ul>
@@ -168,7 +168,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }: SidebarProps) => {
                 </ul>
               </div>
             ) : null}
-          </div>
+          </div> */}
 
           <div className=" w-full">
             <div
