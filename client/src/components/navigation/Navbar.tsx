@@ -18,6 +18,7 @@ import { fetchAllSizes } from "../../redux/slice/SizeSlice";
 import { fetchAllColors } from "../../redux/slice/ColorSlice";
 import Badge from "../badge/Badge";
 import { fetchAllBrands } from "../../redux/slice/BrandSlice";
+import Button from "../button/Button";
 
 const Navbar: React.FC = () => {
   const { menCategories, womenCategories } = useSelector(
@@ -108,41 +109,48 @@ const Navbar: React.FC = () => {
                   <span className={`${styles.menuItem}`}>Home</span>
                 </li> */}
 
-                <li
+                {/* <li
                   className={`h-full flex items-center justify-center ${
                     selectedMenu === "women" ? styles.active : ""
                   }`}
                   onClick={() => navigate("/women?cat=tops")}
                 >
                   <span className={`${styles.menuItem}`}>Women</span>
-                </li>
+                </li> */}
 
-                <li
+                <Button
+                  onClick={() => navigate("/women?cat=tops")}
+                  variant="friday-btn"
+                >
+                  Black Friday
+                </Button>
+
+                {/* <li
                   className={`h-full flex items-center justify-center ${
                     selectedMenu === "men" ? styles.active : ""
                   }`}
                   onClick={() => navigate("/men?cat=t-shirts")}
                 >
                   <span className={`${styles.menuItem}`}>Men</span>
-                </li>
+                </li> */}
 
-                <li
+                {/* <li
                   className={`h-full flex items-center justify-center ${
                     selectedMenu === "trending" ? styles.active : ""
                   }`}
                   onClick={() => navigate("/trending")}
                 >
                   <span className={`${styles.menuItem}`}>Christmas Sales</span>
-                </li>
+                </li> */}
 
-                <li
+                {/* <li
                   className={`h-full flex items-center justify-center ${
                     selectedMenu === "brands" ? styles.active : ""
                   }`}
                   onClick={() => navigate("/brands")}
                 >
                   <span className={`${styles.menuItem}`}>Brands</span>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
@@ -175,8 +183,8 @@ const Navbar: React.FC = () => {
             </div>
             <div
               className="relative cursor-pointer"
-              title="Cart"
-              onClick={() => navigate("/cart")}
+              title="Card"
+              onClick={() => navigate("/card")}
             >
               {productsInCart.length > 0 ? (
                 <Badge quantity={productsInCart.length} />

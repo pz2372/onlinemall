@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 import {
   fetchProductById,
   fetchProductsByIds,
-} from "../redux/slice/ProductSlice";
-import Loader from "../components/loader/Loader";
-import { TProduct, TProductRating } from "../types/products.type";
-import ProductCard from "../components/productCard/ProductCard";
+} from "../../redux/slice/ProductSlice";
+import Loader from "../../components/loader/Loader";
+import { TProduct, TProductRating } from "../../types/products.type";
+import ProductCard from "../../components/productCard/ProductCard";
 
 const Favorites = () => {
   const dispatch: AppDispatch = useDispatch();

@@ -1,12 +1,54 @@
+@import '../../../assets/scss/variables';
+@import '../../../assets/scss/mixins';
+
 .container {
   width: 100%;
-  height: calc(100vh - 96px);
+  height: 100vh;
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 1.8fr 1.2fr;
 
-  .rightDiv {
-    background-position: center center;
+  @include xl {
+    grid-template-columns: 1fr;
+  }
+
+  @include md {
+    height: 89vh;
+  }
+
+  @include sm {
+    height: 89vh;
+  }
+
+  >div {
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    @include md {
+      background-size: contain;
+    }
+  }
+
+  .rightDiv {
+    @include flexbox(row, center, flex-end);
+
+    >button {
+      width: 250px;
+      margin-bottom: 150px;
+
+      @include xl {
+        margin-bottom: 80px;
+      }
+
+      @include lg {
+        margin-bottom: 120px;
+      }
+    }
+  }
+
+  .leftDiv {
+    @include xl {
+      display: none;
+    }
   }
 }
