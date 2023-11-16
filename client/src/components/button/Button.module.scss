@@ -62,8 +62,7 @@ button {
     border: 2px solid white;
     background-color: transparent;
     transition: .5s;
-    @include typography(16px, 700, $white, center, 5px);
-    text-transform: uppercase;
+    @include typography(16px, 700, $white, center, 5px, uppercase);
 
     &:hover {
       background-color: $white;
@@ -75,8 +74,7 @@ button {
     padding: 8px 40px;
     background-color: $red;
     border: 2px solid $red;
-    @include typography(16px, 700, $white, center, 4px);
-    text-transform: uppercase;
+    @include typography(16px, 700, $white, center, 4px, uppercase);
     clip-path: polygon(0px 0px, 88% 0px, 100% 100%, 11% 100%);
 
     transition: .5s;
@@ -86,6 +84,21 @@ button {
       border-right-color: transparent;
       border-left-color: transparent;
       color: $red;
+    }
+  }
+
+  &.checkout-btn {
+    width: 100%;
+    padding: 7px 0;
+    background-color: $green;
+    color: $white;
+    border: 2px solid $green;
+    @include typography(15px, 700, $white, center, 4px, uppercase);
+    transition: .5s;
+
+    &:hover {
+      background-color: transparent;
+      color: $green;
     }
   }
 }

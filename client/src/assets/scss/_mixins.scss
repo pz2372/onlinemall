@@ -37,12 +37,13 @@
 }
 
 
-@mixin typography($size, $weight, $color, $align, $spacing) {
+@mixin typography($size, $weight, $color, $align, $spacing, $transform: capitalize) {
   font-size: $size;
   font-weight: $weight;
   color: $color;
   text-align: $align;
   letter-spacing: $spacing;
+  text-transform: $transform;
 }
 
 @mixin flexbox($direction, $jc, $ai) {

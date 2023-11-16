@@ -118,12 +118,12 @@ const Navbar: React.FC = () => {
                   <span className={`${styles.menuItem}`}>Women</span>
                 </li> */}
 
-                <Button
+                {/* <Button
                   onClick={() => navigate("/women?cat=tops")}
                   variant="friday-btn"
                 >
                   Black Friday
-                </Button>
+                </Button> */}
 
                 {/* <li
                   className={`h-full flex items-center justify-center ${
@@ -159,7 +159,7 @@ const Navbar: React.FC = () => {
           <div
             className={`flex justify-end items-center ml-3 gap-6 ${styles.navbarRight}`}
           >
-            <div
+            {/* <div
               className={`${styles.searchContainer} relative shadow-xl py-2 pl-4 pr-10 rounded-3xl md:block hidden`}
             >
               <input
@@ -170,7 +170,7 @@ const Navbar: React.FC = () => {
               <div className="absolute top-1 right-2">
                 <SearchIcon width="30px" height="30px" fill="#000000" />
               </div>
-            </div>
+            </div> */}
             <div
               className="relative cursor-pointer"
               title="Favorites"

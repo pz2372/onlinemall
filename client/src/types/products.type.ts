@@ -61,6 +61,9 @@ export type TProduct = {
   reviews: TProductReview[];
   ratings: TProductRating[];
   totalRatings?: number;
+  selectedSize?: TProductSize;
+  selectedColor?: TProductColor;
+  quantity?: number;
   createdAt: string;
   deletedAt: string;
   modifiedAt: string;
