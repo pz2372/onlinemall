@@ -1,0 +1,53 @@
+@import '../../assets/scss/variables';
+@import '../../assets/scss/mixins';
+
+.bucket_container {
+  min-height: calc(100vh - 613px);
+  background-color: $lightgray;
+  padding: 20px;
+  @include flexbox(row, center, start);
+
+  >.bucket {
+    width: 1000px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 15px;
+
+    >.bucket_products {
+      @include flexbox(column, unset, unset);
+
+      >.header {
+        background-color: $white;
+        padding: 20px;
+
+        >h3 {
+          @include typography(18px, 700, $dark, unset, 2px, uppercase);
+        }
+      }
+
+      >.products {
+        @include flexbox(column, unset, unset);
+      }
+    }
+
+    >.checkout {
+      max-height: 300px;
+      position: sticky;
+      top: 106px;
+
+      >div {
+        background-color: $white;
+        padding: 20px;
+
+        .header {
+          @include typography(18px, 800, $dark, unset, 4px, uppercase);
+        }
+
+        hr {
+          height: 5px;
+          margin: 10px 0;
+        }
+      }
+    }
+  }
+}
