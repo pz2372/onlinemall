@@ -14,6 +14,7 @@ import ColorSlice from "./slice/ColorSlice";
 import SizeSlice from "./slice/SizeSlice";
 import PopupSlice from "./slice/PopupSlice";
 import BrandSlice from "./slice/BrandSlice";
+import PaymentSlice from "./slice/PaymentSlice";
 
 const store = configureStore({
   reducer: {
@@ -32,6 +33,7 @@ const store = configureStore({
     uploadName: UploadNameSlice,
     uploadPrice: UploadPriceSlice,
     editProduct: EditProductSlice,
+    payment: PaymentSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

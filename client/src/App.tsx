@@ -27,6 +27,9 @@ import Popup from "reactjs-popup";
 import SingleProduct from "./components/product/SingleProduct";
 import { toggleQuickviewPopup } from "./redux/slice/PopupSlice";
 import { TQuickview } from "./types/redux.type";
+import Checkout from "./components/payment/Checkout";
+import PaymentSuccess from "./pages/Payment/PaymentSuccess";
+import PaymentFail from "./pages/Payment/PaymentFail";
 
 const App = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -66,6 +69,9 @@ const App = () => {
         <Route path="/card" element={<Card />} />
         <Route path="brand/:id" element={<BrandPage />} />
         <Route path="product/:id" element={<ProductPage />} />
+        <Route path="checkout" element={<Checkout />} />
+        <Route path="payment/success" element={<PaymentSuccess />} />
+        <Route path="payment/fail" element={<PaymentFail />} />
       </Routes>
 
       <ToastContainer />

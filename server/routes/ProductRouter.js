@@ -41,5 +41,9 @@ productRouter.put(
   ProductController.update
 );
 productRouter.delete("/delete/:id", isSuperAdmin, ProductController.deleteById);
+productRouter.post(
+  "/product-purchase-status/",
+  ProductController.purchaseStatus
+);
 
 module.exports = productRouter;

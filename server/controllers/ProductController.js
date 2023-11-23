@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const Category = require("../models/category");
+const Payment = require("../models/payment");
 const mongoose = require("mongoose");
 const { S3DeleteImg, S3UploadImg } = require("../utils/s3");
 const { validationResult } = require("express-validator");
@@ -519,6 +520,37 @@ const deleteById = async (req, res) => {
   }
 };
 
+const purchaseStatus = async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+
+    const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (!session) {
+      throw new Error("Unable to retrieve session");
+    }
+
+    const payment = await Payment.findOne({
+      sessionId,
+    });
+
+    if (!payment) {
+      throw new Error("Unable to retrieve payment");
+    }
+
+    res.send({
+      status: payment.status,
+      success: true,
+    });
+  } catch (e) {
+    res
+      .status(500)
+      .send({ message: e.message, error: e.errors, success: false });
+  }
+};
+
 module.exports = {
   getAll,
   getProductsByCategoryWithBrands,
@@ -529,4 +561,5 @@ module.exports = {
   update,
   deleteById,
   addReview,
+  purchaseStatus,
 };

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { TProduct } from "../../types/products.type";
 import { fetchProductsByIds } from "../../redux/slice/ProductSlice";
 import Loader from "../../components/loader/Loader";
@@ -16,6 +17,8 @@ const Card = () => {
   const [products, setProducts] = useState<TProduct[]>([]);
   const [total, setTotal] = useState<number>(0);
   const productIds: Array<string> = [];
+
+  const isCartEmpty = products.length === 0;
 
   useEffect(() => {
     if (productsInCart.length) {
@@ -95,7 +98,20 @@ const Card = () => {
             </div>
             <hr />
             <div>
-              <Button variant="checkout-btn">checkout</Button>
+              {isCartEmpty ? (
+                <Button variant="checkout-btn" disabled>
+                  Checkout
+                </Button>
+              ) : (
+                <Link
+                  to="/checkout"
+                  state={{
+                    products: products,
+                  }}
+                >
+                  <Button variant="checkout-btn">Checkout</Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
